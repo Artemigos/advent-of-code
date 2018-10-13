@@ -1,29 +1,37 @@
 import itertools
+import common
 
-data = [192,69,168,160,78,1,166,28,0,83,198,2,254,255,41,12]
-string = list(range(256))
+data = common.read_file('2017/10/data.txt').strip()
+ints = common.to_int(data.split(','))
 
-skip = 0
-pos = 0
+def knot_hash(key, repeat=1):
+    hash_data = list(range(256))
 
-def inc_pos(amount):
-    global pos
-    pos += amount
-    while pos >= len(string):
-        pos -= len(string)
+    skip = 0
+    pos = 0
 
-for l in data:
-    start_pos = pos
-    elements = list()
-    for i in range(l):
-        elements.append(string[pos])
-        inc_pos(1)
-    elements.reverse()
-    pos = start_pos
-    for i in range(l):
-        string[pos] = elements[i]
-        inc_pos(1)
-    inc_pos(skip)
-    skip += 1
+    def inc_pos(pos, amount):
+        pos += amount
+        while pos >= len(hash_data):
+            pos -= len(hash_data)
+        return pos
 
-print(string[0] * string[1])
+    for _ in range(repeat):
+        for l in key:
+            start_pos = pos
+            elements = list()
+            for i in range(l):
+                elements.append(hash_data[pos])
+                pos = inc_pos(pos, 1)
+            elements.reverse()
+            pos = start_pos
+            for i in range(l):
+                hash_data[pos] = elements[i]
+                pos = inc_pos(pos, 1)
+            pos = inc_pos(pos, skip)
+            skip += 1
+
+    return hash_data
+
+result = knot_hash(ints)
+print(result[0] * result[1])
