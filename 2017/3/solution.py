@@ -33,6 +33,7 @@ num = 0
 #         break
 
 # print(f"Number {num} with step {step} and distance {dist}.")
+# NOTE: with this data I did manual analysis
 
 # part 2
 board = np.zeros((501, 501))
