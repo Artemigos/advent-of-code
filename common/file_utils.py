@@ -16,4 +16,7 @@ def split_flat(data: str):
     return list(flatmap(lambda x: x.split(' '), lines))
 
 def to_int(data: list):
-    return list(map(lambda x: int(x), data))
+    return list(map(int, data))
+
+def to_ord(data: str):
+    return list(map(ord, data))
