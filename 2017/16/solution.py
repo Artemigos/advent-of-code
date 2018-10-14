@@ -1,7 +1,5 @@
 import common
-# import array
-# import numpy as np
-import itertools
+import queue
 
 data = common.read_file('2017/16/data.txt')
 moves = data.split(',')
@@ -13,75 +11,32 @@ def ordinal_of(character):
     return ord(character) - orda
 
 state = list(range(ordinal_of('a'), ordinal_of('q')))
-# state = array.array('b', state)
-# state = np.array(state, dtype=np.int8)
+state = queue.deque(state)
 len_state = len(state)
-pos0 = 0
-index_of = list(range(len_state))
-
-def calc_index(pos, index):
-    result = pos + index
-    if result >= len_state:
-        result -= len_state
-    return result
-
-precalculated_indexes = list()
-for p in range(len_state):
-    pos_vals = list()
-    for i in range(len_state):
-        pos_vals.append(calc_index(p, i))
-    precalculated_indexes.append(pos_vals)
-
-def swap_index(ch1, ch2):
-    tmp = index_of[ch1]
-    index_of[ch1] = index_of[ch2]
-    index_of[ch2] = tmp
 
 def create_spin_f(amount):
     def spin():
-        global pos0
-        pos0 -= amount
-        # NOTE: range of input data allows simplifying
-        # while pos0 < 0:
-        #     pos0 += len_state
-        # while pos0 >= len_state:
-        #     pos0 -= len_state
-        if pos0 < 0:
-            pos0 += len_state
+        state.rotate(amount)
     return spin
 
 def create_exchange_f(i1, i2):
     def exchange():
-        ind1 = precalculated_indexes[pos0][i1]
-        ind2 = precalculated_indexes[pos0][i2]
-        ch1 = state[ind1]
-        ch2 = state[ind2]
-        state[ind1] = ch2
-        state[ind2] = ch1
-        # swap_index(ch1, ch2)
-        # NOTE: pulled code in, since calls seem to be expensive
-        tmp = index_of[ch1]
-        index_of[ch1] = index_of[ch2]
-        index_of[ch2] = tmp
+        ch1 = state[i1]
+        state[i1] = state[i2]
+        state[i2] = ch1
     return exchange
 
 def create_partner_f(ch1, ch2):
     def partner():
-        i1 = index_of[ch1]
-        i2 = index_of[ch2]
+        i1 = state.index(ch1)
+        i2 = state.index(ch2)
         state[i1] = ch2
         state[i2] = ch1
-        # swap_index(ch1, ch2)
-        # NOTE: pulled code in, since calls seem to be expensive
-        tmp = index_of[ch1]
-        index_of[ch1] = index_of[ch2]
-        index_of[ch2] = tmp
     return partner
 
 def get_full():
     for i in range(len_state):
-        ind = precalculated_indexes[pos0][i]
-        ch = chr(state[ind] + orda)
+        ch = chr(state[i] + orda)
         yield ch
 
 def parse_move(move):
@@ -97,19 +52,30 @@ def parse_move(move):
     parts = m_data.split('/')
     return create_partner_f(ordinal_of(parts[0]), ordinal_of(parts[1]))
 
+def calc_state_hash():
+    h = 0
+    for i in range(len_state):
+        h = h << 4
+        h += state[i]
+    return h
+
 parsed_moves = list(map(parse_move, moves))
 def apply_moves(moves, repetitions=1):
+    seen_states = dict()
     for i in range(repetitions):
         for move in moves:
             move()
-        if i % 100 == 0:
-            print(i/10000000, '%')
+        h = calc_state_hash()
+        if h in seen_states.keys():
+            print('loop detected! loop length:', i-seen_states[h])
+        seen_states[h] = i
 
 # part 1
 apply_moves(parsed_moves)
 print(''.join(get_full()))
 
 # part 2
-apply_moves(parsed_moves, repetitions-1)
+# apply_moves(parsed_moves, repetitions-1)
+# NOTE: loop detection showed that the states repeat every 30 applications
+apply_moves(parsed_moves, 9)
 print(''.join(get_full()))
-# NOTE: this is way to slow, needs optimization
