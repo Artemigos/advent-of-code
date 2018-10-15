@@ -20,3 +20,13 @@ def to_int(data: list):
 
 def to_ord(data: str):
     return list(map(ord, data))
+
+def import_from_day(year, day, module):
+    year = str(year)
+    day = str(day)
+    y = __import__(f'{year}.{day}.{module}')
+    d = getattr(y, day)
+    return getattr(d, module)
+
+def import_solution(year, day):
+    return import_from_day(year, day, 'solution')

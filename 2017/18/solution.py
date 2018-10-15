@@ -2,10 +2,6 @@ import common
 import re
 import queue
 
-data = common.read_file('2017/18/data.txt')
-lines = data.splitlines()
-instructions = list(map(lambda x: x.split(' '), lines))
-
 class Runtime:
     def __init__(self, instructions):
         self.instructions = instructions
@@ -68,13 +64,16 @@ class Runtime:
         if val != 0:
             self.received_sound = self.last_sound
 
-    def jgz(self, cmp, val):
+    def conditional_jump(self, predicate, cmp, val):
         cmp = self.find_val(cmp)
         val = self.find_val(val)
-        if cmp > 0:
+        if predicate(cmp):
             self.instruction += val
         else:
             self.instruction += 1
+
+    def jgz(self, cmp, val):
+        self.conditional_jump(lambda x: x > 0, cmp, val)
 
     def advance(self):
         self.instruction += 1
@@ -100,62 +99,67 @@ class Runtime:
             print('unknown instruction ', code)
             exit(1)
 
-# part 1
-rt1 = Runtime(instructions)
-while True:
-    rt1.process_instr()
-    if rt1.received_sound is not None:
-        break
-    if rt1.instruction_out_of_bounds():
-        break
+if __name__ == '__main__':
+    data = common.read_file('2017/18/data.txt')
+    lines = data.splitlines()
+    instructions = list(map(lambda x: x.split(' '), lines))
 
-print(rt1.last_sound)
+    # part 1
+    rt1 = Runtime(instructions)
+    while True:
+        rt1.process_instr()
+        if rt1.received_sound is not None:
+            break
+        if rt1.instruction_out_of_bounds():
+            break
 
-# part 2
-rt21 = Runtime(instructions)
-rt22 = Runtime(instructions)
-rt21.registers['p'] = 0
-rt22.registers['p'] = 1
-q1 = queue.Queue()
-q2 = queue.Queue()
-p1_sent_count = 0
-p2_sent_count = 0
-while True:
-    instr1 = rt21.current_instruction()
-    instr2 = rt22.current_instruction()
-    code1 = instr1[0] if instr1 else None
-    code2 = instr2[0] if instr2 else None
+    print(rt1.last_sound)
 
-    locked1 = (code1 == 'rcv' and q1.empty()) or code1 == None
-    locked2 = (code2 == 'rcv' and q2.empty()) or code2 == None
-    if locked1 and locked2:
-        break # deadlock
+    # part 2
+    rt21 = Runtime(instructions)
+    rt22 = Runtime(instructions)
+    rt21.registers['p'] = 0
+    rt22.registers['p'] = 1
+    q1 = queue.Queue()
+    q2 = queue.Queue()
+    p1_sent_count = 0
+    p2_sent_count = 0
+    while True:
+        instr1 = rt21.current_instruction()
+        instr2 = rt22.current_instruction()
+        code1 = instr1[0] if instr1 else None
+        code2 = instr2[0] if instr2 else None
 
-    if code1:
-        if code1 == 'snd':
-            val = rt21.find_val(instr1[1])
-            q2.put(str(val))
-            p1_sent_count += 1
-            rt21.advance()
-        elif code1 == 'rcv':
-            if not q1.empty():
-                el = q1.get()
-                rt21.set(instr1[1], el)
-        else:
-            rt21.process_instr(instr1)
+        locked1 = (code1 == 'rcv' and q1.empty()) or code1 == None
+        locked2 = (code2 == 'rcv' and q2.empty()) or code2 == None
+        if locked1 and locked2:
+            break # deadlock
 
-    if code2:
-        if code2 == 'snd':
-            val = rt22.find_val(instr2[1])
-            q1.put(str(val))
-            p2_sent_count += 1
-            rt22.advance()
-        elif code2 == 'rcv':
-            if not q2.empty():
-                el = q2.get()
-                rt22.set(instr2[1], el)
-        else:
-            rt22.process_instr(instr2)
+        if code1:
+            if code1 == 'snd':
+                val = rt21.find_val(instr1[1])
+                q2.put(str(val))
+                p1_sent_count += 1
+                rt21.advance()
+            elif code1 == 'rcv':
+                if not q1.empty():
+                    el = q1.get()
+                    rt21.set(instr1[1], el)
+            else:
+                rt21.process_instr(instr1)
 
-print(p1_sent_count)
-print(p2_sent_count)
+        if code2:
+            if code2 == 'snd':
+                val = rt22.find_val(instr2[1])
+                q1.put(str(val))
+                p2_sent_count += 1
+                rt22.advance()
+            elif code2 == 'rcv':
+                if not q2.empty():
+                    el = q2.get()
+                    rt22.set(instr2[1], el)
+            else:
+                rt22.process_instr(instr2)
+
+    print(p1_sent_count)
+    print(p2_sent_count)
