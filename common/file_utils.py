@@ -30,3 +30,6 @@ def import_from_day(year, day, module):
 
 def import_solution(year, day):
     return import_from_day(year, day, 'solution')
+
+def print_and_return(*args):
+    print(*args, end='\r')
