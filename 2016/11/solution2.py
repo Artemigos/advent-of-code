@@ -38,8 +38,6 @@ def is_state_valid(state):
     return True
 
 seen_states = set()
-move_queue = queue.PriorityQueue()
-move_queue.put((0, state))
 move_queue = queue.deque([(0, state)])
 
 div = (1 << 30) / 100
