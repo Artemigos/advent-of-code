@@ -1,0 +1,100 @@
+rotr 1
+swapp 2 4
+rotrel g
+rotl 4
+swapp 6 0
+swapl h a
+swapl d c
+revp 2 4
+swapp 2 4
+swapl d e
+revp 1 5
+swapl b a
+rotr 0
+swapp 7 3
+movp 2 1
+revp 2 5
+revp 4 7
+revp 2 7
+swapl e c
+swapp 1 7
+swapp 5 7
+movp 3 6
+swapp 7 2
+movp 0 7
+swapp 3 7
+revp 3 6
+movp 0 5
+swapl h c
+revp 2 3
+swapp 2 3
+movp 4 0
+rotrel g
+rotrel g
+revp 0 2
+swapl e d
+revp 2 5
+swapp 6 0
+swapl a g
+swapp 2 5
+revp 2 3
+swapl b d
+revp 3 7
+swapp 2 5
+swapl d b
+revp 0 3
+swapl e g
+rotrel h
+movp 4 3
+revp 0 6
+swapp 4 1
+swapp 6 4
+movp 7 5
+swapp 6 4
+revp 5 6
+movp 0 6
+swapp 5 0
+revp 2 5
+rotr 0
+swapp 7 0
+swapp 0 2
+swapp 2 5
+swapl h c
+rotl 1
+revp 6 7
+swapl g a
+revp 3 7
+movp 2 4
+revp 0 6
+rotrel g
+swapp 0 6
+movp 2 0
+rotl 3
+revp 2 5
+rotrel a
+revp 1 4
+movp 2 3
+rotr 2
+rotrel f
+rotrel f
+swapl g a
+rotr 0
+swapl f h
+swapl f b
+swapl d e
+swapp 0 7
+movp 3 0
+swapp 3 0
+rotr 4
+rotrel a
+revp 0 7
+rotl 6
+swapl d h
+revp 0 4
+rotrel f
+movp 5 3
+movp 1 3
+movp 6 0
+swapl f c
+rotrel h
+revp 6 7
