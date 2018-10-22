@@ -1,4 +1,4 @@
-import numpy as np
+import queue
 import common
 
 lines = common.read_file('2016/22/data.txt').splitlines()[2:]
@@ -25,11 +25,71 @@ for i in range(len(nodes_lst)):
         if used2 > 0 and used2 <= avail1:
             found += 1
 
-print(found)
+print('connections:', found)
 
 # part 2
-# w = max(nodes_lst, key=lambda x: x[0])[0]+1
-# h = max(nodes_lst, key=lambda x: x[1])[1]+1
-# grid = np.zeros((w, h), dtype=(np.int, 2))
-# for x, y, used, avail in nodes_lst:
-#     grid[x, y] = (used, used+avail)
+w = 31
+h = 31
+wanted = 30,0
+
+# preview map
+def create_grid(w, h):
+    grid = []
+    for _ in range(h):
+        grid.append(['']*w)
+    return grid
+grid = create_grid(w, h)
+for x, y, used, avail in nodes_lst:
+    if used > 400:
+        grid[y][x] = '#'
+    elif used == 0:
+        grid[y][x] = '_'
+    elif (x, y) == wanted:
+        grid[y][x] = '!'
+    else:
+        grid[y][x] = '.'
+for y in range(h):
+    for x in range(w):
+        print(grid[y][x], end='')
+    print()
+
+# data figured out from preview
+zero = 13, 27
+
+def is_movable(pos):
+    x, y = pos
+    if x < 0 or x >= w or y < 0 or y >= h:
+        return False
+    if y == 15 and x >= 5:
+        return False
+    return True
+
+# actual solution
+def find_moves(state):
+    zero, wanted = state
+    x, y = zero
+    neighbors = [(x-1,y), (x+1,y), (x,y-1), (x,y+1)]
+    for n in neighbors:
+        if is_movable(n):
+            if n == wanted:
+                yield n, zero
+            else:
+                yield n, wanted
+
+q = queue.deque([(0, (zero, wanted))])
+seen_states = set()
+
+while len(q) > 0:
+    depth, state = q.popleft()
+    if state in seen_states:
+        continue
+    seen_states.add(state)
+
+    zero, wanted = state
+    if wanted == (0, 0):
+        print('found solution at depth', depth)
+        break
+
+    common.print_and_return(depth)
+    for m in find_moves(state):
+        q.append((depth+1, m))
