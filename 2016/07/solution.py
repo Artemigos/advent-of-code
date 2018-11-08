@@ -13,7 +13,7 @@ lines = common.read_file('2016/07/data.txt').splitlines()
 support_tls = 0
 support_ssl = 0
 for l in lines:
-    segments = list(common.flatmap(lambda x: x.split('['), l.split(']')))
+    segments = list(common.flat_map(lambda x: x.split('['), l.split(']')))
 
     # part 1
     found_outside = False

@@ -1,9 +1,6 @@
 import common
 Runtime = common.import_solution(2017, 18).Runtime
 
-data = common.read_file('2017/23/data.txt')
-lines = data.splitlines()
-instructions = list(map(lambda x: x.split(' '), lines))
 
 class RuntimeEx(Runtime):
     def __init__(self, instructions):
@@ -31,10 +28,19 @@ class RuntimeEx(Runtime):
                 self.mul_amount += 1
             super().process_instr(instr)
 
-rt = RuntimeEx(instructions)
-while True:
-    rt.process_instr()
-    if rt.instruction_out_of_bounds():
-        break
 
-print(rt.mul_amount)
+def main():
+    data = common.read_file('2017/23/data.txt')
+    lines = data.splitlines()
+    instructions = list(map(lambda x: x.split(' '), lines))
+
+    rt = RuntimeEx(instructions)
+    while True:
+        rt.process_instr()
+        if rt.instruction_out_of_bounds():
+            break
+
+    print(rt.mul_amount)
+
+
+main()

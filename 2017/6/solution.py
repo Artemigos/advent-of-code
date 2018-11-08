@@ -8,12 +8,14 @@ steps = 0
 seen = set()
 seen_at_step = dict()
 
+
 def state_to_int():
     acc = 0
     for i in range(0, len(state)):
         acc *= 100
         acc += state[i]
     return acc
+
 
 while True:
     state_val = state_to_int()

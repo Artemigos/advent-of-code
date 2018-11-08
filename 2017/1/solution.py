@@ -1,21 +1,25 @@
-data = ''
-with open('2017/1/data.txt') as f:
-    data = f.read()
+import common
 
-sum = 0
+data = common.read_file('2017/1/data.txt')
 
 # part 1
-# last = ''
-# for c in data:
-#     if c == last:
-#         sum += int(c)
-#     last = c
+sum_acc = 0
+last = ''
 
-# if data[0] == data[-1]:
-#     sum += int(data[0])
+for c in data:
+    if c == last:
+        sum_acc += int(c)
+    last = c
+
+if data[0] == data[-1]:
+    sum_acc += int(data[0])
+
+print(sum_acc)
 
 # part 2
+sum_acc = 0
 half = int(len(data) / 2)
+
 for i in range(len(data)):
     curr = int(data[i])
     i2 = i + half
@@ -23,6 +27,6 @@ for i in range(len(data)):
         i2 -= len(data)
     nxt = int(data[i2])
     if curr == nxt:
-        sum += curr
+        sum_acc += curr
 
-print(sum)
+print(sum_acc)

@@ -1,27 +1,32 @@
 import common
 from typing import NamedTuple
 
+
 class Particle(NamedTuple):
     p: list
     v: list
     a: list
 
+
 data = common.read_file('2017/20/data.txt')
 lines = data.splitlines()
+
 
 def parse_line(line: str):
     def extract_nums(segment):
         nums_joined = segment[3:-1]
-        num_strs = nums_joined.split(',')
-        return list(map(int, num_strs))
+        num_strings = nums_joined.split(',')
+        return list(map(int, num_strings))
     segments = line.split(', ')
-    p = extract_nums(segments[0])
-    v = extract_nums(segments[1])
-    a = extract_nums(segments[2])
-    return Particle(p, v, a)
+    return Particle(
+        p=extract_nums(segments[0]),
+        v=extract_nums(segments[1]),
+        a=extract_nums(segments[2]))
+
 
 def m_len(vec):
     return sum(map(abs, vec))
+
 
 particles = list(map(parse_line, lines))
 
@@ -33,7 +38,7 @@ curr_particle = -1
 for particle in particles:
     curr_particle += 1
     a_len = m_len(particle.a)
-    if min_a == None or a_len < min_a:
+    if min_a is None or a_len < min_a:
         min_a = a_len
         min_a_particle = [curr_particle]
         min_a_particle_data = [particle]
@@ -46,11 +51,13 @@ print(min_a_particle)
 print(min_a)
 print(min_a_particle_data)
 
+
 # part 2
-def add(pos, offset):
-    pos[0] += offset[0]
-    pos[1] += offset[1]
-    pos[2] += offset[2]
+def add(position, offset):
+    position[0] += offset[0]
+    position[1] += offset[1]
+    position[2] += offset[2]
+
 
 for _ in range(10000):
     positions = dict()
@@ -64,9 +71,9 @@ for _ in range(10000):
         curr_positions.append(i)
         positions[the_pos] = curr_positions
 
-    for pos, idxs in positions.items():
-        if len(idxs) > 1:
-            for idx in idxs:
+    for pos, indices in positions.items():
+        if len(indices) > 1:
+            for idx in indices:
                 particles[idx] = None
 
 nones = particles.count(None)

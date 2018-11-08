@@ -2,6 +2,7 @@ import common
 import re
 import queue
 
+
 class Runtime:
     def __init__(self, instructions):
         self.instructions = instructions
@@ -11,7 +12,7 @@ class Runtime:
         self.received_sound = None
 
     def ensure_reg(self, reg):
-        if not reg in self.registers.keys():
+        if reg not in self.registers.keys():
             self.registers[reg] = 0
 
     def find_val(self, val):
@@ -99,7 +100,8 @@ class Runtime:
             print('unknown instruction ', code)
             exit(1)
 
-if __name__ == '__main__':
+
+def main():
     data = common.read_file('2017/18/data.txt')
     lines = data.splitlines()
     instructions = list(map(lambda x: x.split(' '), lines))
@@ -130,10 +132,10 @@ if __name__ == '__main__':
         code1 = instr1[0] if instr1 else None
         code2 = instr2[0] if instr2 else None
 
-        locked1 = (code1 == 'rcv' and q1.empty()) or code1 == None
-        locked2 = (code2 == 'rcv' and q2.empty()) or code2 == None
+        locked1 = (code1 == 'rcv' and q1.empty()) or code1 is None
+        locked2 = (code2 == 'rcv' and q2.empty()) or code2 is None
         if locked1 and locked2:
-            break # deadlock
+            break  # deadlock
 
         if code1:
             if code1 == 'snd':
@@ -161,5 +163,9 @@ if __name__ == '__main__':
             else:
                 rt22.process_instr(instr2)
 
-    print(p1_sent_count)
-    print(p2_sent_count)
+    print('p0:', p1_sent_count)
+    print('p1:', p2_sent_count)
+
+
+if __name__ == '__main__':
+    main()

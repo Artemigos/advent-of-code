@@ -15,11 +15,14 @@ for y in range(side):
         if lines[y][x] == '#':
             infected.add((x, y))
 
+
 def rot_left(d):
-    return (d[1], -d[0])
+    return d[1], -d[0]
+
 
 def rot_right(d):
-    return (-d[1], d[0])
+    return -d[1], d[0]
+
 
 pos = (mid, mid)
 direction = (0, -1)
@@ -48,8 +51,10 @@ for y in range(side):
         if lines[y][x] == '#':
             infected[(x, y)] = s_infected
 
+
 def rev(d):
-    return (-d[0], -d[1])
+    return -d[0], -d[1]
+
 
 pos = (mid, mid)
 direction = (0, -1)
@@ -63,10 +68,10 @@ for i in range(steps_2):
         elif status == s_weakened:
             infected[pos] = s_infected
             added_infections += 1
-        else: # s_flagged
+        else:  # s_flagged
             direction = rev(direction)
             infected.pop(pos)
-    else: # clean
+    else:  # clean
         direction = rot_left(direction)
         infected[pos] = s_weakened
     pos = (pos[0]+direction[0], pos[1]+direction[1])

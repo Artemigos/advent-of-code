@@ -3,24 +3,31 @@ import common
 data = common.read_file('2017/2/data.txt')
 table = common.split_table(data)
 
-sum = 0
+# part 1
+sum_acc = 0
 for row in table:
     ints = list(map(lambda x: int(x), row))
-    # part 1
-    # mx = max(ints)
-    # mn = min(ints)
-    # sum += (mx - mn)
+    mx = max(ints)
+    mn = min(ints)
+    sum_acc += (mx - mn)
 
-    # part 2
+print(sum_acc)
+
+# part 2
+sum_acc = 0
+for row in table:
+    ints = list(map(lambda x: int(x), row))
     found = False
     for i in range(len(ints)):
         for j in range(len(ints)):
             if i != j and ints[i] % ints[j] == 0:
-                sum += ints[i] / ints[j]
+                sum_acc += ints[i] // ints[j]
                 found = True
                 break
 
-        if found: break
-    if found: continue
+        if found:
+            break
+    if found:
+        continue
 
-print(sum)
+print(sum_acc)

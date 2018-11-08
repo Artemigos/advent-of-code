@@ -15,20 +15,24 @@ turns = {
 
 current = (0, start_x)
 
+
 def add(pos, offset):
-    return (pos[0] + offset[0], pos[1] + offset[1])
+    return pos[0] + offset[0], pos[1] + offset[1]
+
 
 def at(pos):
     return board[pos[0]][pos[1]]
 
-def update_direction(direction):
-    if at(add(current, direction)) != ' ':
-        return direction
-    if at(add(current, turns[direction][0])) != ' ':
-        return turns[direction][0]
-    if at(add(current, turns[direction][1])) != ' ':
-        return turns[direction][1]
+
+def update_direction(current_direction):
+    if at(add(current, current_direction)) != ' ':
+        return current_direction
+    if at(add(current, turns[current_direction][0])) != ' ':
+        return turns[current_direction][0]
+    if at(add(current, turns[current_direction][1])) != ' ':
+        return turns[current_direction][1]
     return None
+
 
 acc = ''
 steps = 1

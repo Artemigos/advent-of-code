@@ -3,17 +3,18 @@ import operator
 from typing import List, Tuple
 import common
 
+
 def knot_hash(key: List[int], repeat=1) -> List[int]:
     hash_data = list(range(256))
 
     skip = 0
     pos = 0
 
-    def inc_pos(pos, amount):
-        pos += amount
-        while pos >= len(hash_data):
-            pos -= len(hash_data)
-        return pos
+    def inc_pos(position, amount):
+        position += amount
+        while position >= len(hash_data):
+            position -= len(hash_data)
+        return position
 
     for _ in range(repeat):
         for l in key:
@@ -32,6 +33,7 @@ def knot_hash(key: List[int], repeat=1) -> List[int]:
 
     return hash_data
 
+
 def knot_hash_full(key: str) -> Tuple[List[int], str]:
     inp = common.to_ord(key) + [17, 31, 73, 47, 23]
     result = knot_hash(inp, 64)
@@ -41,4 +43,4 @@ def knot_hash_full(key: str) -> Tuple[List[int], str]:
         acc = functools.reduce(operator.xor, segment)
         xored.append(acc)
     representation = ''.join(map(lambda x: hex(x)[2:].rjust(2, '0'), xored))
-    return (xored, representation)
+    return xored, representation

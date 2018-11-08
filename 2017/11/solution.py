@@ -5,14 +5,18 @@ data = common.read_file('2017/11/data.txt').strip().split(',')
 offset_x = 0
 offset_y = 0
 
+
 def dist():
     def sign(x):
-        if x > 0: return 1
-        if x < 0: return -1
+        if x > 0:
+            return 1
+        if x < 0:
+            return -1
         return 0
     if sign(offset_x) != sign(offset_y):
         return max([abs(offset_x), abs(offset_y)])
     return abs(offset_x) + abs(offset_y)
+
 
 max_dist = 0
 

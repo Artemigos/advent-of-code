@@ -3,9 +3,11 @@ import common
 data = common.read_file('2017/13/data.txt')
 lines = data.splitlines()
 
+
 def parse_line(line):
     segments = line.split(':')
-    return (int(segments[0]), int(segments[1].strip()))
+    return int(segments[0]), int(segments[1].strip())
+
 
 layers = list(map(parse_line, lines))
 

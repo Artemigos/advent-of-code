@@ -11,17 +11,19 @@ repetitions_1 = 40000000
 repetitions_2 = 5000000
 cmp_mask = 256*256-1
 
-def create_gen(init, mul, mod, criteria=1):
+
+def create_gen(init, mul, criteria=1):
     prev = init
     while True:
-        prev = (prev*mul)%mod
-        if not prev%criteria == 0:
+        prev = (prev*mul) % mod
+        if not prev % criteria == 0:
             continue
         yield prev
 
+
 # part 1
-gen_a = create_gen(data_a, mul_a, mod)
-gen_b = create_gen(data_b, mul_b, mod)
+gen_a = create_gen(data_a, mul_a)
+gen_b = create_gen(data_b, mul_b)
 
 matches = 0
 for i in range(repetitions_1):
@@ -33,8 +35,8 @@ for i in range(repetitions_1):
 print(matches)
 
 # part 2
-gen_a = create_gen(data_a, mul_a, mod, criteria_a)
-gen_b = create_gen(data_b, mul_b, mod, criteria_b)
+gen_a = create_gen(data_a, mul_a, criteria_a)
+gen_b = create_gen(data_b, mul_b, criteria_b)
 
 matches = 0
 

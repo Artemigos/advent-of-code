@@ -18,5 +18,6 @@ def run(part2=False):
 
     return non_prime_count
 
+
 if __name__ == '__main__':
     run()

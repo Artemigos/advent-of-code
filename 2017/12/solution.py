@@ -1,41 +1,41 @@
-import itertools
 import queue
 import common
 
 data = common.read_file('2017/12/data.txt')
 lines = data.splitlines()
 
+
 def parse_line(line):
     segments = line.split(' ')
     left = int(segments[0])
     right = list(map(lambda x: int(x.rstrip(',')), segments[2:]))
-    return (left, right)
+    return left, right
 
-node_data = dict()
-for l, r in map(parse_line, lines):
-    node_data[l] = (r, False)
 
-def search_connected(init_node, node_data):
-    # BFS
+node_data = {l: (r, False) for l, r in map(parse_line, lines)}
+
+
+def search_connected(init_node, all_nodes):
     q = queue.Queue()
     q.put(init_node)
-    found = 0
+    group_size = 0
 
     while not q.empty():
         el = q.get()
-        connected, visited = node_data[el]
+        connected, visited = all_nodes[el]
         if visited:
             continue
-        found += 1
+        group_size += 1
         for c in connected:
             q.put(c)
-        node_data[el] = (connected, True)
+        all_nodes[el] = (connected, True)
 
-    return (found, node_data)
+    return group_size, all_nodes
+
 
 # part 1
-# found, _ = search_connected(0, node_data)
-# print(found)
+found, _ = search_connected(0, node_data)
+print(found)
 
 # part 2
 groups = 0
@@ -47,4 +47,4 @@ while True:
     first = not_visited[0] 
     _, node_data = search_connected(first, node_data)
 
-print(groups)
+print(groups+1)  # +1 because the 0 group was already marked as visited

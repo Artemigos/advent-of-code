@@ -1,6 +1,3 @@
-import functools
-import itertools
-import operator
 import common
 
 data = common.read_file('2017/10/data.txt').strip()
