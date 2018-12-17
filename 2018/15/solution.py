@@ -224,11 +224,26 @@ def play(elf_attack_powah=3):
         else:
             rnd += 1
 
-    state.print_state()
+    # state.print_state()
     elves_hp = sum(map(lambda x: x.hp, state.elves.values()))
     goblins_hp = sum(map(lambda x: x.hp, state.goblins.values()))
     sum_hp = elves_hp + goblins_hp
 
     print(rnd, sum_hp, rnd*sum_hp)
 
+# part 1
 play()
+
+# part 2
+elves_before = 0
+for l in lines:
+    elves_before += sum(map(lambda x: 1 if x == 'E' else 0, l))
+
+atk = 3
+while True:
+    atk += 1
+    play(atk)
+    if len(state.elves) == elves_before:
+        break
+    else:
+        print('elves left:', len(state.elves))
