@@ -17,13 +17,12 @@ h = len(initial_state)
 current = initial_state
 steps = 100
 
-def at(x, y):
-    if x < 0 or x >= w or y < 0 or y >= h:
-        return 0
-    return current[y][x]
+def run_step(current):
+    def at(x, y):
+        if x < 0 or x >= w or y < 0 or y >= h:
+            return 0
+        return current[y][x]
 
-# part 1
-for i in range(steps):
     result = []
     for y in range(h):
         row = []
@@ -46,7 +45,11 @@ for i in range(steps):
             else:
                 row.append(0)
         result.append(row)
-    current = result
+    return result
+
+# part 1
+for i in range(steps):
+    current = run_step(current)
 
 on_num = sum(map(sum, current))
 print(on_num)
@@ -63,29 +66,7 @@ def update_corners():
 update_corners()
 
 for i in range(steps):
-    result = []
-    for y in range(h):
-        row = []
-        for x in range(w):
-            neighbors = sum([
-                at(x, y-1),
-                at(x+1, y-1),
-                at(x+1, y),
-                at(x+1, y+1),
-                at(x, y+1),
-                at(x-1, y+1),
-                at(x-1, y),
-                at(x-1, y-1)
-            ])
-            me = current[y][x]
-            if me == 1 and (neighbors == 2 or neighbors == 3):
-                row.append(1)
-            elif me == 0 and neighbors == 3:
-                row.append(1)
-            else:
-                row.append(0)
-        result.append(row)
-    current = result
+    current = run_step(current)
     update_corners()
 
 on_num = sum(map(sum, current))

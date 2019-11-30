@@ -107,3 +107,6 @@ venv.bak/
 .swn
 .swo
 .swp
+
+# PyCharm
+.idea/

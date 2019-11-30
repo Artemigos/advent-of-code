@@ -1,3 +1,5 @@
+import re
+
 def read_file(path: str) -> str:
     with open(path) as f:
         return f.read()
@@ -25,6 +27,14 @@ def to_int(data: list):
 
 def to_ord(data: str):
     return list(map(ord, data))
+
+
+def extract_numbers(data: str):
+    return [int(x) for x in re.findall(r'-?\d+', data)]
+
+
+def extract_words(data: str):
+    return re.findall(r'\w+', data)
 
 
 def import_from_day(year, day, module):
