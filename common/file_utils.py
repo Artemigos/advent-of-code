@@ -45,8 +45,18 @@ def import_from_day(year, day, module):
     return getattr(d, module)
 
 
+def import_from_year(year, module):
+    year = str(year)
+    y = __import__(f'{year}.{module}')
+    return getattr(y, module)
+
+
 def import_solution(year, day):
     return import_from_day(year, day, 'solution')
+
+
+def import_year_common(year):
+    return import_from_year(year, 'year_common')
 
 
 def print_and_return(*args):

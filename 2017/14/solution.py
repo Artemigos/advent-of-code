@@ -1,5 +1,6 @@
 import numpy as np
 import common
+knot_hash_full = common.import_year_common(2017).knot_hash_full
 
 data = 'hwlqcszp'
 # data = 'flqrgnkx' # sample data
@@ -10,7 +11,7 @@ rows = list()
 count = 0
 for r in range(128):
     hash_input = data + '-' + str(r)
-    ints, representation = common.knot_hash_full(hash_input)
+    ints, representation = knot_hash_full(hash_input)
     rows.append(ints)
     for i in range(len(ints)):
         for b in range(8):
