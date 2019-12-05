@@ -37,7 +37,24 @@ def run_intcode(tape, input_data=None):
         elif op == 4:
             print(read_param(0))
             ip += 2
-        # TODO: opcodes 5, 6, 7, and 8
+        elif op == 5:
+            if read_param(0) != 0:
+                ip = read_param(1)
+            else:
+                ip += 3
+        elif op == 6:
+            if read_param(0) == 0:
+                ip = read_param(1)
+            else:
+                ip += 3
+        elif op == 7:
+            result = 1 if read_param(0) < read_param(1) else 0
+            set_at_param(2, result)
+            ip += 4
+        elif op == 8:
+            result = 1 if read_param(0) == read_param(1) else 0
+            set_at_param(2, result)
+            ip += 4
         elif op == 99:
             break
         else:
