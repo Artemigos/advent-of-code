@@ -12,15 +12,18 @@ tape = common.extract_numbers(common.read_file('2019/02/data.txt'))
 # part 1
 tape[1] = 12
 tape[2] = 2
-print('part 1: ' + str(run_intcode(tape)[0]))
+mem = list(tape)
+list(run_intcode(mem))
+print('part 1: ' + str(mem[0]))
 
 # part 2
 for i in range(100):
     for j in range(100):
         tape[1] = i
         tape[2] = j
-        result = run_intcode(tape)[0]
-        if result == 19690720:
+        mem = list(tape)
+        list(run_intcode(mem))
+        if mem[0] == 19690720:
             print('part 2: ' + str(100*i+j))
             exit(0)
 

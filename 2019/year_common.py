@@ -1,6 +1,4 @@
-def run_intcode(tape, input_data=None):
-    input_data = input_data or []
-    mem = list(tape)
+def run_intcode(mem, input_data=None):
     ip = 0
 
     while True:
@@ -29,13 +27,10 @@ def run_intcode(tape, input_data=None):
             set_at_param(2, read_param(0) * read_param(1))
             ip += 4
         elif op == 3:
-            if len(input_data) == 0:
-                raise "not enough input data"
-            set_at_param(0, input_data[0])
-            input_data = input_data[1:]
+            set_at_param(0, next(input_data))
             ip += 2
         elif op == 4:
-            print(read_param(0))
+            yield read_param(0)
             ip += 2
         elif op == 5:
             if read_param(0) != 0:
@@ -59,5 +54,3 @@ def run_intcode(tape, input_data=None):
             break
         else:
             raise Exception("unknown op code: " + str(op))
-
-    return mem
