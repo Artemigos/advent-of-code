@@ -1,4 +1,4 @@
-from functools import cache
+from functools import lru_cache
 import common
 
 nums = common.to_int(common.read_file('2020/10/data.txt').splitlines())
@@ -21,7 +21,7 @@ acc3 += 1
 print(acc1*acc3)
 
 # part 2
-@cache
+@lru_cache(maxsize=None)
 def num_of_paths(idx):
     if idx == len(sorted_nums)-1:
         return 1
