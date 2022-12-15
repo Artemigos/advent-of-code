@@ -22,5 +22,43 @@ epsilon = ~gamma & mask
 print(gamma*epsilon)
 
 # part 2
-most_frequent = list(nums)
-least_frequesnt = list(nums)
+
+most_common = list(lines)
+
+for bit in range(len(most_common[0])):
+    zeros = []
+    ones = []
+    for line in most_common:
+        if line[bit] == '1':
+            ones.append(line)
+        else:
+            zeros.append(line)
+    most_common = zeros if len(zeros) > len(ones) else ones
+    if len(most_common) == 1:
+        break
+
+print(len(most_common))
+print(most_common[0])
+num1 = int(most_common[0], 2)
+print(num1)
+
+least_common = list(lines)
+
+for bit in range(len(least_common[0])):
+    zeros = []
+    ones = []
+    for line in least_common:
+        if line[bit] == '1':
+            ones.append(line)
+        else:
+            zeros.append(line)
+    least_common = ones if len(ones) < len(zeros) else zeros
+    if len(least_common) == 1:
+        break
+
+print(len(least_common))
+print(least_common[0])
+num2 = int(least_common[0], 2)
+print(num2)
+
+print(num1*num2)
