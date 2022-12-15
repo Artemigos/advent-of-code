@@ -1,9 +1,16 @@
 import re
+import sys
+import os
 
-def read_file(path: str) -> str:
+def read_file(path: str = None) -> str:
+    if path is None:
+        if len(sys.argv) > 1:
+            path = sys.argv[1]
+        else:
+            path = os.path.dirname(sys.argv[0][len(os.getcwd())+1:])+'/data.txt'
+
     with open(path) as f:
         return f.read()
-
 
 def split_table(data: str, separator='\t'):
     lines = data.splitlines()
