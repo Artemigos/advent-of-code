@@ -1,43 +1,59 @@
+import common
 from collections import deque
+from ast import literal_eval
+from math import lcm
 
-# part 1
-def monkey(items, op, div_by, on_true, on_false):
-    def _monkey(new_item=None):
-        if new_item is not None:
-            items.append(new_item)
-        elif len(items) == 0:
+lines = common.read_file().splitlines()
+
+class Monkey:
+    def __init__(self, items: list, op, div_by, on_true, on_false, limiter):
+        self.items = deque(items)
+        self.op = op
+        self.div_by = div_by
+        self.on_true = on_true
+        self.on_false = on_false
+        self.limiter = limiter
+
+    def add(self, new_item):
+        self.items.append(new_item)
+
+    def process(self):
+        if len(self.items) == 0:
             return None
         else:
-            item = items.popleft()
-            item = op(item)
-            item //= 3
-            if item % div_by == 0:
-                return (item, on_true)
+            item = self.items.popleft()
+            item = self.op(item)
+            item = self.limiter(item)
+            if item % self.div_by == 0:
+                return (item, self.on_true)
             else:
-                return (item, on_false)
-    return _monkey
+                return (item, self.on_false)
 
-monkeys = [
-        monkey(deque([52, 60, 85, 69, 75, 75]), lambda x: x*17, 13, 6, 7),
-        monkey(deque([96, 82, 61, 99, 82, 84, 85]), lambda x: x+8, 7, 0, 7),
-        monkey(deque([95, 79]), lambda x: x+6, 19, 5, 3),
-        monkey(deque([88, 50, 82, 65, 77]), lambda x: x*19, 2, 4, 1),
-        monkey(deque([66, 90, 59, 90, 87, 63, 53, 88]), lambda x: x+7, 5, 1, 0),
-        monkey(deque([92, 75, 62]), lambda x: x*x, 3, 3, 4),
-        monkey(deque([94, 86, 76, 67]), lambda x: x+1, 11, 5, 2),
-        monkey(deque([57]), lambda x: x+2, 17, 6, 2),
-]
+def parse(lines, limiter):
+    monkeys = []
+    for i in range(0, len(lines), 7):
+        items = lines[i+1].split(': ')[1]
+        items = literal_eval('[' + items + ']')
+        op = lines[i+2].split(' = ')[1]
+        op = eval('lambda old: ' + op)
+        div_by = int(lines[i+3].split(' ')[-1])
+        on_true = int(lines[i+4].split(' ')[-1])
+        on_false = int(lines[i+5].split(' ')[-1])
+        monkeys.append(Monkey(items, op, div_by, on_true, on_false, limiter))
+    return monkeys
 
+# part 1
+monkeys = parse(lines, lambda x: x // 3)
 acc = [0]*len(monkeys)
 for _ in range(20):
     for i in range(len(monkeys)):
         mk = monkeys[i]
         while True:
-            item = mk()
+            item = mk.process()
             if item is None:
                 break
             acc[i] = acc[i]+1
-            monkeys[item[1]](item[0])
+            monkeys[item[1]].add(item[0])
 
 max_1 = max(acc)
 acc.remove(max_1)
@@ -45,44 +61,18 @@ max_2 = max(acc)
 print(max_1*max_2)
 
 # part 2
-def monkey(mod_by, items, op, div_by, on_true, on_false):
-    def _monkey(new_item=None):
-        if new_item is not None:
-            items.append(new_item)
-        elif len(items) == 0:
-            return None
-        else:
-            item = items.popleft()
-            item = op(item)
-            item %= mod_by
-            if item % div_by == 0:
-                return (item, on_true)
-            else:
-                return (item, on_false)
-    return _monkey
-
-mod_by = 13*7*19*2*5*3*11*17
-monkeys = [
-        monkey(mod_by, deque([52, 60, 85, 69, 75, 75]), lambda x: x*17, 13, 6, 7),
-        monkey(mod_by, deque([96, 82, 61, 99, 82, 84, 85]), lambda x: x+8, 7, 0, 7),
-        monkey(mod_by, deque([95, 79]), lambda x: x+6, 19, 5, 3),
-        monkey(mod_by, deque([88, 50, 82, 65, 77]), lambda x: x*19, 2, 4, 1),
-        monkey(mod_by, deque([66, 90, 59, 90, 87, 63, 53, 88]), lambda x: x+7, 5, 1, 0),
-        monkey(mod_by, deque([92, 75, 62]), lambda x: x*x, 3, 3, 4),
-        monkey(mod_by, deque([94, 86, 76, 67]), lambda x: x+1, 11, 5, 2),
-        monkey(mod_by, deque([57]), lambda x: x+2, 17, 6, 2),
-]
-
+mod_by = lcm(*map(lambda x: x.div_by, monkeys))
+monkeys = parse(lines, lambda x: x % mod_by)
 acc = [0]*len(monkeys)
 for _ in range(10000):
     for i in range(len(monkeys)):
         mk = monkeys[i]
         while True:
-            item = mk()
+            item = mk.process()
             if item is None:
                 break
             acc[i] = acc[i]+1
-            monkeys[item[1]](item[0])
+            monkeys[item[1]].add(item[0])
 
 max_1 = max(acc)
 acc.remove(max_1)
