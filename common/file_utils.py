@@ -1,8 +1,9 @@
 import re
 import sys
 import os
+from typing import Optional
 
-def read_file(path: str = None) -> str:
+def read_file(path: Optional[str] = None) -> str:
     if path is None:
         if len(sys.argv) > 1:
             path = sys.argv[1]
