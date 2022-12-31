@@ -1,12 +1,12 @@
 import common
 
-lines = common.read_file('2022/07/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 folders = set(['/'])
 files = set()
 
 # parse
-def p(x):
+def path_str(x):
     return '/'+'/'.join(x)
 
 curr = []
@@ -23,12 +23,12 @@ for line in lines:
     else:
         if line [:3] == 'dir':
             name = line[4:]
-            folders.add(p(curr + [name]))
+            folders.add(path_str(curr + [name]))
         else:
             segments = line.split(' ')
             size = int(segments[0])
             name = segments[1]
-            files.add((p(curr+[name]), size))
+            files.add((path_str(curr+[name]), size))
 
 # part 1
 acc = 0

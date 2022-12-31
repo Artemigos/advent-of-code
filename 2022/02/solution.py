@@ -2,10 +2,6 @@ import common
 
 guide = []
 lines = common.read_file().splitlines()
-# lines = '''A Y
-# B X
-# C Z
-# '''.splitlines()
 for line in lines:
     segments = line.split(' ')
     guide.append((segments[0], segments[1]))

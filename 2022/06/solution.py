@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2022/06/data.txt')
+data = common.read_file()
 
 # part 1
 for i in range(3, len(data)):

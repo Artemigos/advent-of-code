@@ -1,5 +1,4 @@
 import common
-import sys
 
 lines = common.read_file().splitlines()
 moves = []
@@ -42,7 +41,7 @@ def solve(knots):
     print(len(seen))
 
 # part 1
-solve([(0, 0), (0, 0)])
+solve([(0, 0)] * 2)
 
 # part 2
-solve([(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)])
+solve([(0, 0)] * 10)

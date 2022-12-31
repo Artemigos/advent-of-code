@@ -1,6 +1,6 @@
 import common
 
-trees = common.read_file('2022/08/data.txt').splitlines()
+trees = common.read_file().splitlines()
 h = len(trees)
 w = len(trees[0])
 

@@ -46,3 +46,4 @@ for amount, start, end in moves:
 
 for stack in stacks2:
     print(stack[-1], end='')
+print()

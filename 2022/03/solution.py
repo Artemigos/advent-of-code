@@ -1,9 +1,12 @@
 import common
 
-lines = common.read_file('2022/03/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 def score_letter(letter):
-    return ord(letter) - ord('a') + 1 if ord(letter) >= ord('a') else ord(letter) - ord('A') + 27
+    if ord(letter) >= ord('a'):
+        return ord(letter) - ord('a') + 1 
+    else:
+        return ord(letter) - ord('A') + 27
 
 # part 1
 acc = 0

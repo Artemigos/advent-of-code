@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2022/04/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 assignments = []
 for line in lines:
@@ -14,20 +14,14 @@ for line in lines:
 def intersect_range(r1: range, r2: range) -> range:
     return range(max(r1.start, r2.start), min(r1.stop, r2.stop))
 
-# part 1
-acc = 0
+p1_acc = 0
+p2_acc = 0
 for l_elf, r_elf in assignments:
     inter = intersect_range(l_elf, r_elf)
     if inter == l_elf or inter == r_elf:
-        acc += 1
-
-print(acc)
-
-# part 2
-acc = 0
-for l_elf, r_elf in assignments:
-    inter = intersect_range(l_elf, r_elf)
+        p1_acc += 1
     if len(inter) > 0:
-        acc += 1
+        p2_acc += 1
 
-print(acc)
+print(p1_acc)
+print(p2_acc)
