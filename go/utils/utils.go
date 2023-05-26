@@ -11,7 +11,11 @@ func ReadLines(path string) []string {
 		panic(err)
 	}
 
-	return strings.Split(string(data), "\n")
+	result := strings.Split(string(data), "\n")
+	if result[len(result)-1] == "" {
+		result = result[:len(result)-1]
+	}
+	return result
 }
 
 func Sum(data []int) int {
