@@ -33,12 +33,16 @@ func (s *Set[T]) Remove(value T) bool {
 }
 
 func (s *Set[T]) Pop() T {
+	k := s.Peek()
+	delete(*s, k)
+	return k
+}
+
+func (s *Set[T]) Peek() T {
 	var k T
 	for k = range *s {
 		break
 	}
-
-	delete(*s, k)
 	return k
 }
 
