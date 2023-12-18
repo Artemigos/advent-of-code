@@ -1,13 +1,11 @@
-from typing import Optional, Iterator, List, Union, Sequence, TypeVar, overload
+from typing import Iterator, List, overload
 import itertools
-
-Tranges = TypeVar('Tranges', bound='ranges')
 
 class ranges:
     @overload
     def __init__(self) -> None: ...
     @overload
-    def __init__(self, stop: Tranges) -> None: ...
+    def __init__(self, stop: "ranges") -> None: ...
     @overload
     def __init__(self, start: int, stop: int) -> None: ...
     @overload
@@ -19,7 +17,6 @@ class ranges:
         if isinstance(first, list) and stop is None:
             for r in first:
                 assert r.step == 1, 'Only ranges with step == 1 are supported.'
-            #self._ranges = list(sorted(first, key=lambda r: r.start))
             self._ranges = first
             return
 
@@ -43,11 +40,11 @@ class ranges:
         raise TypeError('invalid arguments')
 
     @overload
-    def intersection(self, rng: Tranges) -> Tranges: ...
+    def intersection(self, rng: "ranges") -> "ranges": ...
     @overload
-    def intersection(self, rng: range) -> Tranges: ...
+    def intersection(self, rng: range) -> "ranges": ...
 
-    def intersection(self, rng) -> Tranges:
+    def intersection(self, rng) -> "ranges":
         if isinstance(rng, ranges):
             curr = ranges()
             for r1 in self._ranges:
@@ -69,11 +66,11 @@ class ranges:
         raise TypeError('invalid arguments')
 
     @overload
-    def union(self, rng: Tranges) -> Tranges: ...
+    def union(self, rng: "ranges") -> "ranges": ...
     @overload
-    def union(self, rng: range) -> Tranges: ...
+    def union(self, rng: range) -> "ranges": ...
 
-    def union(self, rng) -> Tranges:
+    def union(self, rng) -> "ranges":
         if isinstance(rng, ranges):
             curr = self
             for r in rng._ranges:
@@ -97,11 +94,11 @@ class ranges:
         raise TypeError('invalid arguments')
 
     @overload
-    def difference(self, rng: Tranges) -> Tranges: ...
+    def difference(self, rng: "ranges") -> "ranges": ...
     @overload
-    def difference(self, rng: range) -> Tranges: ...
+    def difference(self, rng: range) -> "ranges": ...
 
-    def difference(self, rng) -> Tranges:
+    def difference(self, rng) -> "ranges":
         if isinstance(rng, ranges):
             curr = self
             for r in rng._ranges:
@@ -140,34 +137,34 @@ class ranges:
         raise ValueError(f'{value} is not in ranges')
 
     @overload
-    def __or__(self, other: Tranges) -> Tranges: ...
+    def __or__(self, other: "ranges") -> "ranges": ...
     @overload
-    def __or__(self, other: range) -> Tranges: ...
+    def __or__(self, other: range) -> "ranges": ...
 
-    def __or__(self, other) -> Tranges:
+    def __or__(self, other) -> "ranges":
         return self.union(other)
 
     @overload
-    def __and__(self, other: Tranges) -> Tranges: ...
+    def __and__(self, other: "ranges") -> "ranges": ...
     @overload
-    def __and__(self, other: range) -> Tranges: ...
+    def __and__(self, other: range) -> "ranges": ...
 
-    def __and__(self, other) -> Tranges:
+    def __and__(self, other) -> "ranges":
         return self.intersection(other)
 
     @overload
-    def __sub__(self, other: Tranges) -> Tranges: ...
+    def __sub__(self, other: "ranges") -> "ranges": ...
     @overload
-    def __sub__(self, other: range) -> Tranges: ...
+    def __sub__(self, other: range) -> "ranges": ...
 
-    def __sub__(self, other) -> Tranges:
+    def __sub__(self, other) -> "ranges":
         return self.difference(other)
 
     def __len__(self) -> int:
         return sum((len(r) for r in self._ranges))
 
     def __contains__(self, o: object) -> bool:
-        return any(self._ranges, lambda r: o in r)
+        return any(map(lambda r: o in r, self._ranges))
 
     def __iter__(self) -> Iterator[int]:
         return itertools.chain(*self._ranges)
