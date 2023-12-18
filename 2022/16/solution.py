@@ -1,155 +1,83 @@
-from collections import deque
 import common
+from collections import deque
 
 lines = common.read_file().splitlines()
 
-valves = {}
+rates = {}
+connections = {}
+
 for line in lines:
     room = line[6:8]
     rate = common.extract_numbers(line)[0]
     destinations = line.split('valves ')[1] if 'valves ' in line else line.split('valve ')[1]
     destinations = destinations.split(', ')
-    valves[room] = (rate, destinations)
+    rates[room] = rate
+    connections[room] = destinations
 
-#rnt(repr(valves))
+worth = set((v for v in rates.keys() if rates[v] > 0))
+worth_connections = dict()
 
-worth = [k for k in valves if valves[k][0] > 1]
-#print(repr(worth))
-
-distances = {}
-
-for start in ['AA'] + worth:
-    distances[start] = {}
-    q = deque([(start, 0)])
-    seen = set()
+for v in ['AA'] + list(worth):
+    q = deque([(v, 0)])
+    seen = dict()
     while len(q) > 0:
-        at, depth = q.popleft()
-        if at in seen:
+        room, depth = q.popleft()
+        if room in seen:
             continue
-        seen.add(at)
-        distances[start][at] = depth
-        for n in valves[at][1]:
+        seen[room] = depth+1
+        for n in connections[room]:
             q.append((n, depth+1))
-
-#print(repr(distances))
+    worth_connections[v] = seen
 
 # part 1
-q = deque([(30, 'AA', 0, set())])
-results = []
-while len(q) > 0:
-    time, at, released, opened = q.popleft()
-    if time <= 0:
-        results.append(released)
-        continue
-    available_moves = [v for v in worth if v not in opened]
-    if len(available_moves) == 0:
-        results.append(released)
-        continue
-    for move in available_moves:
-        d = distances[at][move] + 1
-        points_for_open = valves[move][0]
-        time_open = time - d
-        if time_open <= 0:
-            results.append(released)
-            continue
-        new_opened = set(opened)
-        new_opened.add(move)
-        q.append((time_open, move, released+time_open*points_for_open, new_opened))
+start_t = 30
+q = deque([('AA', 0, start_t, list(worth))])
+max_release = 0
 
-#print(repr(results))
-print(max(results))
+while len(q) > 0:
+    at, pts, time, remaining = q.popleft()
+    max_release = max(max_release, pts)
+
+    for r in remaining:
+        new_time = time - worth_connections[at][r]
+        if new_time <= 0:
+            continue
+
+        new_pts = pts + new_time*rates[r]
+        new_remaining = list(remaining)
+        new_remaining.remove(r)
+        q.append((r, new_pts, new_time, new_remaining))
+
+print(max_release)
 
 # part 2
-#q = deque([(26, 'AA', 26, 'AA', 26, 0, set())])
-#results = []
-#while len(q) > 0:
-#    time, at, at_time, el_at, el_at_time, released, opened = q.popleft()
-#    if time <= 0:
-#        results.append(released)
-#        continue
-#
-#    available_moves = [v for v in worth if v not in opened and v != el_at and v != at]
-#    if len(available_moves) == 0:
-#        if at_time < time:
-#            points_for_open = valves[at][0]
-#            new_opened = set(opened)
-#            new_opened.add(at)
-#            q.append((at_time, at, at_time, el_at, None, released+at_time*points_for_open, new_opened))
-#        elif el_at_time < time:
-#            points_for_open = valves[el_at][0]
-#            new_opened = set(opened)
-#            new_opened.add(el_at)
-#            q.append((at_time, at, None, el_at, el_at_time, released+el_at_time*points_for_open, new_opened))
-#        else:
-#            results.append(released)
-#        continue
-#    for move in available_moves:
-#        points_for_open = valves[move][0]
-#        if at_time == time:
-#            d = distances[at][move] + 1
-#            time_open = time - d
-#            if time_open <= 0:
-#                results.append(released)
-#                continue
-#            new_opened = set(opened)
-#            new_opened.add(move)
-#            q.append((time_open, move, released+time_open*points_for_open, new_opened))
+start_t = 26
+q = deque([('AA', 0, start_t, 'AA', 0, start_t, list(worth))])
+max_release = 0
+seen = dict()
 
-#print(max(results))
-
-q = deque([((26, 'AA', 0), (26, 'AA', 0), 0, dict())])
-results = []
 while len(q) > 0:
-    me, el, released, opened_at = q.popleft()
-    #print(me, el, released, repr(opened_at))
-    if me is None or el is None:
-        is_me = me is not None
-    else:
-        is_me = me[0] >= el[0]
-    this = me if is_me else el
-    other = el if is_me else me
-
-    time, at, this_release = this
-    released += this_release
-
-    if time <= 0:
-        results.append(released)
+    at1, pts1, time1, at2, pts2, time2, remaining = q.popleft()
+    curr_pts = pts1+pts2
+    k = at1+at2+''.join(sorted(remaining))
+    if k in seen and curr_pts <= seen[k]:
         continue
-    performed_moves = 0
-    for move in worth:
-        if other is not None and move == other[1]:
-            #print(f'skipping {move} because other is doing it')
-            continue
-        d = distances[at][move] + 1
-        time_open = time - d
-        if move in opened_at and opened_at[move] >= time_open:
-            #print(f'skip {move} because already opened')
-            continue
+    seen[k] = curr_pts
 
-        points_for_open = valves[move][0]
+    max_release = max(max_release, curr_pts)
 
-        if time_open <= 0:
-            #print(f'skipping {move} because would take too long')
-            continue
+    for r in remaining:
+        new_remaining = list(remaining)
+        new_remaining.remove(r)
 
-        performed_moves += 1
+        new_time1 = time1 - worth_connections[at1][r]
+        if new_time1 > 0:
+            new_pts = pts1 + new_time1*rates[r]
+            q.append((r, new_pts, new_time1, at2, pts2, time2, new_remaining))
 
-        new_opened_at = dict(opened_at)
-        new_opened_at[move] = time_open
+        new_time2 = time2 - worth_connections[at2][r]
+        if new_time2 > 0:
+            new_pts = pts2 + new_time2*rates[r]
+            q.append((at1, pts1, time1, r, new_pts, new_time2, new_remaining))
 
-        this_data = (time_open, move, time_open*points_for_open)
-        if is_me:
-            #print(f'moving me {at} to {move}')
-            q.appendleft((this_data, other, released, new_opened_at))
-        else:
-            #print(f'moving elephant {at} to {move}')
-            q.appendleft((other, this_data, released, new_opened_at))
-
-    if performed_moves == 0:
-        if other is None:
-            results.append(released)
-        else:
-            results.append(released+other[2])
-        #print('added result', results[-1])
-
-print(max(results))
+print(max_release)
