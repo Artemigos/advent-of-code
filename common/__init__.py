@@ -19,3 +19,14 @@ def neighbors_ortho(p, dims=None):
         yield tuple(np)
         np[i] = p[i]+1
         yield tuple(np)
+
+def neighbors_all(p):
+    import itertools
+    for combination in itertools.product([-1, 0, 1], repeat=len(p)):
+        if all(map(lambda x: x == 0, combination)):
+            continue
+        yield tuple((x + combination[i] for i, x in enumerate(p)))
+
+def product(nums):
+    from functools import reduce
+    return reduce(lambda x, y: x * y, nums, 1)
