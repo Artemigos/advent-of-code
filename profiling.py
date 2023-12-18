@@ -12,7 +12,7 @@ if len(sys.argv) != 2:
 
 
 def profile_entry():
-    solution = __import__(sys.argv[1])
+    solution = __import__(module)
     return solution
 
 
