@@ -1,6 +1,7 @@
 from .file_utils import *
 from .parsing import *
 from .d3 import *
+from .ranges import *
 
 def manhattan_dist(p1, p2):
     assert len(p1) == len(p2)
