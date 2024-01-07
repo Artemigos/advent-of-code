@@ -4,14 +4,20 @@ import os
 from typing import Optional
 
 def read_file(path: Optional[str] = None) -> str:
+    with open(get_data_path(path)) as f:
+        return f.read()
+
+def is_sample_data(path: Optional[str] = None) -> bool:
+    return get_data_path(path).endswith('sample.txt')
+
+def get_data_path(path: Optional[str] = None) -> str:
     if path is None:
         if len(sys.argv) > 1:
             path = sys.argv[1]
         else:
             path = os.path.dirname(sys.argv[0][len(os.getcwd())+1:])+'/data.txt'
 
-    with open(path) as f:
-        return f.read()
+    return path
 
 def split_table(data: str, separator='\t'):
     lines = data.splitlines()
