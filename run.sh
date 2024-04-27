@@ -19,8 +19,8 @@ run-python() {
 }
 
 run-go() {
-    echo "not implemented"
-    exit 1
+    cd go
+    go run "aoc/$1/$2" "../$3"
 }
 
 run-rust() {
