@@ -12,6 +12,17 @@ func getPath() string {
 	return os.Args[1]
 }
 
+func Read() string {
+	path := getPath()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+
+	result, _ := strings.CutSuffix(string(data), "\n")
+	return result
+}
+
 func ReadLines() []string {
 	path := getPath()
 	data, err := os.ReadFile(path)
