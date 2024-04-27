@@ -35,11 +35,6 @@ func main() {
 		if found5 && found6 {
 			break
 		}
-
-		if i > 10000000 {
-			fmt.Println("went too far")
-			break
-		}
 	}
 
 	fmt.Println(five)
