@@ -65,5 +65,5 @@ else
     fi
 
     echo -n "$_problem_year/$_problem_day: "
-    "run-$_lang" "$_problem_year" "$_problem_day" "$_data_file" | diff "$_result_file" - && echo OK || echo FAIL
+    "run-$_lang" "$_problem_year" "$_problem_day" "$_data_file" 2>/dev/null | diff "$_result_file" >/dev/null - && echo OK || { echo FAIL; exit 1; }
 fi
