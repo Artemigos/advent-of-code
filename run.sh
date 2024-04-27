@@ -6,7 +6,7 @@ print-help() {
     cat <<EOF
 Usage: ./run.sh <MODE> <LANG> <PROBLEM_YEAR> <PROBLEM_DAY>
 
-MODE          mode of operation, can be either run or test
+MODE          mode of operation, can be either run, test or diff
 LANG          code language, e.g. python, go
 PROBLEM_YEAR  year of the problem, e.g. 2023
 PROBLEM_DAY   day of the problem, e.g. 18
@@ -39,7 +39,7 @@ _problem_year=$3
 _problem_day=$4
 
 case $_mode in
-    run|test) ;;
+    run|test|diff) ;;
     *) echo "Unknown mode: $_mode"; exit 1 ;;
 esac
 
@@ -58,6 +58,13 @@ fi
 
 if [ "$_mode" == "run" ]; then
     "run-$_lang" "$_problem_year" "$_problem_day" "$_data_file"
+elif [ "$_mode" == "diff" ]; then
+    if [ ! -f "$_result_file" ]; then
+        echo "Result file not available"
+        exit 1
+    fi
+
+    "run-$_lang" "$_problem_year" "$_problem_day" "$_data_file" | diff "$_result_file" -
 else
     if [ ! -f "$_result_file" ]; then
         echo "Result file not available"
