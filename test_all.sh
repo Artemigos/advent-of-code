@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-MAX_YEAR=${MAX_YEAR:-2024}
+MAX_YEAR=${MAX_YEAR:-2023}
 
 if [ $# -ne 1 ]; then
     echo "Usage: ./test_all.sh <LANG>"

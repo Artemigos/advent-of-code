@@ -1,4 +1,4 @@
-import common
+# import common
 
 data = 'vzbxkghb'
 # data = 'abcdefgh' # sample 1
@@ -26,7 +26,7 @@ series = [
 
 def find_next_pass(current):
     for p in pass_iterator(current):
-        common.print_and_return(p)
+        # common.print_and_return(p)
 
         if 'i' in p or 'l' in p or 'o' in p:
             continue

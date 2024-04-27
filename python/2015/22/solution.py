@@ -62,37 +62,42 @@ def boss_attack(state):
     dmg = max([state[1][1]-state[0][2], 1])
     return ((state[0][0]-dmg, state[0][1], state[0][2]), state[1], True, *state[3:])
 
-q = queue.deque([state])
-min_winning_spent = None
-while len(q) > 0:
-    state = q.popleft()
-    player, boss, players_turn, shield_turns, poison_turns, recharge_turns, mana_spent = state
-    boss_hp, boss_dmg = boss
-    player_hp, player_mana, player_armor = player
+def do_the_solve(state, part2):
+    q = queue.deque([state])
+    min_winning_spent = None
+    while len(q) > 0:
+        state = q.popleft()
+        player, boss, players_turn, shield_turns, poison_turns, recharge_turns, mana_spent = state
+        boss_hp, boss_dmg = boss
+        player_hp, player_mana, player_armor = player
 
-    if min_winning_spent is not None and mana_spent >= min_winning_spent:
-        continue
+        if min_winning_spent is not None and mana_spent >= min_winning_spent:
+            continue
 
-    if boss_hp <= 0:
-        min_winning_spent = mana_spent
-        continue
+        if boss_hp <= 0:
+            min_winning_spent = mana_spent
+            continue
 
-    # part 2 - comment out for part 1 solution
-    if players_turn:
-        player_hp -= 1
-        state = (player_hp, player_mana, player_armor), boss, players_turn, shield_turns, poison_turns, recharge_turns, mana_spent
-    # end of part 2
+        if part2:
+            # part 2 - comment out for part 1 solution
+            if players_turn:
+                player_hp -= 1
+                state = (player_hp, player_mana, player_armor), boss, players_turn, shield_turns, poison_turns, recharge_turns, mana_spent
+            # end of part 2
 
-    if player_hp <= 0:
-        continue
+        if player_hp <= 0:
+            continue
 
-    state = apply_effects(state)
-    if players_turn:
-        moves = [spell(state) for spell in spells]
-        for move in moves:
-            if move is not None:
-                q.append(move)
-    else:
-        q.append(boss_attack(state))
+        state = apply_effects(state)
+        if players_turn:
+            moves = [spell(state) for spell in spells]
+            for move in moves:
+                if move is not None:
+                    q.append(move)
+        else:
+            q.append(boss_attack(state))
 
-print(min_winning_spent)
+    print(min_winning_spent)
+
+do_the_solve(state, False)
+do_the_solve(state, True)

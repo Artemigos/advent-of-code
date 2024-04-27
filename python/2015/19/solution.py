@@ -40,7 +40,7 @@ def find_reverse_replacements(inp: str):
 while len(q) > 0:
     depth, val = q.popleft()
     if val == target:
-        print()
+        # print()
         print(depth)
         break
     # lucky enough, this finds the right answer
@@ -48,4 +48,4 @@ while len(q) > 0:
         if r not in seen:
             q.append((depth+1, r))
             seen.add(r)
-    common.print_and_return(len(q), len(seen), depth)
+    # common.print_and_return(len(q), len(seen), depth)
