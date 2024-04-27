@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -41,6 +42,18 @@ func Sum(data []int) int {
 	result := 0
 	for _, x := range data {
 		result += x
+	}
+	return result
+}
+
+func AsInts(list []string) []int64 {
+	result := make([]int64, len(list))
+	for i, el := range list {
+		num, err := strconv.ParseInt(el, 10, 32)
+		if err != nil {
+			return nil
+		}
+		result[i] = num
 	}
 	return result
 }
