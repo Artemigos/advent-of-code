@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	lines := utils.ReadLines("../2022/01/data.txt")
+	lines := utils.ReadLines()
 
 	currentElf := 0
 	elves := make([]int, 0)

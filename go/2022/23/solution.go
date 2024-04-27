@@ -10,7 +10,7 @@ type Pos struct {
 }
 
 func main() {
-	lines := utils.ReadLines("../2022/23/data.txt")
+	lines := utils.ReadLines()
 	elves := set.Set[Pos]{}
 	for y, line := range lines {
 		for x, c := range []rune(line) {

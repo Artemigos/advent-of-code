@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	lines := utils.ReadLines("../2022/03/data.txt")
+	lines := utils.ReadLines()
 
 	// part 1
 	acc := 0

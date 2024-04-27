@@ -12,7 +12,7 @@ type Guide struct {
 }
 
 func main() {
-	lines := utils.ReadLines("../2022/02/data.txt")
+	lines := utils.ReadLines()
 	guide := make([]Guide, 0)
 
 	for _, line := range lines {

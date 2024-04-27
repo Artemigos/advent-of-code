@@ -5,7 +5,15 @@ import (
 	"strings"
 )
 
-func ReadLines(path string) []string {
+func getPath() string {
+	if len(os.Args) != 2 {
+		panic("data file path required")
+	}
+	return os.Args[1]
+}
+
+func ReadLines() []string {
+	path := getPath()
 	data, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
