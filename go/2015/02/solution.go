@@ -9,7 +9,7 @@ import (
 func main() {
 	lines := utils.ReadLines()
 
-	var areaAcc, ribbonAcc int64
+	var areaAcc, ribbonAcc int
 	areaAcc = 0
 	ribbonAcc = 0
 

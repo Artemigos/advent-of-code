@@ -46,14 +46,30 @@ func Sum(data []int) int {
 	return result
 }
 
-func AsInts(list []string) []int64 {
-	result := make([]int64, len(list))
-	for i, el := range list {
-		num, err := strconv.ParseInt(el, 10, 32)
-		if err != nil {
-			return nil
-		}
-		result[i] = num
+func Atoi(s string) int {
+	num, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
+	}
+	return num
+}
+
+func AsInts(list []string) []int {
+	return Map(list, Atoi)
+}
+
+func Map[TFrom any, TTo any](from []TFrom, mapper func(TFrom) TTo) []TTo {
+	result := make([]TTo, len(from))
+	for i, f := range from {
+		result[i] = mapper(f)
+	}
+	return result
+}
+
+func Reverse[T any](arr []T) []T {
+	result := make([]T, len(arr))
+	for i := range len(arr) {
+		result[i] = arr[len(arr)-1-i]
 	}
 	return result
 }
