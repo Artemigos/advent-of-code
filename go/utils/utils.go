@@ -66,10 +66,11 @@ func Map[TFrom any, TTo any](from []TFrom, mapper func(TFrom) TTo) []TTo {
 	return result
 }
 
-func Reverse[T any](arr []T) []T {
-	result := make([]T, len(arr))
-	for i := range len(arr) {
-		result[i] = arr[len(arr)-1-i]
+func All(arr []bool) bool {
+	for _, b := range arr {
+		if !b {
+			return false
+		}
 	}
-	return result
+	return true
 }

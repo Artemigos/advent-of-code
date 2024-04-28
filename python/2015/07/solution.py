@@ -25,8 +25,6 @@ def set_val(name, val):
     if name == 'a':
         print(val)
 
-seen = set()
-
 def propagate_val(name):
     fulfilled = []
     for g in gates:

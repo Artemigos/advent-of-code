@@ -3,6 +3,7 @@ package main
 import (
 	"aoc/utils"
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -41,7 +42,7 @@ func main() {
 	}
 
 	// part 1
-	ranges = utils.Reverse(ranges)
+	slices.Reverse(ranges)
 
 	lit := 0
 	for x := range 1000 {
@@ -72,7 +73,7 @@ func main() {
 	fmt.Println(lit)
 
 	// part 2
-	ranges = utils.Reverse(ranges)
+	slices.Reverse(ranges)
 
 	totalBrightness := 0
 	for x := range 1000 {
