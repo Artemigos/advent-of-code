@@ -1,10 +1,13 @@
-# capacity, durability, flavor, texture, calories
-ingredients = dict (
-    Sugar=(3, 0, 0, -3, 2),
-    Sprinkles=(-3, 3, 0, 0, 9),
-    Candy=(-1, 0, 4, 0, 1),
-    Chocolate=(0, 0, -2, 2, 8),
-)
+import common
+
+lines = common.read_file().splitlines()
+
+ingredients = {}
+for line in lines:
+    name = line.split(':')[0]
+    nums = common.extract_numbers(line)
+    assert len(nums) == 5
+    ingredients[name] = tuple(nums)
 
 amount = 100
 
