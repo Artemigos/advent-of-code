@@ -1,6 +1,10 @@
 import queue
+import common
 
-boss = (55, 8) # hp, dmg
+lines = common.read_file().splitlines()
+nums = [int(line.split(' ')[-1]) for line in lines]
+
+boss = tuple(nums) # hp, dmg
 player = (50, 500, 0) # hp, mana, armor
 state = (player, boss, True, 0, 0, 0, 0) # player, boss, player's turn, shield turns left, poison turns left, recharge turns left, mana spent
 
