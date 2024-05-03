@@ -1,31 +1,44 @@
-data = '1113122113'
+from dataclasses import dataclass
+import common
 
-def look_and_say(inp: str):
-    result = ''
-    streak = 0
-    character = ''
-    for c in inp:
-        if c != character and character != '':
-            result += str(streak)
-            result += character
-            streak = 1
-            character = c
-        else:
-            character = c
-            streak += 1
-    result += str(streak)
-    result += character
+data = common.read_file().strip()
+nums = [ord(x) - ord('0') for x in data]
+
+@dataclass
+class Repeat:
+    num: int
+    amount: int
+
+    def try_push(self, num: int, amount: int) -> bool:
+        if num != self.num:
+            return False
+        self.amount += amount
+        return True
+
+def push(repeats: list[Repeat], num: int, amount: int):
+    if len(repeats) == 0 or not repeats[-1].try_push(num, amount):
+        repeats.append(Repeat(num, amount))
+
+def r_len(repeats: list[Repeat]) -> int:
+    return sum((x.amount for x in repeats))
+
+repeats = []
+for n in nums:
+    push(repeats, n, 1)
+
+def look_and_say(repeats: list[Repeat]) -> list[Repeat]:
+    result = []
+    for r in repeats:
+        push(result, r.amount, 1)
+        push(result, r.num, 1)
     return result
 
-# part 1
-result = data
-for i in range(40):
-    result = look_and_say(result)
+for _ in range(40):
+    repeats = look_and_say(repeats)
 
-print(len(result))
+print(r_len(repeats))
 
-# part 2
-for i in range(10):
-    result = look_and_say(result)
+for _ in range(10):
+    repeats = look_and_say(repeats)
 
-print(len(result))
+print(r_len(repeats))
