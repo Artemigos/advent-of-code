@@ -46,13 +46,13 @@ while len(move_queue) > 0:
     deepness, move = move_queue.popleft()
     move_hash = create_state_hash(*move)
     if move_hash == target:
-        print('found path with deepness', deepness)
+        print(deepness)
         break
     if move_hash in seen_states:
         continue
     seen_states.add(move_hash)
-    if len(seen_states)%50000 == 0:
-        print(len(seen_states) / div, '%')
+    # if len(seen_states)%50000 == 0:
+        # print(len(seen_states) / div, '%')
     if not is_state_valid(move):
         continue
     elevator = move[0]
@@ -83,4 +83,4 @@ while len(move_queue) > 0:
                 new_move[a] = elevator+1
                 move_queue.append((deepness+1, new_move))
 
-print(len(seen_states))
+# print(len(seen_states))
