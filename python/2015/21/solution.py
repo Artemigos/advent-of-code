@@ -1,7 +1,11 @@
+import common
+
+lines = common.read_file().splitlines()
+
 boss = dict(
-    hp = 109,
-    dmg = 8,
-    armor = 2
+    hp = int(lines[0].split(' ')[-1]),
+    dmg = int(lines[1].split(' ')[-1]),
+    armor = int(lines[2].split(' ')[-1]),
 )
 
 player = dict(
