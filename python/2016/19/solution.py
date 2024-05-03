@@ -1,6 +1,6 @@
 import common
 
-data = 3012210
+data = int(common.read_file().strip())
 # data = 5 # sample
 # data = 5000 # profiling
 
@@ -37,7 +37,7 @@ while elf_len > 1:
     elves[i] = False
     elf_len -= 1
     i = find_index(i, offset)
-    common.print_and_return(elf_len)
+    # common.print_and_return(elf_len)
 
-print()
+# print()
 print(find_index(0, 1)+1)

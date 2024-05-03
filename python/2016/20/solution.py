@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2016/20/data.txt').splitlines()
+lines = common.read_file().splitlines()
 max_ip = 4294967295
 
 def parse_line(line):

@@ -2,7 +2,7 @@ import itertools
 import operator
 import common
 
-lines = common.read_file('2016/07/data.txt').splitlines()
+lines = common.read_file().splitlines()
 # lines = [
 #     'abba[mnop]qrst',
 #     'abcd[bddb]xyyx',

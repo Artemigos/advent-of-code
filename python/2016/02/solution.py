@@ -1,6 +1,26 @@
 import common
 
-lines = common.read_file('2016/02/data.txt').splitlines()
+lines = common.read_file().splitlines()
+
+def solve(keypad, can_i, x, y, size):
+    code = []
+    for l in lines:
+        for m in l:
+            if m == 'L':
+                if x > 0 and can_i[y][x-1]:
+                    x -= 1
+            elif m == 'R':
+                if x < size-1 and can_i[y][x+1]:
+                    x += 1
+            elif m == 'U':
+                if y > 0 and can_i[y-1][x]:
+                    y -= 1
+            else:
+                if y < size-1 and can_i[y+1][x]:
+                    y += 1
+        code.append(keypad[y][x])
+
+    return ''.join(map(str, code))
 
 # part 1
 keypad = [
@@ -16,6 +36,8 @@ can_i = [
 x = 1
 y = 1
 size = 3
+
+print(solve(keypad, can_i, x, y, size))
 
 # part 2
 keypad = [
@@ -36,21 +58,4 @@ x = 0
 y = 2
 size = 5
 
-code = []
-for l in lines:
-    for m in l:
-        if m == 'L':
-            if x > 0 and can_i[y][x-1]:
-                x -= 1
-        elif m == 'R':
-            if x < size-1 and can_i[y][x+1]:
-                x += 1
-        elif m == 'U':
-            if y > 0 and can_i[y-1][x]:
-                y -= 1
-        else:
-            if y < size-1 and can_i[y+1][x]:
-                y += 1
-    code.append(keypad[y][x])
-
-print(''.join(map(str, code)))
+print(solve(keypad, can_i, x, y, size))

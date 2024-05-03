@@ -1,7 +1,7 @@
 import queue
 import common
 
-lines = common.read_file('2016/22/data.txt').splitlines()[2:]
+lines = common.read_file().splitlines()[2:]
 
 def parse_line(line: str):
     segments = line.split()
@@ -25,7 +25,7 @@ for i in range(len(nodes_lst)):
         if used2 > 0 and used2 <= avail1:
             found += 1
 
-print('connections:', found)
+print(found)
 
 # part 2
 w = 31
@@ -48,10 +48,10 @@ for x, y, used, avail in nodes_lst:
         grid[y][x] = '!'
     else:
         grid[y][x] = '.'
-for y in range(h):
-    for x in range(w):
-        print(grid[y][x], end='')
-    print()
+# for y in range(h):
+#     for x in range(w):
+#         print(grid[y][x], end='')
+#     print()
 
 # data figured out from preview
 zero = 13, 27
@@ -87,9 +87,9 @@ while len(q) > 0:
 
     zero, wanted = state
     if wanted == (0, 0):
-        print('found solution at depth', depth)
+        print(depth)
         break
 
-    common.print_and_return(depth)
+    # common.print_and_return(depth)
     for m in find_moves(state):
         q.append((depth+1, m))

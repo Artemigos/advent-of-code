@@ -1,7 +1,8 @@
 import hashlib
 import queue
+import common
 
-data = b'edjrjqaa'
+data = bytes(common.read_file().strip(), encoding='utf8')
 # data = b'ihgpwlah' # sample
 board_size = 4, 4
 target = 3, 3
@@ -10,12 +11,14 @@ characters_for_open = ['b', 'c', 'd', 'e', 'f']
 md5 = hashlib.md5(data)
 q = queue.deque([(b'', (0, 0), md5)])
 
+found_shortest = False
 last_path = None
 while len(q) > 0:
     path, position, hash_gen = q.popleft()
     if position == target:
-        # print(path)
-        # break
+        if not found_shortest:
+            print(str(path, encoding='utf8'))
+            found_shortest = True
         last_path = path # part 2
         continue
 

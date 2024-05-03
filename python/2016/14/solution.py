@@ -2,7 +2,7 @@ import hashlib
 import queue
 import common
 
-data = b'zpqevtbw'
+data = bytes(common.read_file().strip(), encoding='utf8')
 # data = b'abc'
 base_hash = hashlib.md5(data)
 
@@ -29,9 +29,9 @@ while True:
             for f3 in finished_threes:
                 threes.remove(f3)
                 keys_found += 1
-                common.print_and_return(keys_found)
+                # common.print_and_return(keys_found)
                 if keys_found == 64:
-                    print('64th key at', f3[0])
+                    print(f3[0])
                     break
         charas.append(c)
         charas5.append(c)
@@ -64,9 +64,9 @@ while True:
             for f3 in finished_threes:
                 threes.remove(f3)
                 keys_found += 1
-                common.print_and_return(keys_found)
+                # common.print_and_return(keys_found)
                 if keys_found == 64:
-                    print('64th key at', f3[0])
+                    print(f3[0])
                     exit(0)
         charas.append(c)
         charas5.append(c)

@@ -1,7 +1,7 @@
 import numpy as np
 import common
 
-lines = common.read_file('2016/08/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 display = np.zeros((6, 50))
 for l in lines:
@@ -19,7 +19,7 @@ for l in lines:
         else:
             display[:, which] = np.roll(display[:, which], shift)
 
-print(sum(sum(display)))
+print(int(sum(sum(display))))
 
 for y in range(6):
     for x in range(50):

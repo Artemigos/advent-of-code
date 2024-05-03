@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2016/09/data.txt')
+data = common.read_file()
 
 def read_marker(start, data=data):
     end = data.index(')', start)
@@ -23,7 +23,7 @@ while i < len(data):
         output += data[i]
         i += 1
 
-print(len(output))
+print(len(output)-1)
 
 # part 2
 def calc_length(data):
@@ -43,4 +43,4 @@ def calc_length(data):
     return result_len
 
 result = calc_length(data)
-print(result)
+print(result-1)

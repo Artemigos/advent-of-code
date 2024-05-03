@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2016/04/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 def parse_line(line: str):
     segments = line.rstrip(']').split('[')
@@ -57,4 +57,6 @@ for r in real_rooms:
             result += chr(num+orda)
         return result
 
-    print(' '.join(map(decrypt, name_segments)), segment_id)
+    name = ' '.join(map(decrypt, name_segments))
+    if name == 'northpole object storage':
+        print(segment_id)

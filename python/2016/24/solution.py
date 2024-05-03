@@ -2,7 +2,7 @@ import common
 import queue
 import itertools
 
-board = common.read_file('2016/24/data.txt').splitlines()
+board = common.read_file().splitlines()
 h = len(board)
 w = len(board[0])
 spots = 8
@@ -59,8 +59,9 @@ for i in range(spots):
     dist_matrix.append(dists)
 
 travel_points = range(1, spots)
-travel_orders = itertools.permutations(travel_points)
 
+# part 1
+travel_orders = itertools.permutations(travel_points)
 min_dist = sum(dist_matrix[0])
 
 for order in travel_orders:
@@ -69,8 +70,23 @@ for order in travel_orders:
     for point in order:
         acc += dist_matrix[last_point][point]
         last_point = point
-    
-    # this line alone is new for part 2
+
+    if acc < min_dist:
+        min_dist = acc
+
+print(min_dist)
+
+# part 2
+travel_orders = itertools.permutations(travel_points)
+min_dist = sum(dist_matrix[0])
+
+for order in travel_orders:
+    acc = 0
+    last_point = 0
+    for point in order:
+        acc += dist_matrix[last_point][point]
+        last_point = point
+
     acc += dist_matrix[last_point][0]
 
     if acc < min_dist:

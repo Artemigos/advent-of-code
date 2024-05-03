@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2016/01/data.txt')
+data = common.read_file()
 move_strs = data.split(', ')
 
 pos = (0, 0)
@@ -11,6 +11,7 @@ def move(pos, offset, times=1):
 
 visited = set()
 looking_for_repeats = True
+part2_result = 0
 for m in move_strs:
     dir_change = m[0]
     move_val = int(m[1:])
@@ -26,9 +27,10 @@ for m in move_strs:
         # part 2
         if looking_for_repeats:
             if pos in visited:
-                print(sum(pos))
+                part2_result = sum(pos)
                 looking_for_repeats = False
             else:
                 visited.add(pos)
 
 print(sum(pos))
+print(part2_result)

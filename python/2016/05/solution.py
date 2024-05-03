@@ -1,7 +1,7 @@
 import hashlib
 import common
 
-data = b'ffykfhsq'
+data = bytes(common.read_file().strip(), encoding='utf8')
 
 md5 = hashlib.md5()
 md5.update(data)
@@ -16,13 +16,13 @@ while True:
 
     if result[:5] == '00000':
         digits += result[5]
-        common.print_and_return(digits)
+        # common.print_and_return(digits)
         if len(digits) == 8:
             break
 
     i += 1
 
-print()
+print(digits)
 
 # part 2
 i = 0
@@ -42,10 +42,10 @@ while True:
         pos = int(result[5])
         if digits[pos] == '':
             digits[pos] = result[6]
-            print_digits()
+            # print_digits()
             if all(digits):
                 break
 
     i += 1
 
-print()
+print(''.join(digits))
