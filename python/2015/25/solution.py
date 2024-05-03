@@ -1,5 +1,8 @@
-row = 3010
-column = 3019
+import common
+
+nums = common.extract_numbers(common.read_file())
+row = nums[0]
+column = nums[1]
 
 # looking for ordinal for this cell
 ordinal = 1
