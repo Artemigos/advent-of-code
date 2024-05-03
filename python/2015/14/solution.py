@@ -1,14 +1,13 @@
-reindeer = dict(
-    Rudolph=(22, 8, 165),
-    Cupid=(8, 17, 114),
-    Prancer=(18, 6, 103),
-    Donner=(25, 6, 145),
-    Dasher=(11, 12, 125),
-    Comet=(21, 6, 121),
-    Blitzen=(18, 3, 50),
-    Vixen=(20, 4, 75),
-    Dancer=(7, 20, 119),
-)
+import common
+
+lines = common.read_file().splitlines()
+
+reindeer = {}
+for line in lines:
+    name = line.split(' ')[0]
+    nums = common.extract_numbers(line)
+    assert len(nums) == 3
+    reindeer[name] = tuple(nums)
 
 race_len = 2503
 
