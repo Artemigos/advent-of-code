@@ -1,5 +1,3 @@
-import common
-
 def num_gen(start = 0):
     acc = start
     while True:

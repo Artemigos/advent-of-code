@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2016/23/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 # part 1
 eggs = 7

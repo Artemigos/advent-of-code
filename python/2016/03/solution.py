@@ -1,6 +1,7 @@
 import common
 
-data = common.import_from_day(2016, '03', 'data').data
+lines = common.read_file().splitlines()
+data = [common.extract_numbers(x) for x in lines]
 
 # part 1
 possible = 0

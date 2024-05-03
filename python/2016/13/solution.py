@@ -1,6 +1,7 @@
 import queue
+import common
 
-data = 1350
+data = int(common.read_file().strip())
 
 def can_step(x, y):
     num = x*x + 3*x + 2*x*y + y + y*y + data
@@ -16,7 +17,7 @@ seen_positions = set()
 while len(moves) > 0:
     depth, move = moves.popleft()
     if move == (31, 39):
-        print('found path at depth', depth)
+        print(depth)
         break
     if move in seen_positions:
         continue

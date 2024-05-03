@@ -1,7 +1,18 @@
 import common
 import queue
+import re
 
-lines = common.read_file('2016/21/data.txt').splitlines()
+lines = common.read_file().splitlines()
+for i in range(len(lines)):
+    l = lines[i]
+    l = re.sub(r'rotate right (\d+) steps?', 'rotr \\1', l)
+    l = re.sub(r'rotate left (\d+) steps?', 'rotl \\1', l)
+    l = re.sub(r'rotate based on position of letter (.)', 'rotrel \\1', l)
+    l = re.sub(r'swap position (\d+) with position (\d+)', 'swapp \\1 \\2', l)
+    l = re.sub(r'swap letter (.) with letter (.)', 'swapl \\1 \\2', l)
+    l = re.sub(r'move position (\d+) to position (\d+)', 'movp \\1 \\2', l)
+    l = re.sub(r'reverse positions (\d+) through (\d+)', 'revp \\1 \\2', l)
+    lines[i] = l
 
 # part 1
 password = 'abcdefgh'
