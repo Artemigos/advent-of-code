@@ -1,10 +1,10 @@
-import numpy as np
+import common
 
-target = 34000000
+target = int(common.read_file().strip())
 
 # part 1
 mx = int(target/10)
-arr = np.zeros((mx,))
+arr = [0]*mx
 
 for i in range(1, mx):
     if i > mx: break
@@ -19,7 +19,7 @@ print(mx)
 
 # part 2
 mx = int(target/10)
-arr = np.zeros((mx,))
+arr = [0]*mx
 
 for i in range(1, mx):
     if i > mx: break
