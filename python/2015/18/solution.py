@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2015/18/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 initial_state = []
 

@@ -1,6 +1,7 @@
 import hashlib
+import common
 
-data = b'iwrupvqb'
+data = bytes(common.read_file().strip(), encoding='utf8')
 
 base_hash = hashlib.md5(data)
 

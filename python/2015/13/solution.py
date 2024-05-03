@@ -1,7 +1,7 @@
 import itertools
 import common
 
-lines = common.read_file('2015/13/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 ppl = set()
 ratings = dict()

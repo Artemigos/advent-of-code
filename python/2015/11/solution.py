@@ -1,6 +1,6 @@
-# import common
+import common
 
-data = 'vzbxkghb'
+data = common.read_file().strip()
 # data = 'abcdefgh' # sample 1
 
 def pass_iterator(start=data):

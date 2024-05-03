@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2015/03/data.txt')
+data = common.read_file()
 
 pos1 = 0, 0
 pos2 = [(0, 0), (0, 0)]

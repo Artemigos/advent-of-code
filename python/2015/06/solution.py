@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2015/06/data.txt').splitlines()
+lines = common.read_file().splitlines()
 ranges = []
 
 for line in lines:

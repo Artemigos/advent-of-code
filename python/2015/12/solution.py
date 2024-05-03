@@ -1,7 +1,7 @@
 import json
 import common
 
-data = common.read_file('2015/12/data.txt')
+data = common.read_file()
 obj = json.loads(data)
 
 # part 1

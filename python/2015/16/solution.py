@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2015/16/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 target = dict(
     children=3,

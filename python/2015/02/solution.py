@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2015/02/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 area_acc = 0
 ribbon_acc = 0

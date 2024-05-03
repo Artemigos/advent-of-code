@@ -1,7 +1,7 @@
 import common
 import re
 
-lines = common.read_file('2015/08/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 # part 1
 diff = 0

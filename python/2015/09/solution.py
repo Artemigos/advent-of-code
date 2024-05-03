@@ -4,7 +4,7 @@ import itertools
 locations = set()
 distances = dict()
 
-lines = common.read_file('2015/09/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 for line in lines:
     segments = line.split()

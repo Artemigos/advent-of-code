@@ -2,7 +2,7 @@ import common
 import operator
 import re
 
-lines = common.read_file('2015/07/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 values = dict()
 gates = []

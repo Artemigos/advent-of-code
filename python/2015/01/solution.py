@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2015/01/data.txt')
+data = common.read_file()
 
 floor = 0
 first_basement_at = 0

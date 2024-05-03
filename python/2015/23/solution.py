@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2015/23/data.txt').splitlines()
+lines = common.read_file().splitlines()
 instructions = [line.split() for line in lines]
 
 def run(registers):
