@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2017/24/data.txt').splitlines()
+lines = common.read_file().splitlines()
 # lines = ['0/2', '2/2', '2/3', '3/4', '3/5', '0/1', '10/1', '9/10']
 
 

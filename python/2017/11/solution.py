@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/11/data.txt').strip().split(',')
+data = common.read_file().strip().split(',')
 
 offset_x = 0
 offset_y = 0

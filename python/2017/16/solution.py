@@ -1,7 +1,7 @@
 import common
 import queue
 
-data = common.read_file('2017/16/data.txt')
+data = common.read_file()
 moves = data.split(',')
 repetitions = 1000000000
 # repetitions = 1000

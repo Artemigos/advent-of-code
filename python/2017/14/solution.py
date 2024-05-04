@@ -2,7 +2,7 @@ import numpy as np
 import common
 knot_hash_full = common.import_year_common(2017).knot_hash_full
 
-data = 'hwlqcszp'
+data = common.read_file().strip()
 # data = 'flqrgnkx' # sample data
 
 rows = list()

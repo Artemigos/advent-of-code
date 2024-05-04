@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/22/data.txt')
+data = common.read_file()
 lines = data.splitlines()
 steps_1 = 10000
 steps_2 = 10000000

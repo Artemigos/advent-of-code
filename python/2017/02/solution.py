@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/2/data.txt')
+data = common.read_file()
 table = common.split_table(data)
 
 # part 1

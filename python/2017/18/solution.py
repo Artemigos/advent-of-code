@@ -102,7 +102,7 @@ class Runtime:
 
 
 def main():
-    data = common.read_file('2017/18/data.txt')
+    data = common.read_file()
     lines = data.splitlines()
     instructions = list(map(lambda x: x.split(' '), lines))
 

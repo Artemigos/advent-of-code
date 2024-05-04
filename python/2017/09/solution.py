@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/9/data.txt')
+data = common.read_file()
 
 level = 0
 in_garbage = False

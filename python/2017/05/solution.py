@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/5/data.txt')
+data = common.read_file()
 lines = data.splitlines()
 
 # part 1

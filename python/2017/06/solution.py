@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/6/data.txt')
+data = common.read_file()
 cells = data.split('\t')
 
 state = common.to_int(cells)

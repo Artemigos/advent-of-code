@@ -8,7 +8,7 @@ class Particle(NamedTuple):
     a: list
 
 
-data = common.read_file('2017/20/data.txt')
+data = common.read_file()
 lines = data.splitlines()
 
 

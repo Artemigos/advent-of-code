@@ -1,5 +1,9 @@
-data_a = 783
-data_b = 325
+import common
+
+lines = common.read_file().splitlines()
+
+data_a = common.extract_numbers(lines[0])[0]
+data_b = common.extract_numbers(lines[1])[0]
 
 mul_a = 16807
 mul_b = 48271

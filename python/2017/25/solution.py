@@ -1,34 +1,22 @@
 import queue
+import common
 
 # data
-state = 'A'
-steps = 12399302
-blueprint = dict(
-    A=[
-        (1, 1, 'B'),
-        (0, 1, 'C')
-    ],
-    B=[
-        (0, -1, 'A'),
-        (0, 1, 'D')
-    ],
-    C=[
-        (1, 1, 'D'),
-        (1, 1, 'A')
-    ],
-    D=[
-        (1, -1, 'E'),
-        (0, -1, 'D')
-    ],
-    E=[
-        (1, 1, 'F'),
-        (1, -1, 'B')
-    ],
-    F=[
-        (1, 1, 'A'),
-        (1, 1, 'E')
-    ]
-)
+lines = common.read_file().splitlines()
+state = lines[0][-2]
+steps = common.extract_numbers(lines[1])[0]
+blueprint = {}
+
+for i in range(3, len(lines), 10):
+    st = lines[i][-2]
+    def read_points(i: int) -> tuple[int, int, str]:
+        w = common.extract_numbers(lines[i])[0]
+        m = -1 if 'left' in lines[i+1] else 1
+        n = lines[i+2][-2]
+        return (w, m, n)
+    p0 = read_points(i+2)
+    p1 = read_points(i+6)
+    blueprint[st] = [p0, p1]
 
 tape = queue.deque([0])
 pos = 0

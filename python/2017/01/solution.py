@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/1/data.txt')
+data = common.read_file().strip()
 
 # part 1
 sum_acc = 0

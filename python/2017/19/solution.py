@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/19/data.txt')
+data = common.read_file()
 board = data.splitlines()
 start_x = board[0].index('|')
 

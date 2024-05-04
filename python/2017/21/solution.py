@@ -1,7 +1,7 @@
 import common
 import numpy as np
 
-data = common.read_file('2017/21/data.txt')
+data = common.read_file()
 lines = data.splitlines()
 repetitions = 5  # part 1
 repetitions = 18  # part 2

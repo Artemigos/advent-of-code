@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2017/4/data.txt')
+data = common.read_file()
 passphrases = common.split_table(data, ' ')
 
 

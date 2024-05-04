@@ -1,7 +1,7 @@
 import queue
 import common
 
-data = common.read_file('2017/12/data.txt')
+data = common.read_file()
 lines = data.splitlines()
 
 

@@ -30,7 +30,7 @@ class RuntimeEx(Runtime):
 
 
 def main():
-    data = common.read_file('2017/23/data.txt')
+    data = common.read_file()
     lines = data.splitlines()
     instructions = list(map(lambda x: x.split(' '), lines))
 

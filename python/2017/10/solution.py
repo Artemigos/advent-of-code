@@ -1,7 +1,7 @@
 import common
 year_common = common.import_year_common(2017)
 
-data = common.read_file('2017/10/data.txt').strip()
+data = common.read_file().strip()
 ints = common.to_int(data.split(','))
 
 # NOTE: implementation of knot hash was moved to common

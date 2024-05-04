@@ -1,10 +1,11 @@
 import numpy as np
+import common
 
-data = 277678
+data = int(common.read_file().strip())
 
 step = 0
 dist = 0
-num = 0
+num = 1
 
 # part 1
 while True:
@@ -32,8 +33,15 @@ while True:
     if num >= data:
         break
 
-print(f"Number {num} with step {step} and distance {dist}.")
-# NOTE: with this data I did manual analysis
+step_back = (step + 1) // 2
+dist_back = num - data
+if dist_back <= step_back:
+    dist -= dist_back
+else:
+    dist -= step_back
+    dist += dist_back - step_back
+
+print(dist)
 
 # part 2
 step = 0
@@ -55,7 +63,7 @@ while True:
         pos_x += 1
         update_field(pos_x, pos_y)
         if board[pos_x, pos_y] > data:
-            print(board[pos_x, pos_y])
+            print(int(board[pos_x, pos_y]))
             exit()
 
     # up
@@ -63,7 +71,7 @@ while True:
         pos_y -= 1
         update_field(pos_x, pos_y)
         if board[pos_x, pos_y] > data:
-            print(board[pos_x, pos_y])
+            print(int(board[pos_x, pos_y]))
             exit()
 
     # left
@@ -72,7 +80,7 @@ while True:
         pos_x -= 1
         update_field(pos_x, pos_y)
         if board[pos_x, pos_y] > data:
-            print(board[pos_x, pos_y])
+            print(int(board[pos_x, pos_y]))
             exit()
 
     # down
@@ -80,5 +88,5 @@ while True:
         pos_y += 1
         update_field(pos_x, pos_y)
         if board[pos_x, pos_y] > data:
-            print(board[pos_x, pos_y])
+            print(int(board[pos_x, pos_y]))
             exit()
