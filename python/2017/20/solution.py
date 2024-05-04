@@ -30,26 +30,21 @@ def m_len(vec):
 
 particles = list(map(parse_line, lines))
 
-min_a_particle = None
+min_particle = None
 min_a = None
-min_a_particle_data = None
+min_v = None
 
 curr_particle = -1
 for particle in particles:
     curr_particle += 1
     a_len = m_len(particle.a)
-    if min_a is None or a_len < min_a:
+    v_len = m_len(particle.v)
+    if min_a is None or a_len < min_a or (a_len == min_a and v_len < min_v):
         min_a = a_len
-        min_a_particle = [curr_particle]
-        min_a_particle_data = [particle]
-    elif min_a == a_len:
-        min_a_particle.append(curr_particle)
-        min_a_particle_data.append(particle)
+        min_v = v_len
+        min_particle = curr_particle
 
-# NOTE: this result is inconclusive, but gives enough to figure it out manually (or try them all)
-print(min_a_particle)
-print(min_a)
-print(min_a_particle_data)
+print(min_particle)
 
 
 # part 2

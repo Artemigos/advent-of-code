@@ -163,8 +163,7 @@ def main():
             else:
                 rt22.process_instr(instr2)
 
-    print('p0:', p1_sent_count)
-    print('p1:', p2_sent_count)
+    print(p2_sent_count)
 
 
 if __name__ == '__main__':

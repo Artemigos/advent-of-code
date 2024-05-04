@@ -1,4 +1,5 @@
 import common
+from .solution2 import run
 Runtime = common.import_solution(2017, 18).Runtime
 
 
@@ -44,3 +45,4 @@ def main():
 
 
 main()
+run()

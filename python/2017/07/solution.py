@@ -26,6 +26,8 @@ while True:
         break
     current = relations[current]
 
+print(current)
+
 # part 2
 nodes = list(map(parse_line_with_weight, lines))
 weights = {node: weight for node, weight in nodes}
@@ -37,8 +39,7 @@ for node, weight in nodes:
 
 s_weights = sorted(weights, key=lambda x: weights[x])
 
-for k in s_weights:
-    print(k, weights[k])
+# for k in s_weights:
+#     print(k, weights[k])
 # NOTE: with this data I did manual analysis
-
-print(current)
+# TODO: finish implementation

@@ -63,5 +63,5 @@ for curr_len, curr_sum in yield_lengths_and_sums(tree):
         max_len = curr_len
         max_str = curr_sum
 
-print(max_len)
+# print(max_len)
 print(max_str)
