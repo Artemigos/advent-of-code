@@ -1,3 +1,4 @@
+# TODO: read from file
 class Group:
     def __init__(self, units, hp, weaknesses, immunities, damage, damage_type, initiative):
         self.units = units

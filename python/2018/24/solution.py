@@ -29,23 +29,23 @@ def target_phase(immune_system, infection):
 
 def attack_phase(immune_system, infection, target_info):
     # report status
-    print("Immune System:")
-    for i, group in enumerate(immune_system.groups):
-        if not group.is_dead():
-            print(f"Group {i+1} contains {group.units} units")
-    print("Infection:")
-    for i, group in enumerate(infection.groups):
-        if not group.is_dead():
-            print(f"Group {i+1} contains {group.units} units")
-    print()
+    # print("Immune System:")
+    # for i, group in enumerate(immune_system.groups):
+    #     if not group.is_dead():
+    #         print(f"Group {i+1} contains {group.units} units")
+    # print("Infection:")
+    # for i, group in enumerate(infection.groups):
+    #     if not group.is_dead():
+    #         print(f"Group {i+1} contains {group.units} units")
+    # print()
 
     # perform attacks
     for group in sorted(target_info.keys(), key=lambda x: x.initiative, reverse=True):
         enemy = target_info[group]
         killed = enemy.take_damage(group)
-        print(f"{'Infection' if group in infection.groups else 'Immune System'} group {infection.groups.index(group)+1 if group in infection.groups else immune_system.groups.index(group)+1} attacks defending group {infection.groups.index(enemy)+1 if enemy in infection.groups else immune_system.groups.index(enemy)+1}, killing {killed} units")
+        # print(f"{'Infection' if group in infection.groups else 'Immune System'} group {infection.groups.index(group)+1 if group in infection.groups else immune_system.groups.index(group)+1} attacks defending group {infection.groups.index(enemy)+1 if enemy in infection.groups else immune_system.groups.index(enemy)+1}, killing {killed} units")
 
-    print('---')
+    # print('---')
 
 def run_combat(immune_system_boost=0):
     (ImmuneSystem, Infection) = create_starting_forces()
@@ -59,15 +59,15 @@ def run_combat(immune_system_boost=0):
 
     return (ImmuneSystem, Infection)
 
-def print_solution(ImmuneSystem, Infection, label):
+def print_solution(ImmuneSystem, Infection):
     units1 = sum(map(lambda x: x.units, ImmuneSystem.groups))
     units2 = sum(map(lambda x: x.units, Infection.groups))
-    print(label, str(max(units1, units2)))
+    print(str(max(units1, units2)))
 
 # part 1
 ImmuneSystem, Infection = run_combat()
-print_solution(ImmuneSystem, Infection, 'part 1:')
+print_solution(ImmuneSystem, Infection)
 
 # part 2
 ImmuneSystem, Infection = run_combat(38) # found with manual binary search
-print_solution(ImmuneSystem, Infection, 'part 2:')
+print_solution(ImmuneSystem, Infection)

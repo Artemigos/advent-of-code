@@ -29,7 +29,7 @@ for row in rows:
     if dist <= max_range_bot_range:
         in_range_count += 1
 
-print('part 1:', in_range_count)
+print(in_range_count)
 
 # part 2
 minx = min(map(lambda x: x[X], rows))-max_range_bot_range
@@ -123,4 +123,4 @@ def eval_segment(segment, depth):
 
 found_val, found_segment = search_space(space, eval_segment)
 found_dist = manhattan_dist((found_segment[0], found_segment[2], found_segment[4]), (0, 0, 0))
-print('part 2:', found_dist)
+print(found_dist)

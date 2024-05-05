@@ -39,4 +39,4 @@ def build_forest(data):
 
 # part 1
 constellations = build_forest(common.read_file())
-print('part 1:', len(constellations))
+print(len(constellations))
