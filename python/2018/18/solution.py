@@ -1,14 +1,7 @@
 import collections
-import sys
+import common
 
-def read_file(path: str) -> str:
-    with open(path, 'r') as f:
-        return f.read()
-
-src = 'data'
-if len(sys.argv) > 1:
-    src = sys.argv[1]
-board = read_file(f'2018/18/{src}.txt').splitlines()
+board = common.read_file().splitlines()
 board = [list(x) for x in board]
 w = len(board[0])
 h = len(board)

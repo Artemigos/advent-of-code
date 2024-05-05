@@ -1,4 +1,6 @@
-data = 84601
+import common
+
+data = int(common.read_file().strip())
 amount_needed = data + 10
 
 # part 1

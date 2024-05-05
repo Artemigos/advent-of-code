@@ -1,7 +1,7 @@
 import common
 import numpy as np
 
-lines = common.read_file('2018/03/data.txt').splitlines()
+lines = common.read_file().splitlines()
 parsed = [common.extract_numbers(x) for x in lines]
 
 fabric = np.zeros((1000, 1000))

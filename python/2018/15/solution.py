@@ -1,7 +1,5 @@
-import sys
-from typing import NamedTuple
-import itertools
 import queue
+import common
 
 class Unit:
     def __init__(self, unit_type: str, power=3):
@@ -123,14 +121,7 @@ class GameState:
                     result[y, x] = Goblin()
         return result
 
-board = 'data'
-if len(sys.argv) > 1:
-    board = sys.argv[1]
-
-with open(f'2018/15/{board}.txt') as f:
-    data = f.read()
-
-lines = data.splitlines()
+lines = common.read_file().splitlines()
 state: GameState = None
 
 def iter_units():

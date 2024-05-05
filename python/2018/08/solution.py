@@ -1,29 +1,7 @@
-import collections as coll
-import queue
-import itertools
-import functools
-import numpy as np
-import re
+import common
 
-def read_file(path: str) -> str:
-    with open(path) as f:
-        return f.read()
-
-def read_lines(path: str) -> str:
-    with open(path) as f:
-        return f.read().splitlines()
-
-def extract_words(data: str):
-    return re.findall(r'\w+', data)
-
-def extract_numbers(data: str):
-    return [int(x) for x in re.findall(r'-?\d+', data)]
-
-def parse_line(line: str):
-    return line
-
-data = read_file('2018/08/data.txt')
-parsed = extract_numbers(data)
+data = common.read_file()
+parsed = common.extract_numbers(data)
 print(len(parsed))
 
 nodes = []

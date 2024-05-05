@@ -3,8 +3,9 @@ import queue
 from collections import Counter
 
 # 478 players; last marble is worth 71240 points
-nplayers = 478
-last_marble = 71240
+nums = common.extract_numbers(common.read_file())
+nplayers = nums[0]
+last_marble = nums[1]
 
 circle = queue.deque([0])
 scores = Counter()

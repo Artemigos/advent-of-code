@@ -1,8 +1,8 @@
 import common
 from collections import deque
 
-def build_forest(path):
-    points = [tuple(common.extract_numbers(line)) for line in common.read_file(path).splitlines()]
+def build_forest(data):
+    points = [tuple(common.extract_numbers(line)) for line in data.splitlines()]
     direct_connections = {}
 
     def manhattan_distance(p1, p2):
@@ -37,10 +37,6 @@ def build_forest(path):
         constellations.append(list(seen_points))
     return constellations
 
-# sample
-constellations = build_forest('2018/25/sample1.txt')
-print('sample:', len(constellations))
-
 # part 1
-constellations = build_forest('2018/25/data.txt')
+constellations = build_forest(common.read_file())
 print('part 1:', len(constellations))

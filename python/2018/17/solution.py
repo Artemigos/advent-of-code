@@ -1,25 +1,13 @@
-import re
 import sys
 import queue
 import numpy as np
+import common
 
 sys.setrecursionlimit(10000)
 
-def extract_ints(data: str):
-    matches = re.findall(r'-?\d+', data)
-    return list(map(int, matches))
-
-def read_file(path: str) -> str:
-    with open(path, 'r') as f:
-        return f.read()
-
-src = 'data'
-if len(sys.argv) > 1:
-    src = sys.argv[1]
-
 fountain = (500, 0)
 
-lines = [(x[0], extract_ints(x)) for x in read_file(f'2018/17/{src}.txt').splitlines()]
+lines = [(x[0], common.extract_numbers(x)) for x in common.read_file().splitlines()]
 points = []
 for (coord_type, [coord, start, stop]) in lines:
     opposite = 'x' if coord_type == 'y' else 'y'

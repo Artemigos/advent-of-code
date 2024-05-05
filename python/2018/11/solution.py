@@ -1,31 +1,7 @@
-import collections as coll
-import queue
-import itertools
-import functools
 import numpy as np
-import re
+import common
 
-def read_file(path: str) -> str:
-    with open(path) as f:
-        return f.read()
-
-def read_lines(path: str) -> str:
-    with open(path) as f:
-        return f.read().splitlines()
-
-def extract_words(data: str):
-    return re.findall(r'\w+', data)
-
-def extract_numbers(data: str):
-    return [int(x) for x in re.findall(r'-?\d+', data)]
-
-def parse_line(line: str):
-    return line
-
-# data = read_file('2018/11/data.txt').splitlines()
-# parsed = [parse_line(x) for x in data]
-
-data = 9306
+data = int(common.read_file().strip())
 powers = np.zeros((300, 300))
 
 for x in range(1, 301):

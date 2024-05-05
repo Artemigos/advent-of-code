@@ -1,6 +1,7 @@
 import itertools
+import common
 
-nums = list(map(int, open('2018/01/data.txt')))
+nums = [int(x) for x in common.read_file().splitlines()]
 
 # part 1
 print(sum(nums))

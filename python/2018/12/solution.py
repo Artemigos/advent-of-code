@@ -1,17 +1,11 @@
 import common
-import collections as coll
-import queue
-import itertools
-import functools
-import numpy as np
-import re
 
 def parse_line(line: str):
     segments = line.split(' ')
     return (list(segments[0]), segments[2])
 
 def run_simulation(rules_path, initial, generations, label, padding_left = 50, padding_right = 100):
-    data = common.read_file('2018/12/data.txt').splitlines()
+    data = common.read_file().splitlines()
     parsed = [parse_line(x) for x in data]
 
     size = len(initial)+padding_left+padding_right

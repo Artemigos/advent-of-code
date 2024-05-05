@@ -1,8 +1,5 @@
 import re
-
-def read_file(path: str) -> str:
-    with open(path, 'r') as f:
-        return f.read()
+import common
 
 registers = {
     0: 0,
@@ -81,7 +78,7 @@ def set_registers(vals):
 def registers_equal(vals):
     return list(registers.values()) == vals
 
-lines = read_file('2018/16/data1.txt').splitlines()
+lines = common.read_file().splitlines()
 
 match3 = 0
 for i in range(0, len(lines), 4):

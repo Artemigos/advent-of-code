@@ -3,7 +3,7 @@ import common
 alpha = ' abcdefghijklmnopqrstuvwxyz'
 
 for a in alpha:
-    data = common.read_file('2018/05/data.txt')
+    data = common.read_file()
     data = data.replace(a, '')
     data = data.replace(a.upper(), '')
     curr_data = data

@@ -1,8 +1,7 @@
-import re
 from queue import PriorityQueue
 import common
 
-lines = common.read_file('2018/23/data.txt').splitlines()
+lines = common.read_file().splitlines()
 rows = []
 for line in lines:
     nums = common.extract_numbers(line)

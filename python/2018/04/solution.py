@@ -6,7 +6,7 @@ def parse_line(line: str):
     time = tuple(map(int, segments[0:5]))
     return (*time, *segments[5:])
 
-data = common.read_file('2018/04/data.txt').splitlines()
+data = common.read_file().splitlines()
 parsed = [parse_line(x) for x in sorted(data)]
 
 guard = 0

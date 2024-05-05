@@ -1,29 +1,10 @@
 import collections as coll
 import queue
-import itertools
-import functools
-import numpy as np
 import re
+import common
 
-def read_file(path: str) -> str:
-    with open(path) as f:
-        return f.read()
-
-def read_lines(path: str) -> str:
-    with open(path) as f:
-        return f.read().splitlines()
-
-def extract_words(data: str):
-    return re.findall(r'\w+', data)
-
-def extract_numbers(data: str):
-    return [int(x) for x in re.findall(r'-?\d+', data)]
-
-def parse_line(line: str):
-    return extract_words(line)
-
-data = read_lines('2018/07/data.txt')
-parsed = [parse_line(x) for x in data]
+lines = common.read_file().splitlines()
+parsed = [re.findall(r'\w+', x) for x in lines]
 
 deps = coll.defaultdict(set)
 steps = set()

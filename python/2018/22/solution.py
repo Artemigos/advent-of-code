@@ -1,8 +1,11 @@
 import numpy as np
 import queue
+import common
 
-depth = 7863
-target = 14,760
+nums = [common.extract_numbers(x) for x in common.read_file().splitlines()]
+
+depth = nums[0][0]
+target = nums[1][0],nums[1][1]
 mod = 20183
 
 size = target[0]*3, target[1]*3

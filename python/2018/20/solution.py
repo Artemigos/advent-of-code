@@ -1,7 +1,7 @@
 import queue
+import common
 
-with open('2018/20/data.txt', 'r') as f:
-    data = f.read()[1:-1]
+data = common.read_file()[1:-1]
 
 sample0 = 'WNE'
 sample1 = 'ENWWW(NEEE|SSE(EE|N))'

@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2018/02/data.txt').splitlines()
+data = common.read_file().splitlines()
 
 twos = 0
 threes = 0

@@ -1,7 +1,7 @@
 import common
 import collections as coll
 
-data = common.read_file('2018/06/data.txt').splitlines()
+data = common.read_file().splitlines()
 parsed = [tuple(common.extract_numbers(x)) for x in data]
 
 minx = min(map(lambda x: x[0], parsed))
