@@ -3,7 +3,7 @@ transcript2 = common.import_from_day(2018, 21, 'transcript2')
 
 # part 1
 def hook1(r0, r2, r3):
-    print('part 1: ' + str(r3))
+    print(str(r3))
     return False
 transcript2.run(hook1)
 
@@ -20,7 +20,7 @@ def hook2(r0, r2, r3):
     key = (r2, r3)
 
     if key in seen_states:
-        print('part 2: ' + str(last_unique))
+        print(str(last_unique))
         return False
 
     seen_states.add(key)

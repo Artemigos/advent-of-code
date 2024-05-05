@@ -20,8 +20,8 @@ minx = min(map(lambda x: x[0], points))
 maxx = max(map(lambda x: x[0], points))
 miny = min(map(lambda x: x[1], points))
 maxy = max(map(lambda x: x[1], points))
-print(minx, maxx)
-print(miny, maxy)
+# print(minx, maxx)
+# print(miny, maxy)
 
 mud_or_settled_l = np.zeros((maxx+3, maxy+3))
 for point in points:
@@ -52,7 +52,7 @@ def run(start_pos):
 
     while len(q) > 0:
         do_trickle, pos = q.popleft()
-        print(len(q), end='\r')
+        # print(len(q), end='\r')
         # trickle
         if do_trickle:
             while mud_or_settled_l[pos] == 0:
@@ -109,7 +109,7 @@ def run(start_pos):
                     break
 
 run(fountain)
-print()
+# print()
 
 reached_by_water = set()
 for x in range(np.shape(mud_or_settled_l)[0]):
@@ -117,8 +117,9 @@ for x in range(np.shape(mud_or_settled_l)[0]):
         if mud_or_settled_l[x, y] == 1:
             reached_by_water.add((x, y))
 reached_by_water = reached_by_water.difference(points)
-print('part 2:', len(reached_by_water))
+part2_result = len(reached_by_water)
 reached_by_water = [x for x in reached_by_water.union(wet) if x[1] >= miny]
-print('part 1:', len(reached_by_water))
+print(len(reached_by_water))
+print(part2_result)
 
 # output_map('end')

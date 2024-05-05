@@ -1,4 +1,3 @@
-import re
 import common
 
 registers = {
@@ -56,10 +55,6 @@ def eqri(a, b, c):
 def eqrr(a, b, c):
     registers[c] = 1 if registers[a] == registers[b] else 0
 
-def extract_ints(data: str):
-    matches = re.findall(r'-?\d+', data)
-    return list(map(int, matches))
-
 instructions = [
     'addr', 'addi', 'mulr', 'muli',
     'banr', 'bani', 'borr', 'bori',
@@ -78,13 +73,13 @@ def set_registers(vals):
 def registers_equal(vals):
     return list(registers.values()) == vals
 
-lines = common.read_file().splitlines()
+lines = common.read_file().split('\n\n\n\n')[0].splitlines()
 
 match3 = 0
 for i in range(0, len(lines), 4):
-    before = extract_ints(lines[i])
-    after = extract_ints(lines[i+2])
-    op = extract_ints(lines[i+1])
+    before = common.extract_numbers(lines[i])
+    after = common.extract_numbers(lines[i+2])
+    op = common.extract_numbers(lines[i+1])
 
     matches = 0
     for instr in instructions:
@@ -103,9 +98,9 @@ prev_len = -1
 while len(ops) != prev_len:
     prev_len = len(ops)
     for i in range(0, len(lines), 4):
-        before = extract_ints(lines[i])
-        after = extract_ints(lines[i+2])
-        op = extract_ints(lines[i+1])
+        before = common.extract_numbers(lines[i])
+        after = common.extract_numbers(lines[i+2])
+        op = common.extract_numbers(lines[i+1])
         if op[0] in ops:
             continue
 
@@ -120,15 +115,15 @@ while len(ops) != prev_len:
         if len(matches) == 1:
             ops[op[0]] = matches[0]
 
-print(ops)
-print(len(set(ops.values())))
+# print(ops)
+# print(len(set(ops.values())))
 
 # part 2 - run program
-program = [extract_ints(x) for x in read_file('2018/16/data2.txt').splitlines()]
+program = [common.extract_numbers(x) for x in common.read_file().split('\n\n\n\n')[1].splitlines()]
 
 set_registers([0, 0, 0, 0])
 for op in program:
     instr = ops[op[0]]
     run_instruction(instr, *op[1:])
 
-print(registers)
+print(registers[0])

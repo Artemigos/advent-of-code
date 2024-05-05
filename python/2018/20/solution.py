@@ -138,21 +138,22 @@ def find_deep(neighbors, min_depth):
 
 tests = [
     data,
-    sample0,
-    sample1,
-    sample2,
-    sample3,
-    sample4
+    # sample0,
+    # sample1,
+    # sample2,
+    # sample3,
+    # sample4
 ]
 
 for test in tests:
     _, parsed = parse_chain(test)
     constructed = construct_chain(parsed)
     result = test == constructed
-    if not result:
-        print('failed reconstruction for:', test)
+    # if not result:
+    #     print('failed reconstruction for:', test)
     neighbors = {}
     find_neighbors_chain(neighbors, parsed, (0, 0))
     depth = find_depth(neighbors)
     deep_amount = find_deep(neighbors, 1000)
-    print(depth, deep_amount)
+    print(depth)
+    print(deep_amount)

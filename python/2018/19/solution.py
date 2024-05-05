@@ -22,8 +22,8 @@ transcript2 = common.import_from_day(2018, 19, 'transcript2')
 
 # part 1
 result = transcript2.run_better()
-print('part 1:', result)
+print(result)
 
 # part 2
 result = transcript2.run_better(1)
-print('part 2:', result)
+print(result)

@@ -67,9 +67,9 @@ def collect_results():
         for x in range(w):
             final_countdown[get_at(x, y)] += 1
 
-    print(final_countdown['|'], final_countdown['#'], final_countdown['|']*final_countdown['#'])
+    print(final_countdown['|']*final_countdown['#'])
 
-output_board()
+# output_board()
 collect_results()
 
 # part 2
@@ -102,5 +102,5 @@ for i in range(part2_steps-part1_steps):
         if left_steps % loop_size == 0:
             break
 
-output_board()
+# output_board()
 collect_results()
