@@ -73,14 +73,16 @@ def collision(nxt_pos):
             return True
     return False
 
+found_crash = False
 while True:
     for cart in carts:
         if not cart[4]:
             continue
         nxt_pos = next_pos(cart)
         if collision(nxt_pos):
-            # print('crash at', nxt_pos)
-            # exit(0)
+            if not found_crash:
+                print(*nxt_pos, sep=',')
+                found_crash = True
             cart[4] = False
             continue
         nxt_dir = next_dir(cart, nxt_pos)
@@ -91,6 +93,6 @@ while True:
 
     alive = list(filter(lambda x: x[4], carts))
     if len(alive) == 1:
-        print('last cart', alive[0])
+        print(*alive[0][:2], sep=',')
         break
     carts = list(sorted(alive, key=lambda x:str(x[1]).rjust(3, '0')+str(x[0]).rjust(3, '0')))

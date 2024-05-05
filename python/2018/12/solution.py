@@ -4,9 +4,10 @@ def parse_line(line: str):
     segments = line.split(' ')
     return (list(segments[0]), segments[2])
 
-def run_simulation(rules_path, initial, generations, label, padding_left = 50, padding_right = 100):
+def run_simulation(generations, padding_left = 50, padding_right = 100):
     data = common.read_file().splitlines()
-    parsed = [parse_line(x) for x in data]
+    initial = data[0].split(': ')[1]
+    parsed = [parse_line(x) for x in data[2:]]
 
     size = len(initial)+padding_left+padding_right
     i0 = -padding_left
@@ -18,7 +19,7 @@ def run_simulation(rules_path, initial, generations, label, padding_left = 50, p
     g = 0
     while g < generations:
         # calculate new state
-        print(g/generations, end='\r')
+        # print(g/generations, end='\r')
         new_state = '.'*size
         new_state = list(new_state)
         for i in range(2, len(state)-2):
@@ -34,11 +35,11 @@ def run_simulation(rules_path, initial, generations, label, padding_left = 50, p
         if g%1000 == 0:
             for i in range(-1, -7, -1):
                 if state[i] == '#':
-                    print('right end reached!')
+                    # print('right end reached!')
                     break
             for i in range(0, 6):
                 if state[i] == '#':
-                    print('left end reached!')
+                    # print('left end reached!')
                     break
 
         # detect travelling loops
@@ -46,22 +47,22 @@ def run_simulation(rules_path, initial, generations, label, padding_left = 50, p
         trimmed_state = hashable_state.strip('.')
         start = hashable_state.index('#')
         if trimmed_state in seen_trim_states:
-            print('travelling loop!', seen_trim_states[trimmed_state], g, start)
-            print(trimmed_state)
+            # print('travelling loop!', seen_trim_states[trimmed_state], g, start)
+            # print(trimmed_state)
             loop_size = g-seen_trim_states[trimmed_state][0]
             loop_relocation = start-seen_trim_states[trimmed_state][1]
-            print('loop size', loop_size)
-            print('loop relocation', loop_relocation)
-            print('at generation', g)
+            # print('loop size', loop_size)
+            # print('loop relocation', loop_relocation)
+            # print('at generation', g)
             diff = generations-1-g
             skipped_loops = diff // loop_size
-            print('skipping', skipped_loops, 'loops')
+            # print('skipping', skipped_loops, 'loops')
             move = skipped_loops * loop_size
             g += move
-            print('moved to generation', g)
-            print('current offset', i0)
+            # print('moved to generation', g)
+            # print('current offset', i0)
             i0 += loop_relocation*skipped_loops
-            print('moved to offset', i0)
+            # print('moved to offset', i0)
             seen_trim_states.clear()
         else:
             seen_trim_states[trimmed_state] = (g, start)
@@ -73,26 +74,14 @@ def run_simulation(rules_path, initial, generations, label, padding_left = 50, p
     for i in range(len(state)):
         if state[i] == '#':
             acc += (i+i0)
-    print()
-    print(label, acc)
+    # print()
+    print(acc)
 
 # part 1
-run_simulation(
-    '2018/12/data.txt',
-    '..##.#######...##.###...#..#.#.#..#.##.#.##....####..........#..#.######..####.#.#..###.##..##..#..#',
-    20,
-    'part 1:',
-    1000,
-    1000)
+run_simulation(20, 1000, 1000)
 
 # part 2
-run_simulation(
-    '2018/12/data.txt',
-    '..##.#######...##.###...#..#.#.#..#.##.#.##....####..........#..#.######..####.#.#..###.##..##..#..#',
-    50000000000,
-    'part 2:',
-    1000,
-    2000)
+run_simulation(50000000000, 1000, 2000)
 
 # sample
 # initial = '#..#.#..##......###...###'

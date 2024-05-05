@@ -32,5 +32,7 @@ def find_max_pow(sizes):
 
     return (maxp, maxx, maxy, maxn)
 
-print(find_max_pow([3]))
-print(find_max_pow(range(1, 301)))
+r1 = find_max_pow([3])
+print(*r1[1:3], sep=',')
+r2 = find_max_pow(range(1, 301))
+print(*r2[1:], sep=',')

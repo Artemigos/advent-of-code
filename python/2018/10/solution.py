@@ -27,8 +27,6 @@ for i in range(0, 10158+1):
         mx = dx
         mi = i
 
-print(mi, mx, my)
-
 minx = min(map(lambda x: x[0], cp))
 miny = min(map(lambda x: x[1], cp))
 board = np.zeros((mx+1, my+1))
@@ -44,3 +42,5 @@ for y in range(board.shape[1]):
         else:
             print('.', end='')
     print()
+
+print(mi + 1)
