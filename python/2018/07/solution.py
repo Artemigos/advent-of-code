@@ -61,6 +61,7 @@ while not available.empty():
                 available.put((finish, d))
     workers.put(finish)
 
+w = -1
 while not workers.empty():
-    print('worker finish at', workers.get())
-print(acc)
+    w = workers.get()
+print(w)

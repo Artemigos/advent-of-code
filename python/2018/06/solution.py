@@ -10,7 +10,7 @@ maxx = max(map(lambda x: x[0], parsed))
 maxy = max(map(lambda x: x[1], parsed))
 dx = maxx-minx+1
 dy = maxy-miny+1
-print(minx, maxx, miny, maxy)
+# print(minx, maxx, miny, maxy)
 
 def diffs(x, y):
     for row in parsed:
@@ -48,10 +48,10 @@ def iexcept(data, i_remove):
 
 print(max(map(lambda x: counts[x], iexcept(counts.keys(), broke_letter))))
 
-for i in range(50):
-    if i in broke_letter:
-        continue
-    print(i, counts[i])
+# for i in range(50):
+#     if i in broke_letter:
+#         continue
+#     print(i, counts[i])
 
 inc_amount = 500
 x_range = list(range(minx-inc_amount, minx+inc_amount))

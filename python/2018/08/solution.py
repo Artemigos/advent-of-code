@@ -2,7 +2,6 @@ import common
 
 data = common.read_file()
 parsed = common.extract_numbers(data)
-print(len(parsed))
 
 nodes = []
 
