@@ -48,7 +48,7 @@ def attack_phase(immune_system, infection, target_info):
     # print('---')
 
 def run_combat(immune_system_boost=0):
-    (ImmuneSystem, Infection) = create_starting_forces()
+    (ImmuneSystem, Infection) = parse_forces(common.read_file())
 
     for group in ImmuneSystem.groups:
         group.damage += immune_system_boost
