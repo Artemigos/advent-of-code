@@ -2,7 +2,7 @@ import math
 import common
 from collections import defaultdict
 
-data = common.read_file('2019/12/data.txt').splitlines()
+data = common.read_file().splitlines()
 positions = list(map(tuple, map(common.extract_numbers, data)))
 steps = 1000
 
@@ -64,7 +64,7 @@ while True:
 
     if len(resolved_loops) == 3:
         loop_sizes = list(resolved_loops.values())
-        print('part 2:', lcm(loop_sizes[0], loop_sizes[1], loop_sizes[2]))
+        print(lcm(loop_sizes[0], loop_sizes[1], loop_sizes[2]))
         break
 
     # update state
@@ -81,4 +81,4 @@ while True:
             kin = abs(vel[0])+abs(vel[1])+abs(vel[2])
             energy += pot * kin
 
-        print('part 1:', energy)
+        print(energy)

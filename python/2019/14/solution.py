@@ -2,7 +2,7 @@ import common
 from collections import defaultdict
 import math
 
-data = common.read_file('2019/14/data.txt').splitlines()
+data = common.read_file().splitlines()
 rules = {}
 ore = 'ORE'
 fuel = 'FUEL'
@@ -41,7 +41,7 @@ def find_needed(fuel_amount):
     return needed
 
 needed = find_needed(1)
-print('part 1:', needed[ore])
+print(needed[ore])
 
 # part 2
 ore_amount = 1000000000000
@@ -60,8 +60,7 @@ while True:
     elif middle_needed > ore_amount:
         prod_max = middle
     else:
-        print('found exact cost')
-        print('part 2:', middle)
+        print(middle)
         break
 
     if prod_min == prod_max or prod_max - prod_min == 1:
@@ -70,5 +69,5 @@ while True:
             result = prod_max
         else:
             result = prod_min
-        print('part 2:', result)
+        print(result)
         break

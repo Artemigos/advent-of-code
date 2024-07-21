@@ -2,7 +2,7 @@ from collections import defaultdict
 import common
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/13/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 # part 1
 mem = year_common.tape_to_mem(tape)
@@ -20,7 +20,7 @@ try:
 except StopIteration:
     pass
 
-print('part 1:', blocks)
+print(blocks)
 
 # part 2
 mem = year_common.tape_to_mem(tape)
@@ -100,4 +100,4 @@ try:
 except StopIteration:
     pass
 
-print('part 2:', score)
+print(score)

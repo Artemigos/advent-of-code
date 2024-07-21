@@ -1,7 +1,7 @@
 import common
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/17/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 mem = year_common.tape_to_mem(tape)
 x, y = 0, 0
@@ -30,7 +30,7 @@ for y in range(maxy):
             and (x, y-1) in board and board[x, y-1] == '#' and (x, y+1) in board and board[x, y+1] == '#':
             acc += x*y
 
-print('part 1:', acc)
+print(acc)
 
 # part 2
 # manual analysis
@@ -55,9 +55,9 @@ def input_generator():
 mem = year_common.tape_to_mem(tape)
 mem[0] = 2
 
-print('part 2:')
 for x in year_common.run_intcode(mem, input_generator()):
     if x < 256:
-        print(chr(x), end='')
+        pass
+        # print(chr(x), end='')
     else:
         print(x)

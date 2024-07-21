@@ -1,7 +1,7 @@
 import common
 from collections import defaultdict, deque
 
-data = [ list(x) for x in common.read_file('2019/20/data.txt').splitlines()]
+data = [ list(x) for x in common.read_file().splitlines()]
 w = len(data[0])
 h = len(data)
 
@@ -42,16 +42,6 @@ for label, locations in portal_defs.items():
         portals[locations[0][0]] = locations[1][0][0], locations[1][0][1], locations[0][1]
         portals[locations[1][0]] = locations[0][0][0], locations[0][0][1], locations[1][1]
 
-# print board
-# for y in range(h):
-#     for x in range(w):
-#         if (x, y) in portals:
-#             print('X', end='')
-#         else:
-#             print(data[y][x], end='')
-#     print()
-# print()
-
 # part 1
 q = deque([(0, (start[0], start[1]))])
 seen = set()
@@ -59,7 +49,7 @@ short_end = (end[0], end[1])
 while len(q) > 0:
     depth, pos = q.popleft()
     if pos == short_end:
-        print('part 1:', depth)
+        print(depth)
         break
 
     if pos in seen:
@@ -83,7 +73,7 @@ seen = set()
 while len(q) > 0:
     depth, pos = q.popleft()
     if pos == end:
-        print('part 2:', depth)
+        print(depth)
         break
 
     if pos in seen:

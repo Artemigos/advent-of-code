@@ -2,7 +2,7 @@ import common
 from collections import deque
 from queue import PriorityQueue
 
-data = [list(x) for x in common.read_file('2019/18/data.txt').splitlines()]
+data = [list(x) for x in common.read_file().splitlines()]
 w = len(data[0])
 h = len(data)
 
@@ -78,12 +78,16 @@ while not q.empty():
     for key, key_dist in find_keys(pos, keys).items():
         q.put((dist-key_dist, spots[key], keys+[key]))
 
-print('part 1:', -(min_dist or 0))
+print(-(min_dist or 0))
 
 # part 2
-data = [list(x) for x in common.read_file('2019/18/data.part2.txt').splitlines()]
+data = [list(x) for x in common.read_file().splitlines()]
 w = len(data[0])
 h = len(data)
+
+my, mx = w//2-1, h//2-1
+data[my][mx] = data[my][mx+2] = data[my+2][mx] = data[my+2][mx+2] = '@'
+data[my][mx+1] = data[my+1][mx] = data[my+1][mx+1] = data[my+1][mx+2] = data[my+2][mx+1] = '#'
 
 spots = {}
 robots = []
@@ -129,4 +133,4 @@ while not q.empty():
                 robots[:i]+[spots[key]]+robots[i+1:],
                 keys+[key]))
 
-print('part 2:', -(min_dist or 0))
+print(-(min_dist or 0))

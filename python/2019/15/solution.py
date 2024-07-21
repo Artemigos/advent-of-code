@@ -1,9 +1,8 @@
-import random
-from collections import defaultdict, deque
+from collections import deque
 import common
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/15/data.txt'))
+tape = common.extract_numbers(common.read_file())
 pos = 0, 0
 new_pos = None
 
@@ -62,7 +61,7 @@ try:
             curr_dist, _ = explored[pos]
             pos = new_pos
             if result == 2:
-                print('part 1:', curr_dist+1)
+                print(curr_dist+1)
                 oxygen_pos = pos
 
         neighbors = [move(pos, d) for d in range(1, 5)]
@@ -95,4 +94,4 @@ while len(moves) > 0:
         n = move(pos, d)
         moves.append((dist+1, n))
 
-print('part 2:', max_dist)
+print(max_dist)

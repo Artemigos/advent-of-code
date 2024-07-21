@@ -2,7 +2,7 @@ import common
 from collections import defaultdict
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/11/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 state = defaultdict(lambda: 0)
 pos = 0, 0
@@ -47,7 +47,7 @@ try:
 except StopIteration:
     pass
 
-print('part 1:', len(state))
+print(len(state))
 
 # part 2
 state = defaultdict(lambda: 0)
@@ -76,7 +76,6 @@ max_x = max(map(lambda x: x[0], state.keys()))
 min_y = min(map(lambda x: x[1], state.keys()))
 max_y = max(map(lambda x: x[1], state.keys()))
 
-print('part 2:')
 for y in range(min_y, max_y+1):
     for x in range(min_x, max_x+1):
         print('▓' if state[x, y] == 1 else ' ', end='')

@@ -1,7 +1,7 @@
 import common
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/19/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 # part 1
 acc = 0
@@ -11,9 +11,7 @@ for y in range(50):
         output = year_common.run_intcode(mem, iter([x, y]))
         result = next(output)
         acc += result
-        print('.' if result == 0 else '#', end='')
-    print()
-print('part 1:', acc)
+print(acc)
 
 # part 2
 ranges = {0: range(1), 1: range(0), 2: range(0), 4: range(0), 7: range(0)}
@@ -42,12 +40,8 @@ while True:
         range1 = ranges[y-(size-1)]
         intersection = range(max(range1[0], range2[0]), min(range1[-1], range2[-1])+1) if len(range1) > 0 and len(range2) > 0 else range(0)
         if len(intersection) >= size:
-            print()
             x = intersection[0]
             y -= (size-1)
-            print(x, y)
-            print(intersection)
-            print('part 2:', 10000*x+y)
+            print(10000*x+y)
             break
-        print(len(intersection), y, range1, range2, end='\r')
     y += 1
