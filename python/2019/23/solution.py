@@ -4,7 +4,7 @@ from multiprocessing import Process, Queue
 from time import sleep
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/23/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 def run_computer(address, mem, q_in: Queue, q_out: Queue, q_state: Queue):
     operations = deque(maxlen=50)
@@ -69,7 +69,7 @@ def run_nat(mem, q_in: Queue, q_out: Queue, q_state: Queue):
             #     last_x, last_y = q_in.get()
             q_out.put((0, last_x, last_y))
             if not part_2_solved and (last_x, last_y) == last_sent:
-                print('part 2:', last_y)
+                print(last_y)
                 part_2_solved = True
             last_sent = last_x, last_y
 
@@ -101,7 +101,7 @@ part_1_solved = False
 while True:
     address, x, y = q_out.get()
     if not part_1_solved and address == 255:
-        print('part 1:', y)
+        print(y)
         part_1_solved = True
     queues[address].put((x, y))
 

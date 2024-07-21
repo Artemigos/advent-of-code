@@ -1,7 +1,6 @@
 import common
-import itertools
 
-data = tuple([tuple(x) for x in common.read_file('2019/24/data.txt').splitlines()])
+data = tuple([tuple(x) for x in common.read_file().splitlines()])
 w = len(data[0])
 h = len(data)
 
@@ -34,7 +33,7 @@ while True:
         new_state.append(tuple(new_row))
     curr = tuple(new_state)
     if curr in seen:
-        print('part 1:', calc_biodiversity(curr))
+        print(calc_biodiversity(curr))
         break
     seen.add(curr)
 
@@ -100,4 +99,4 @@ for i in range(200):
 
     bugs = new_bugs
 
-print('part 2:', len(bugs))
+print(len(bugs))

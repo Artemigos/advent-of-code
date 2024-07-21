@@ -1,7 +1,7 @@
 import common
 year_common = common.import_year_common(2019)
 
-tape = common.extract_numbers(common.read_file('2019/25/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 moves = [
     'south',
@@ -49,5 +49,9 @@ def gen_input():
 mem = year_common.tape_to_mem(tape)
 it = year_common.run_intcode(mem, gen_input())
 
+acc = ''
 for c in it:
-    print(chr(c), end='')
+    # print(chr(c), end='')
+    acc += chr(c)
+num = common.extract_numbers(acc)[-1]
+print(num)

@@ -2,7 +2,7 @@ import common
 import multiprocessing as mp
 import os
 
-data = [x.split(' ') for x in common.read_file('2019/22/data.txt').splitlines()]
+data = [x.split(' ') for x in common.read_file().splitlines()]
 
 def calc_pos(start, deck_size, curr_mul, const_add):
     return (start*curr_mul+const_add)%deck_size
@@ -70,7 +70,7 @@ def compound_muls(curr_mul, const_add, repetitions):
 deck_size = 10007
 curr_mul, const_add = calc_muls(deck_size)
 curr = calc_pos(2019, deck_size, curr_mul, const_add)
-print('part 1:', curr)
+print(curr)
 
 # part 2 - it's not the prettiest, but if you have time it does the job
 repetitions = 101741582076661
@@ -89,15 +89,13 @@ def check_range(rng, finished):
         curr %= deck_size
         if curr == target:
             with finished.get_lock():
-                print()
-                print('part 2:', i)
+                print(i)
                 break
 
         total += 1
         if total == interval:
             with finished.get_lock():
                 finished.value += interval
-                print(finished.value/deck_size, end='            \r')
                 total = 0
 
 process_count = os.cpu_count()-2
