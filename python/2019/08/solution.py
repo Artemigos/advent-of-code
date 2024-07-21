@@ -1,12 +1,8 @@
 import common
 
-data = common.read_file('2019/08/data.txt')
+data = common.read_file().strip()
 width = 25
 height = 6
-
-# data = '0222112222120000'
-# width = 2
-# height = 2
 
 layer_size = width*height
 
@@ -23,7 +19,7 @@ for layer_offset in range(0, len(data), layer_size):
         min_zeros = values['0']
         min_result = values['1']*values['2']
 
-print('part 1:', min_result)
+print(min_result)
 
 # part 2
 image = ['2'] * layer_size
@@ -33,8 +29,6 @@ for layer_offset in reversed(range(0, len(data), layer_size)):
         c = data[layer_i]
         if c != '2':
             image[layer_i-layer_offset] = c
-
-print('part 2:')
 
 for y in range(height):
     for x in range(width):

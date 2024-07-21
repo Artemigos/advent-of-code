@@ -1,7 +1,7 @@
 import common
 from collections import deque
 
-data = common.read_file('2019/06/data.txt').splitlines()
+data = common.read_file().splitlines()
 relations = list(map(lambda x: x.split(')'), data))
 
 is_orbited = {}
@@ -25,7 +25,7 @@ for planet in planets:
         curr = is_orbiting[curr]
         amount += 1
 
-print('part 1:', amount)
+print(amount)
 
 # part 2
 seen = set()
@@ -34,7 +34,7 @@ steps = deque([('YOU', 0)])
 while len(steps) > 0:
     where, dist = steps.popleft()
     if where == 'SAN':
-        print('part 2:', dist-2) # first and last step are not counted
+        print(dist-2) # first and last step are not counted
         break
     if where in seen:
         continue

@@ -1,9 +1,10 @@
 import common
 import itertools as it
+
 run_intcode = common.import_year_common(2019).run_intcode
 tape_to_mem = common.import_year_common(2019).tape_to_mem
 
-tape = common.extract_numbers(common.read_file('2019/07/data.txt'))
+tape = common.extract_numbers(common.read_file())
 
 class IterGlue:
     def __init__(self):
@@ -37,8 +38,8 @@ def solve(phases):
 
 # part 1
 max_result = solve(range(5))
-print('part 1:', max_result)
+print(max_result)
 
 # part 2
 max_result = solve(range(5, 10))
-print('part 2:', max_result)
+print(max_result)

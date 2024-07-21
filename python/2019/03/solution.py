@@ -1,6 +1,6 @@
 import common
 
-data = common.read_file('2019/03/data.txt').splitlines()
+data = common.read_file().splitlines()
 moves1 = data[0].split(',')
 moves2 = data[1].split(',')
 
@@ -21,7 +21,7 @@ def generate_positions(moves):
             elif direction == 'D':
                 at[1] -= 1
             else:
-                raise 'unknown direction'
+                raise Exception('unknown direction')
             yield tuple(at)
 
 # part 1
@@ -36,7 +36,7 @@ for pos in intersection:
     if min_dist is None or dist < min_dist:
         min_dist = dist
 
-print('part 1:', min_dist)
+print(min_dist)
 
 # part 2
 line1_points = list(generate_positions(moves1))
@@ -51,4 +51,4 @@ for pos in intersection:
     if min_steps is None or all_steps < min_steps:
         min_steps = all_steps
 
-print('part 2:', min_steps)
+print(min_steps)
