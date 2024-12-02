@@ -15,7 +15,11 @@ EOF
 
 run-python() {
     cd python
-    pypy3 -m "$1.$2.solution" "../$3"
+    local _pycmd=pypy3
+    if [ ! -x "$(command -v pypy3)" ]; then
+        _pycmd=python3
+    fi
+    $_pycmd -m "$1.$2.solution" "../$3"
 }
 
 run-go() {
