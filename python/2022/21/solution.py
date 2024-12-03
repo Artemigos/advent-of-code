@@ -14,7 +14,7 @@ def gen_op(monkeys, m1, m2, op):
         elif op == '*':
             return monkeys[m1]() * monkeys[m2]()
         elif op == '/':
-            return monkeys[m1]() / monkeys[m2]()
+            return monkeys[m1]() // monkeys[m2]()
         else:
             raise '???'
     return f
@@ -38,6 +38,12 @@ for line in lines:
 print(monkeys['root']())
 
 # part 2
+
+# TODO:
+# - build operation tree
+# - convert equation to get just 'x' on one side
+# - eval
+
 monkeys_m = dict()
 for line in lines:
     seg = line.split(': ')
@@ -156,7 +162,7 @@ def gen_print_op(monkeys, m1, m2, op):
         elif op == '*':
             return v1 * v2
         elif op == '/':
-            return v1 / v2
+            return v1 // v2
         else:
             raise '???'
     return f
