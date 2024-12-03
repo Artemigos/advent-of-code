@@ -2,7 +2,7 @@ import lark
 import re
 import common
 
-lines = common.read_file('2020/19/data.txt').splitlines()
+lines = common.read_file().splitlines()
 divider = lines.index('')
 rules_str = lines[:divider]
 tickets = lines[divider+1:]

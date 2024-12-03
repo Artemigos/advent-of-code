@@ -1,7 +1,7 @@
 from collections import deque
 import common
 
-lines = common.read_file('2020/20/data.txt').splitlines()
+lines = common.read_file().splitlines()
 lines.append('')
 tiles = {}
 SIZE = 10

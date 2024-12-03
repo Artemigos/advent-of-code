@@ -1,7 +1,8 @@
+import common
+
+PUB1, PUB2 = common.to_int(common.read_file().splitlines())
 SUBJECT_NUM = 7
 MOD_NUM = 20201227
-PUB1 = 12092626
-PUB2 = 4707356
 LOOP_SIZE1 = 0
 LOOP_SIZE2 = 0
 

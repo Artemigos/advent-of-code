@@ -1,7 +1,11 @@
 import common
 
+rules_data, ticket_data, nearby_tickets_data = common.read_file().split('\n\n')
+ticket_data = ticket_data.splitlines()[1]
+nearby_tickets_data = nearby_tickets_data.splitlines()[1:]
+
 rules = {}
-for l in common.read_file('2020/16/rules.txt').splitlines():
+for l in rules_data.splitlines():
     name, ranges = l.split(': ')
     ranges = ranges.split(' or ')
     for i in range(len(ranges)):
@@ -9,9 +13,9 @@ for l in common.read_file('2020/16/rules.txt').splitlines():
         ranges[i] = range(int(left), int(right)+1)
     rules[name] = ranges
 
-ticket = list(map(int, common.read_file('2020/16/ticket.txt').split(',')))
+ticket = list(map(int, ticket_data.split(',')))
 nearby_tickets = []
-for l in common.read_file('2020/16/nearby_tickets.txt').splitlines():
+for l in nearby_tickets_data:
     nearby_tickets.append(list(map(int, l.split(','))))
 
 # part 1

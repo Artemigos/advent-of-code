@@ -1,6 +1,6 @@
 import common
 
-nums = common.to_int(common.read_file('2020/01/data.txt').splitlines())
+nums = common.to_int(common.read_file().splitlines())
 
 # part 1
 found = False

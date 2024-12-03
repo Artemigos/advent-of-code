@@ -1,8 +1,9 @@
 from collections import deque
 import common
 
-deck1 = common.to_int(common.read_file('2020/22/p1.txt').splitlines())
-deck2 = common.to_int(common.read_file('2020/22/p2.txt').splitlines())
+p1_data, p2_data = common.read_file().split('\n\n')
+deck1 = common.to_int(p1_data.splitlines()[1:])
+deck2 = common.to_int(p2_data.splitlines()[1:])
 
 # part 1
 p1 = deque(deck1)

@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-lines = common.read_file('2020/06/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 # part 1
 groups = []

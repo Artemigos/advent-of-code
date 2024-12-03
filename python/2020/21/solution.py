@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-lines = common.read_file('2020/21/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 can_be_contained_by_ingredients = {}
 all_ingredients = defaultdict(int)

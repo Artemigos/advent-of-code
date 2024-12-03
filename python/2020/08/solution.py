@@ -2,7 +2,7 @@ import common
 
 instructions = common.pipe_map(
     lambda x: (x[:3], int(x[4:])),
-    common.read_file('2020/08/data.txt').splitlines()
+    common.read_file().splitlines()
 )
 
 def try_execute(instructions):

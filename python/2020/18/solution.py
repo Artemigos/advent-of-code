@@ -1,6 +1,6 @@
 import common
 
-equations = common.read_file('2020/18/data.txt').splitlines()
+equations = common.read_file().splitlines()
 digit_range = range(ord('0'), ord('9')+1)
 
 import ast

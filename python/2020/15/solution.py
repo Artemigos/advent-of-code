@@ -1,4 +1,6 @@
-data = [6, 4, 12, 1, 20, 0, 16]
+import common
+
+data = common.to_int(common.read_file().split(','))
 
 # part 1
 def find_num(limit):

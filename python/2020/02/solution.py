@@ -1,7 +1,7 @@
 import re
 import common
 
-lines = common.read_file('2020/02/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 amount = 0
 amount2 = 0

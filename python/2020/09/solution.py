@@ -2,7 +2,7 @@ from collections import defaultdict
 import common
 
 FRAME_SIZE = 25
-nums = common.to_int(common.read_file('2020/09/data.txt').splitlines())
+nums = common.to_int(common.read_file().splitlines())
 
 # part 1
 result = None

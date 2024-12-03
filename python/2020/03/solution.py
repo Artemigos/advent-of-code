@@ -1,6 +1,6 @@
 import common
 
-m = common.read_file('2020/03/data.txt').splitlines()
+m = common.read_file().splitlines()
 w = len(m[0])
 
 def count_trees(dx, dy):

@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2020/13/data.txt').splitlines()
+lines = common.read_file().splitlines()
 arrival = int(lines[0])
 buses = []
 offsets = []

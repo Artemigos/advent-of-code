@@ -1,7 +1,7 @@
 from functools import lru_cache
 import common
 
-nums = common.to_int(common.read_file('2020/10/data.txt').splitlines())
+nums = common.to_int(common.read_file().splitlines())
 
 sorted_nums = sorted(nums)
 

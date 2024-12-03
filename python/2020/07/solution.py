@@ -5,7 +5,7 @@ def cut_off_last_word(s):
     i = s.rindex(' ')
     return s[:i]
 
-lines = common.read_file('2020/07/data.txt').splitlines()
+lines = common.read_file().splitlines()
 lines = common.pipe_map(
     lambda x: x.rstrip('.'),
     lambda x: x.split(' contain '),

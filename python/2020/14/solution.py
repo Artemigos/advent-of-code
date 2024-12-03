@@ -5,7 +5,7 @@ setting_mask = 0
 resetting_mask = ~0
 mem = {}
 
-for line in common.read_file('2020/14/data.txt').splitlines():
+for line in common.read_file().splitlines():
     if line[:4] == 'mask':
         mask_str = line[7:]
         setting_mask = int(mask_str.replace('X', '0'), 2)
@@ -18,8 +18,6 @@ for line in common.read_file('2020/14/data.txt').splitlines():
 print(sum(mem.values()))
 
 # part 2
-import itertools
-
 mask = ''
 mem = {}
 
@@ -43,7 +41,7 @@ def gen_addresses(mask, addr, i=0):
             yield rst + ['0']
             yield rst + ['1']
 
-for line in common.read_file('2020/14/data.txt').splitlines():
+for line in common.read_file().splitlines():
     if line[:4] == 'mask':
         mask = line[7:]
     else:

@@ -1,4 +1,6 @@
-data = list(map(int, str(469217538)))
+import common
+
+data = list(map(int, common.read_file().strip()))
 
 class LinkedRotBufNode:
     def __init__(self, value, next_node=None):

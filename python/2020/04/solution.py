@@ -1,7 +1,7 @@
 import re
 import common
 
-lines = common.read_file('2020/04/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 passports = []
 current_passport = {}

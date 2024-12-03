@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2020/12/data.txt').splitlines()
+lines = common.read_file().splitlines()
 lines = list(map(lambda l: (l[0], int(l[1:])), lines))
 
 def turn_right(pos):
