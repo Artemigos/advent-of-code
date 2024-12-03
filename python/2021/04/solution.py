@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/04/data.txt').splitlines()
+lines = common.read_file().splitlines()
 randoms = common.to_int(lines[0].split(','))
 
 boards = []

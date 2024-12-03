@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/08/data.txt').splitlines()
+lines = common.read_file().splitlines()
 entries = []
 for line in lines:
     clues, outputs = line.split(' | ')

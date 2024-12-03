@@ -1,6 +1,6 @@
 import common
 
-commands = common.read_file('2021/02/data.txt').splitlines()
+commands = common.read_file().splitlines()
 commands = [(a, int(b)) for a, b in (x.split(' ') for x in commands)]
 
 # part 1

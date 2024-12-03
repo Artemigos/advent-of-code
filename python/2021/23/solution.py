@@ -1,6 +1,11 @@
 from dataclasses import dataclass, field
 from queue import PriorityQueue
 from typing import Any
+import common
+
+board = common.read_file().splitlines()
+ROOMS_COUNT = 4
+HALLWAY_LEN = len(list(filter(lambda x: x == '.', board[1]))) - ROOMS_COUNT
 
 costs = {
     'A': 1,
@@ -93,7 +98,7 @@ class PrioritizedItem:
     rooms: Any=field(compare=False)
 
 def solve(rooms):
-    hallway = [None]*7
+    hallway = [None]*HALLWAY_LEN
     seen = {}
     q = PriorityQueue()
     q.put(PrioritizedItem(0, hallway, rooms))
@@ -135,16 +140,25 @@ def solve(rooms):
                 new_rooms = splice(rooms, room_i, new_room)
                 q.put(PrioritizedItem(dist+cost, new_hallway, new_rooms))
 
-print(solve([
-    ['C', 'B'],
-    ['A', 'A'],
-    ['D', 'B'],
-    ['D', 'C']]))
+board_rooms = []
+for i in range(ROOMS_COUNT):
+    board_rooms.append([])
+for line in board[2:4]:
+    idx = 0
+    for c in line:
+        if c != ' ' and c != '#':
+            board_rooms[idx].append(c)
+            idx += 1
+
+print(solve(board_rooms))
 
 # part 2
-
-print(solve([
-    ['C', 'D', 'D', 'B'],
-    ['A', 'C', 'B', 'A'],
-    ['D', 'B', 'A', 'B'],
-    ['D', 'A', 'C', 'C']]))
+board_rooms[0].insert(1, 'D')
+board_rooms[0].insert(2, 'D')
+board_rooms[1].insert(1, 'C')
+board_rooms[1].insert(2, 'B')
+board_rooms[2].insert(1, 'B')
+board_rooms[2].insert(2, 'A')
+board_rooms[3].insert(1, 'A')
+board_rooms[3].insert(2, 'C')
+print(solve(board_rooms))

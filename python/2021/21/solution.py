@@ -1,7 +1,9 @@
 from collections import Counter, defaultdict
+import common
 
-p1_start = 3
-p2_start = 4
+lines = common.read_file().splitlines()
+p1_start = common.extract_numbers(lines[0])[-1]-1
+p2_start = common.extract_numbers(lines[1])[-1]-1
 
 # part 1
 

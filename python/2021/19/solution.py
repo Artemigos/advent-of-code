@@ -4,7 +4,7 @@ from typing import List, Tuple
 import common
 
 REQ_INTERSECT = 12
-lines = common.read_file('2021/19/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 # parse data
 

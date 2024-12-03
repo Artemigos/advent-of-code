@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-file_lines = common.read_file('2021/05/data.txt').splitlines()
+file_lines = common.read_file().splitlines()
 lines = []
 for line in file_lines:
     points = line.split(' -> ')

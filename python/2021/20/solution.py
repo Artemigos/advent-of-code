@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/20/data.txt').splitlines()
+lines = common.read_file().splitlines()
 reference = lines[0]
 board = lines[2:]
 w = len(board[0])

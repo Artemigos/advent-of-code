@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-nums = common.to_int(common.read_file('2021/06/data.txt').split(','))
+nums = common.to_int(common.read_file().split(','))
 
 fish = defaultdict(lambda: 0)
 for num in nums:

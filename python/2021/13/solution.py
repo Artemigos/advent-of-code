@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-lines = common.read_file('2021/13/data.txt').splitlines()
+lines = common.read_file().splitlines()
 board = defaultdict(lambda: 0)
 for i in range(len(lines)):
     line = lines[i]

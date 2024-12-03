@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import common
 
-lines = common.read_file('2021/22/data.txt').splitlines()
+lines = common.read_file().splitlines()
 rules = []
 for line in lines:
     status, rest = line.split(' ')

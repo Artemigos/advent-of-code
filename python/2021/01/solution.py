@@ -1,6 +1,6 @@
 import common
 
-nums = common.to_int(common.read_file('2021/01/data.txt').splitlines())
+nums = common.to_int(common.read_file().splitlines())
 
 # part 1
 acc = 0

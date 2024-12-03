@@ -1,7 +1,7 @@
 from collections import deque
 import common
 
-lines = common.read_file('2021/09/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 # part 1
 

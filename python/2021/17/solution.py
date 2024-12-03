@@ -1,5 +1,12 @@
-target_x = range(211, 233)
-target_y = range(-124, -68)
+import common
+
+data = common.read_file()[15:].strip()
+x_data, y_data = data.split(', y=')
+x_nums = common.to_int(x_data.split('..'))
+y_nums = common.to_int(y_data.split('..'))
+
+target_x = range(x_nums[0], x_nums[1]+1)
+target_y = range(y_nums[0], y_nums[1]+1)
 
 # part 1 and 2
 
@@ -15,8 +22,6 @@ for vx in range(1, target_x.stop):
             x_hits.append((vx, i))
     if vx == i and pos in target_x:
         infinite_x_hits.append((vx, i+1))
-
-print(infinite_x_hits)
 
 y_hits = []
 curr_vy = target_y.start

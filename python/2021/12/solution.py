@@ -1,7 +1,7 @@
 from collections import defaultdict, deque
 import common
 
-lines = common.read_file('2021/12/data.txt').splitlines()
+lines = common.read_file().splitlines()
 connections = defaultdict(lambda: [])
 for line in lines:
     l, r = line.split('-')

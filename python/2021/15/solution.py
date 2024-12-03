@@ -1,8 +1,7 @@
-from collections import deque, defaultdict
 from queue import PriorityQueue
 import common
 
-lines = common.read_file('2021/15/data.txt').splitlines()
+lines = common.read_file().splitlines()
 board = [common.to_int(x) for x in lines]
 w = len(lines[0])
 h = len(lines)

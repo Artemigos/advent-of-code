@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/03/data.txt').splitlines()
+lines = common.read_file().splitlines()
 nums = [int(x, 2) for x in lines]
 w = len(lines[0])
 
@@ -37,11 +37,7 @@ for bit in range(len(most_common[0])):
     if len(most_common) == 1:
         break
 
-print(len(most_common))
-print(most_common[0])
 num1 = int(most_common[0], 2)
-print(num1)
-
 least_common = list(lines)
 
 for bit in range(len(least_common[0])):
@@ -56,9 +52,5 @@ for bit in range(len(least_common[0])):
     if len(least_common) == 1:
         break
 
-print(len(least_common))
-print(least_common[0])
 num2 = int(least_common[0], 2)
-print(num2)
-
 print(num1*num2)

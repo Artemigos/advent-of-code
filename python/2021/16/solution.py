@@ -3,7 +3,7 @@ from functools import reduce
 from operator import mul
 import common
 
-inp = common.read_file('2021/16/data.txt').strip()
+inp = common.read_file().strip()
 def to_bin(hex_data):
     val = bin(int(hex_data, 16))[2:]
     padding_len =  (-len(val))%4

@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/18/data.txt').splitlines()
+lines = common.read_file().splitlines()
 
 class Node:
     def __init__(self, left = None, right = None, data = None):

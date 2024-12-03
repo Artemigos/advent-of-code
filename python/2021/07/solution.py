@@ -1,6 +1,6 @@
 import common
 
-positions = common.to_int(common.read_file('2021/07/data.txt').split(','))
+positions = common.to_int(common.read_file().split(','))
 min_pos = min(positions)
 max_pos = max(positions)
 

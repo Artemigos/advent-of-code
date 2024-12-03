@@ -1,6 +1,6 @@
 import common
 
-lines = common.read_file('2021/11/data.txt').splitlines()
+lines = common.read_file().splitlines()
 w = len(lines[0])
 h = len(lines)
 board = {}

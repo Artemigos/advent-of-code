@@ -1,7 +1,7 @@
 from collections import defaultdict
 import common
 
-lines = common.read_file('2021/14/data.txt').splitlines()
+lines = common.read_file().splitlines()
 polymer = lines[0]
 rules = {}
 for line in lines[2:]:
