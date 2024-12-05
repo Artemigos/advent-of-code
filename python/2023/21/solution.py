@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from functools import cache
 import math
 from typing import Optional
@@ -52,53 +53,22 @@ steps = 5000 if common.is_sample_data() else 26501365
 step_parity = steps % 2
 distances_covered = steps // w
 
-# find all walkable tiles
-tl = tr = bl = br = 0
-walkable: set[tuple[int, int]] = set()
-q = deque()
-q.append((0, start[0], start[1]))
-while len(q) > 0:
-    depth, x, y = q.popleft()
-    if x < 0 or y < 0 or x >= w or y >= h:
-        continue
-    if board[y][x] == '#':
-        continue
-    if (x, y) in walkable:
-        continue
-    walkable.add((x, y))
-    if (x, y) == (0, 0):
-        tl = depth
-    elif (x, y) == (w-1, 0):
-        tr = depth
-    elif (x, y) == (0, h-1):
-        bl = depth
-    elif (x, y) == (w-1, h-1):
-        br = depth
-    q.append((depth+1, x-1, y))
-    q.append((depth+1, x+1, y))
-    q.append((depth+1, x, y-1))
-    q.append((depth+1, x, y+1))
-
-# figure out how many spots get covered if tile is covered entirely
-curr_parity_block: set[tuple[int, int]] = set()
-curr_parity = (start[0]+start[1])%2
-for p in walkable:
-    x, y = p
-    if (x+y)%2 == curr_parity:
-        curr_parity_block.add((x, y))
-if w % 2 == 0:
-    other_parity_block = curr_parity_block
-else:
-    other_parity_block = walkable.difference(curr_parity_block)
-
-curr_parity_block_covers = len(curr_parity_block)
-other_parity_block_covers = len(other_parity_block)
+@dataclass
+class DistMap:
+    start: tuple[int, int]
+    distances: list[list[Optional[int]]]
+    walkable_even: set[tuple[int, int]]
+    walkable_odd: set[tuple[int, int]]
+    max_dist: int
 
 # create distance maps from corners
-def get_distances(fx: int, fy: int) -> list[list[Optional[int]]]:
+def get_distances(fx: int, fy: int) -> DistMap:
     distances: list[list[Optional[int]]] = []
     for _ in range(h):
         distances.append([None] * w)
+    walkable_even: set[tuple[int, int]] = set()
+    walkable_odd: set[tuple[int, int]] = set()
+    max_dist = 0
     seen: set[tuple[int, int]] = set()
     q: deque[tuple[int, int, int]] = deque()
     q.append((0, fx, fy))
@@ -112,22 +82,20 @@ def get_distances(fx: int, fy: int) -> list[list[Optional[int]]]:
             continue
         seen.add((x, y))
         distances[y][x] = depth
+        curr_walkable = walkable_even if depth % 2 == 0 else walkable_odd
+        curr_walkable.add((x, y))
+        max_dist = max(max_dist, depth)
         q.append((depth+1, x-1, y))
         q.append((depth+1, x+1, y))
         q.append((depth+1, x, y-1))
         q.append((depth+1, x, y+1))
-    return distances
+    return DistMap((fx, fy), distances, walkable_even, walkable_odd, max_dist)
 
 def collect_corner(cx, cy, init_corner_dist):
     distances = get_distances(cx, cy)
-    max_distance = -1
-    for row in distances:
-        for num in row:
-            if num is not None and num > max_distance:
-                max_distance = num
 
     # sum completely covered tiles
-    skips_before_limit = (steps - init_corner_dist - 2 - max_distance) // w
+    skips_before_limit = (steps - init_corner_dist - 2 - distances.max_dist) // w
     full_repetitions = (skips_before_limit * (skips_before_limit + 1)) // 2
     curr_repetitions = int(math.pow(math.ceil(skips_before_limit / 2), 2))
     other_repetitions = full_repetitions - curr_repetitions
@@ -136,27 +104,33 @@ def collect_corner(cx, cy, init_corner_dist):
     curr_repetitions += skips_before_limit // 2 + 1
     other_repetitions += math.ceil(skips_before_limit / 2)
 
-    acc = curr_repetitions*curr_parity_block_covers + other_parity_block_covers*other_repetitions
+    acc = curr_repetitions*len(distances.walkable_even) + len(distances.walkable_odd)*other_repetitions
 
     # walk partially covered corner tiles
     i = 0
     while True:
         if (skips_before_limit + i) % 2 == 0:
-            wkbl = curr_parity_block
+            wkbl = distances.walkable_even
         else:
-            wkbl = other_parity_block
-        corner_dist = br + 2 + (skips_before_limit + i) * w
+            wkbl = distances.walkable_odd
+        corner_dist = init_corner_dist + 2 + (skips_before_limit + i) * w
         if corner_dist > steps:
             break
         tile_acc = 0
         for y in range(h):
             for x in range(w):
-                if (x, y) in wkbl and distances[y][x] + corner_dist <= steps:
+                if (x, y) in wkbl and distances.distances[y][x] + corner_dist <= steps:
                     tile_acc += 1
         acc += (skips_before_limit + i + 1) * tile_acc
         i += 1
 
     return acc
+
+start_distances = get_distances(*start).distances
+tl = start_distances[0][0]
+tr = start_distances[0][w-1]
+bl = start_distances[h-1][0]
+br = start_distances[h-1][w-1]
 
 print(sum([
     collect_corner(0, 0, tl),
