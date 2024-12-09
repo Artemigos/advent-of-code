@@ -74,7 +74,7 @@ for _ in range(1000):
 print(low_pulses*high_pulses)
 
 # part 2
-def part2() -> int:
+def find_high_signal(send_to: str, observe_on: str) -> int:
     class Mod:
         def __init__(self, name: str):
             self.outputs: 'list[Mod]' = []
@@ -130,61 +130,40 @@ def part2() -> int:
             for inp in module.inputs:
                 mod.inputs[inp] = False
 
-    found_rx = False
+    should_exit = False
     button_presses = 0
-    while not found_rx:
+    while not should_exit:
         button_presses += 1
-        print(button_presses, end='\r')
         q: deque[tuple[Mod, Mod, bool]] = deque()
-        q.append((Dummy('button'), mods['broadcaster'], False))
+        q.append((mods['broadcaster'], mods[send_to], False))
         while len(q) > 0:
             fro, to, high = q.popleft()
-            if not high and to.name == 'rx':
-                found_rx = True
-                break
+            if high and to.name == observe_on:
+                return button_presses
+            # for observing intervals
+            # if to.name == observe_on:
+            #     if to.inputs[fro.name] != high:
+            #         print(button_presses, 'changed on', to.name, 'from', fro.name, 'to', high)
+            #     if button_presses > 20000:
+            #         should_exit = True
+            #         break
             to.add_pulses(fro, high, q)
 
-    return 0
+    return 0 # shouldn't reach
 
-print(part2())
+# NOTE: from here on there's manual process involved
+# - first I dropped my input graph data into an online visualizer
+#   - this lead to an observation, that the graph cosists of 2 independent subsections,
+#     each branching from 'broadcaster' and converging at '&th' which leads directly to 'rx'
+# - I pointed the function below at each of the 4 subsections and observed the output
+#   - each of them at regular intervals of button presses flipped to high and then back to low on the same press
+#   - from the output I could collect the interval from each of those subsection
+# - I calculated LCM of those intervals, which is the solution
+# - after that, knowing how it works, I modified the code to get to the solution programatically
+s1 = find_high_signal('sr', 'th')
+s2 = find_high_signal('ch', 'th')
+s3 = find_high_signal('hd', 'th')
+s4 = find_high_signal('bx', 'th')
 
-# # reset states
-# states = {}
-# for name in modules:
-#     module = modules[name]
-#     if module.type == '%':
-#         states[name] = False
-#     elif module.type == '&':
-#         states[name] = {i: False for i in module.inputs}
-#
-# # part 2
-# found_rx = False
-# button_presses = 0
-# while not found_rx:
-#     button_presses += 1
-#     print(button_presses, end='\r')
-#     q = deque()
-#     q.append(('button', 'broadcaster', False))
-#     while len(q) > 0:
-#         fro, to, high = q.popleft()
-#         if not high and to == 'rx':
-#             found_rx = True
-#             break
-#         module = modules[to]
-#         if module.type == 'broadcaster':
-#             for output in module.outputs:
-#                 q.append((to, output, high))
-#         elif module.type == '%':
-#             if not high:
-#                 new_state = states[to] = not states[to]
-#                 for output in module.outputs:
-#                     q.append((to, output, new_state))
-#         elif module.type == '&':
-#             state = states[to]
-#             state[fro] = high
-#             new_pulse = not all(state.values())
-#             for output in module.outputs:
-#                 q.append((to, output, new_pulse))
-#
-# print()
-# print(button_presses)
+import math
+print(math.lcm(s1, s2, s3, s4))
