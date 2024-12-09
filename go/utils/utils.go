@@ -74,3 +74,20 @@ func All(arr []bool) bool {
 	}
 	return true
 }
+
+func Any(arr []bool) bool {
+	for _, b := range arr {
+		if b {
+			return true
+		}
+	}
+
+	return false
+}
+
+func Abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
