@@ -32,6 +32,10 @@ run-rust() {
     exit 1
 }
 
+run-zig() {
+    zig run "zig/$1/$2/main.zig" -- "$3"
+}
+
 if [ $# != 4 ]; then
     print-help
     exit 1
@@ -48,7 +52,7 @@ case $_mode in
 esac
 
 case $_lang in
-    python|go|rust) ;;
+    python|go|rust|zig) ;;
     *) echo "Unknown language: $_lang"; exit 1 ;;
 esac
 
