@@ -14,21 +14,7 @@ const sample =
 ;
 
 pub fn main() !void {
-    // allocator
-    var gpa = std.heap.GeneralPurposeAllocator(.{ .thread_safe = true }){};
-    defer if (gpa.deinit() == .leak) {
-        std.log.err("Memory leak", .{});
-    };
-    const allocator = gpa.allocator();
-
-    // read file
-    const argv = try std.process.argsAlloc(allocator);
-    defer std.process.argsFree(allocator, argv);
-    if (argv.len != 2) {
-        return error.InvalidNumberOfArguments;
-    }
-    const path: []u8 = argv[1];
-    const file = try std.fs.cwd().openFile(path, .{});
+    const file = try readFileFromArg();
     defer file.close();
     var file_buffer: [4096]u8 = undefined;
     var r = file.reader(&file_buffer);
@@ -71,9 +57,22 @@ pub fn main() !void {
         }
     }
 
-    // print output
+    try printStdOutUnsafe("{}\n{}\n", .{ result_part1, result_part2 });
+}
+
+fn readFileFromArg() !std.fs.File {
+    var args = std.process.args();
+    _ = args.next();
+    const path = args.next();
+    if (path == null) {
+        return error.InvalidNumberOfArguments;
+    }
+    return std.fs.cwd().openFile(path.?, .{});
+}
+
+fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
     var buf: [64]u8 = undefined;
     var writer = std.fs.File.stdout().writer(&buf);
-    try writer.interface.print("{}\n{}\n", .{ result_part1, result_part2 });
+    try writer.interface.print(fmt, args);
     try writer.interface.flush();
 }

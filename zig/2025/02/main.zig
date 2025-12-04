@@ -5,7 +5,7 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    const file = try readFileFromArg(allocator);
+    const file = try readFileFromArg();
     defer file.close();
     var file_buffer: [4096]u8 = undefined;
     var file_reader = file.reader(&file_buffer);
@@ -94,14 +94,14 @@ fn findIndex(data: []const u8, to_find: u8) ?usize {
     return null;
 }
 
-fn readFileFromArg(allocator: std.mem.Allocator) !std.fs.File {
-    const argv = try std.process.argsAlloc(allocator);
-    defer std.process.argsFree(allocator, argv);
-    if (argv.len != 2) {
+fn readFileFromArg() !std.fs.File {
+    var args = std.process.args();
+    _ = args.next();
+    const path = args.next();
+    if (path == null) {
         return error.InvalidNumberOfArguments;
     }
-    const path: []u8 = argv[1];
-    return std.fs.cwd().openFile(path, .{});
+    return std.fs.cwd().openFile(path.?, .{});
 }
 
 fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
