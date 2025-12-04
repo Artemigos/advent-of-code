@@ -33,7 +33,19 @@ run-rust() {
 }
 
 run-zig() {
-    zig run "zig/$1/$2/main.zig" -- "$3"
+    local _main=zig/$1/$2/main
+    if [[ -x "$_main" ]]; then
+        "$_main" "$3"
+    else
+        zig run "$_main.zig" -- "$3"
+    fi
+}
+
+build-zig() {
+    {
+        cd "zig/$1/$2"
+        zig build-exe -O ReleaseFast -fllvm main.zig
+    }
 }
 
 if [ $# != 4 ]; then
@@ -47,7 +59,7 @@ _problem_year=$3
 _problem_day=$4
 
 case $_mode in
-    run|test|diff) ;;
+    run|test|diff|build) ;;
     *) echo "Unknown mode: $_mode"; exit 1 ;;
 esac
 
@@ -73,6 +85,13 @@ elif [ "$_mode" == "diff" ]; then
     fi
 
     "run-$_lang" "$_problem_year" "$_problem_day" "$_data_file" | diff "$_result_file" -
+elif [ "$_mode" == "build" ]; then
+    case $_lang in
+        zig) ;;
+        *) echo "Build not supported for language: $_lang"; exit 1 ;;
+    esac
+
+    "build-$_lang" "$_problem_year" "$_problem_day"
 else
     if [ ! -f "$_result_file" ]; then
         echo "Result file not available"
