@@ -22,42 +22,19 @@ fn processBuf(reader: *std.io.Reader) !Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
 
-    // read data into buffer
     var data: [buf_cap]u8 = undefined;
-    const len = try reader.readSliceShort(&data);
-    if (len == data.len) {
-        return error.BufferTooSmall;
-    }
-    const buf = data[0..len];
-
-    // find lines
-    var line_count: usize = 0;
-    var offset: usize = 0;
-    var newlines: [lines_cap]usize = undefined;
-    while (offset < len) {
-        const next_newline = std.mem.indexOfScalarPos(u8, buf, offset, '\n');
-        if (next_newline) |val| {
-            newlines[line_count] = val;
-            line_count += 1;
-            offset = val + 1;
-        } else {
-            newlines[line_count] = len;
-            line_count += 1;
-            break;
-        }
-    }
+    const buf = try readToBuffer(&data, reader);
+    var lines_buf: [lines_cap][]u8 = undefined;
+    const lines = try findLines(buf, &lines_buf);
+    const w = lines[0].len;
 
     // find columns
     var columns: [columns_cap]usize = undefined;
     var column_count: usize = 0;
-    const line_len = newlines[0];
     var i: usize = 0;
-    while (i < line_len) : (i += 1) {
-        var l: usize = 0;
-        const empty_column = while (l < line_count) : (l += 1) {
-            const left = if (l == 0) 0 else newlines[l - 1] + 1;
-            const c = buf[left + i];
-            if (c != ' ') {
+    while (i < w) : (i += 1) {
+        const empty_column = for (lines) |line| {
+            if (line[i] != ' ') {
                 break false;
             }
         } else true;
@@ -66,7 +43,7 @@ fn processBuf(reader: *std.io.Reader) !Result {
             column_count += 1;
         }
     }
-    columns[column_count] = line_len;
+    columns[column_count] = w;
     column_count += 1;
 
     // solve
@@ -75,20 +52,16 @@ fn processBuf(reader: *std.io.Reader) !Result {
         const col_offset = if (col == 0) 0 else columns[col - 1] + 1;
         const col_end_offset = columns[col];
         const op = op: {
-            const l = line_count - 1;
-            const left = newlines[l - 1] + 1;
-            break :op buf[left + col_offset];
+            const l = lines.len - 1;
+            break :op lines[l][col_offset];
         };
         std.debug.assert(op == '+' or op == '*');
+        const num_lines = lines[0 .. lines.len - 1];
 
         // part 1
         var acc: u64 = if (op == '+') 0 else 1;
-        var l: usize = 0;
-        while (l < line_count - 1) : (l += 1) {
-            const left = if (l == 0) 0 else newlines[l - 1] + 1;
-            const cell_start = left + col_offset;
-            const cell_end = left + col_end_offset;
-            const cell = buf[cell_start..cell_end];
+        for (num_lines) |line| {
+            const cell = line[col_offset..col_end_offset];
             const trimmed = std.mem.trim(u8, cell, " ");
             const num = try std.fmt.parseInt(u64, trimmed, 10);
             if (op == '+') {
@@ -103,12 +76,9 @@ fn processBuf(reader: *std.io.Reader) !Result {
         acc = if (op == '+') 0 else 1;
         var cell_col: usize = col_end_offset - 1;
         while (cell_col >= col_offset) : (cell_col -= 1) {
-            l = 0;
             var num: u64 = 0;
-            while (l < line_count - 1) : (l += 1) {
-                const left = if (l == 0) 0 else newlines[l - 1] + 1;
-                const digit_pos = left + cell_col;
-                const c = buf[digit_pos];
+            for (num_lines) |line| {
+                const c = line[cell_col];
                 if (c != ' ') {
                     num *= 10;
                     num += c - '0';
@@ -162,4 +132,33 @@ fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
     var writer = std.fs.File.stdout().writer(&buf);
     try writer.interface.print(fmt, args);
     try writer.interface.flush();
+}
+
+fn readToBuffer(buffer: []u8, reader: *std.io.Reader) ![]u8 {
+    const len = try reader.readSliceShort(buffer);
+    if (len == buffer.len) {
+        return error.BufferTooSmall;
+    }
+    return buffer[0..len];
+}
+
+fn findLines(buf: []u8, lines_buf: [][]u8) ![][]u8 {
+    var lines = std.ArrayList([]u8){
+        .items = lines_buf[0..0],
+        .capacity = lines_buf.len,
+    };
+
+    var offset: usize = 0;
+    while (offset < buf.len) {
+        const next_newline = std.mem.indexOfScalarPos(u8, buf, offset, '\n');
+        if (next_newline) |val| {
+            try lines.appendBounded(buf[offset..val]);
+            offset = val + 1;
+        } else {
+            try lines.appendBounded(buf[offset..buf.len]);
+            break;
+        }
+    }
+
+    return lines.items;
 }
