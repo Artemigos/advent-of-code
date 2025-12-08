@@ -33,7 +33,7 @@ run-rust() {
 }
 
 run-zig() {
-    local _main=zig/$1/$2/main
+    local _main=zig/$1/$2
     if [[ -x "$_main" ]]; then
         "$_main" "$3"
     else
@@ -43,8 +43,8 @@ run-zig() {
 
 build-zig() {
     {
-        cd "zig/$1/$2"
-        zig build-exe -O ReleaseFast -fllvm main.zig
+        cd "zig/$1"
+        zig build-exe -O ReleaseFast -fllvm "$2.zig"
     }
 }
 
