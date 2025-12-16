@@ -10,6 +10,8 @@ if [ $# -lt 1 ] || [ $# -gt 2 ]; then
     exit 1
 fi
 
+source './year_maxes.sh'
+
 if [ $# -eq 2 ]; then
     MIN_YEAR=$2
     MAX_YEAR=$2
@@ -20,7 +22,7 @@ _passed=0
 _total=0
 
 for _year in $(seq "$MIN_YEAR" "$MAX_YEAR"); do
-    for _day in $(seq 1 25); do
+    for _day in $(seq 1 "${year_maxes[$_year]}"); do
         _total=$((_total + 1))
         _day=$(printf "%02d" "$_day")
         if ./run.sh test "$_lang" "$_year" "$_day"; then
