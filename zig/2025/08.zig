@@ -17,6 +17,10 @@ const Result = struct {
 };
 
 fn processBuf(reader: *std.io.Reader, connections: usize) !Result {
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const alloc = arena.allocator();
+
     // parse input points
     var points_buf: [points_cap]Point = undefined;
     var points = std.ArrayList(Point).initBuffer(&points_buf);
@@ -43,8 +47,10 @@ fn processBuf(reader: *std.io.Reader, connections: usize) !Result {
     }
 
     // calculate and sort all distances
-    var dists_buf: [points_cap * points_cap]Dist = undefined;
-    var dists = std.ArrayList(Dist).initBuffer(&dists_buf);
+    // NOTE: allocating avoids a segfault
+    // using a stack buffer gets into some kind of weird comptime vs runtime world
+    // that I don't undarstand, which causes all sorting functions to SIGSEGV (???)
+    var dists = try std.ArrayList(Dist).initCapacity(alloc, points_cap * points_cap);
 
     var i: usize = 0;
     while (i < points.items.len) : (i += 1) {
@@ -59,7 +65,7 @@ fn processBuf(reader: *std.io.Reader, connections: usize) !Result {
         }
     }
 
-    std.sort.heap(Dist, dists.items, {}, Dist.lessThan);
+    std.mem.sort(Dist, dists.items, {}, Dist.lessThan);
 
     // join circuits of closest points
     var part1: u64 = 0;
