@@ -20,7 +20,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
 
     var data: [buf_cap]u8 = undefined;
     const buf = try utils.io.readAllToBuffer(&data, reader);
-    var lines_buf: [lines_cap][]u8 = undefined;
+    var lines_buf: [lines_cap][]const u8 = undefined;
     const lines = try utils.buf.findLines(buf, &lines_buf);
     const w = lines[0].len;
 

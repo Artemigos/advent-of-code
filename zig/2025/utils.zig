@@ -1,21 +1,11 @@
 const std = @import("std");
 
 pub const buf = struct {
-    pub fn findLines(buffer: []u8, lines_buf: [][]u8) ![][]u8 {
-        var lines = std.ArrayList([]u8).initBuffer(lines_buf);
-        var offset: usize = 0;
-        while (offset < buffer.len) {
-            const next_newline = std.mem.indexOfScalarPos(u8, buffer, offset, '\n');
-            if (next_newline) |val| {
-                try lines.appendBounded(buffer[offset..val]);
-                offset = val + 1;
-            } else {
-                try lines.appendBounded(buffer[offset..buffer.len]);
-                break;
-            }
-        }
-
-        return lines.items;
+    pub fn findLines(buffer: []u8, lines_buf: [][]const u8) ![][]const u8 {
+        var lines = std.ArrayList([]const u8).initBuffer(lines_buf);
+        var iterator = std.mem.splitScalar(u8, buffer, '\n');
+        try iter.materializeBounded([]const u8, &iterator, &lines);
+        return lines.items[0 .. lines.items.len - 1];
     }
 };
 
@@ -81,6 +71,25 @@ pub const io = struct {
             return error.BufferTooSmall;
         }
         return buffer[0..len];
+    }
+};
+
+pub const iter = struct {
+    pub fn materializeBounded(T: type, iterator: anytype, target: *std.ArrayList(T)) !void {
+        comptime {
+            var iter_type = @TypeOf(iterator);
+            const iter_info = @typeInfo(iter_type);
+            if (iter_info == .pointer) {
+                iter_type = iter_info.pointer.child;
+            }
+            if (!@hasDecl(iter_type, "next")) {
+                @compileError("iterator is required to have a next() function");
+            }
+        }
+
+        while (iterator.next()) |item| {
+            try target.appendBounded(item);
+        }
     }
 };
 

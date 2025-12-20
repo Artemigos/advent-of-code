@@ -19,7 +19,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
     const allocator = gpa.allocator();
 
     var data_buf: [buf_cap]u8 = undefined;
-    var lines_buf: [lines_cap][]u8 = undefined;
+    var lines_buf: [lines_cap][]const u8 = undefined;
     const buf = try utils.io.readAllToBuffer(&data_buf, reader);
     const lines = try utils.buf.findLines(buf, &lines_buf);
 
@@ -81,7 +81,7 @@ const MemoFindPaths = struct {
 
     fn call(
         self: *MemoFindPaths,
-        lines: [][]u8,
+        lines: [][]const u8,
         splitter: Point,
     ) std.mem.Allocator.Error!usize {
         if (self.cache.get(splitter)) |ret| {
@@ -94,7 +94,7 @@ const MemoFindPaths = struct {
 
     fn _impl(
         self: *MemoFindPaths,
-        lines: [][]u8,
+        lines: [][]const u8,
         splitter: Point,
     ) !usize {
         var result: usize = 0;
@@ -133,7 +133,7 @@ const Point = struct {
     y: usize,
 };
 
-fn findSplitterBelow(lines: [][]u8, start: Point) ?Point {
+fn findSplitterBelow(lines: [][]const u8, start: Point) ?Point {
     var y: usize = start.y;
     while (y < lines.len) : (y += 1) {
         if (lines[y][start.x] == '^') {
