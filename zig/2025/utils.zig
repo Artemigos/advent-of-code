@@ -1,5 +1,24 @@
 const std = @import("std");
 
+pub const buf = struct {
+    pub fn findLines(buffer: []u8, lines_buf: [][]u8) ![][]u8 {
+        var lines = std.ArrayList([]u8).initBuffer(lines_buf);
+        var offset: usize = 0;
+        while (offset < buffer.len) {
+            const next_newline = std.mem.indexOfScalarPos(u8, buffer, offset, '\n');
+            if (next_newline) |val| {
+                try lines.appendBounded(buffer[offset..val]);
+                offset = val + 1;
+            } else {
+                try lines.appendBounded(buffer[offset..buffer.len]);
+                break;
+            }
+        }
+
+        return lines.items;
+    }
+};
+
 pub const floats = struct {
     // NOTE: ugly, but it's fine for the purpose of this repo
     pub var equality_threshold: f64 = 1e-10;
@@ -27,6 +46,17 @@ pub const floats = struct {
     }
 };
 
+pub const int = struct {
+    pub fn countDigits(comptime T: type, num: T, base: T) !usize {
+        var digits: usize = 0;
+        var curr = num;
+        while (curr > 0) : (curr = try std.math.divTrunc(T, curr, base)) {
+            digits += 1;
+        }
+        return digits;
+    }
+};
+
 pub const io = struct {
     pub fn readFileFromArg() !std.fs.File {
         var args = std.process.args();
@@ -39,10 +69,18 @@ pub const io = struct {
     }
 
     pub fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
-        var buf: [64]u8 = undefined;
-        var writer = std.fs.File.stdout().writer(&buf);
+        var buffer: [64]u8 = undefined;
+        var writer = std.fs.File.stdout().writer(&buffer);
         try writer.interface.print(fmt, args);
         try writer.interface.flush();
+    }
+
+    pub fn readAllToBuffer(buffer: []u8, reader: *std.io.Reader) ![]u8 {
+        const len = try reader.readSliceShort(buffer);
+        if (len == buffer.len) {
+            return error.BufferTooSmall;
+        }
+        return buffer[0..len];
     }
 };
 

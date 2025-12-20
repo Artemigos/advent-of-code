@@ -21,7 +21,7 @@ fn processBuf(data: []u8, size: usize) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
 
-    const w = std.mem.indexOf(u8, data, "\n").?;
+    const w = std.mem.indexOfScalar(u8, data, '\n').?;
     const stride: usize = w + 1;
     std.debug.assert(size % stride == 0);
     const h: usize = @divExact(size, stride);

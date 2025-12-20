@@ -2,24 +2,24 @@ const std = @import("std");
 const utils = @import("utils.zig");
 
 pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
     const file = try utils.io.readFileFromArg();
     defer file.close();
     var file_buffer: [4096]u8 = undefined;
     var file_reader = file.reader(&file_buffer);
-    const result = try processBuf(allocator, &file_reader.interface);
+    const result = try processBuf(&file_reader.interface);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(allocator: std.mem.Allocator, reader: *std.io.Reader) !utils.Result {
+fn processBuf(reader: *std.io.Reader) !utils.Result {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+
     var part1: u64 = 0;
     var part2: u64 = 0;
     while (try reader.takeDelimiter(',')) |range| {
         const rng = std.mem.trimEnd(u8, range, "\n");
-        const comma_idx = findIndex(rng, '-').?;
+        const comma_idx = std.mem.indexOfScalar(u8, rng, '-').?;
         const left = rng[0..comma_idx];
         const right = rng[comma_idx + 1 ..];
 
@@ -69,34 +69,11 @@ fn processBuf(allocator: std.mem.Allocator, reader: *std.io.Reader) !utils.Resul
 }
 
 test "sample" {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
     const sample = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
     var reader = std.io.Reader.fixed(sample);
-    const result = try processBuf(allocator, &reader);
+    const result = try processBuf(&reader);
     try std.testing.expect(result.part1 == 1227775554);
     try std.testing.expect(result.part2 == 4174379265);
-}
-
-fn findIndex(data: []const u8, to_find: u8) ?usize {
-    var i: usize = 0;
-    while (i < data.len) : (i += 1) {
-        if (data[i] == to_find) {
-            return i;
-        }
-    }
-    return null;
-}
-
-fn countDigits(comptime T: type, num: T, base: T) !usize {
-    var digits: usize = 0;
-    var curr = num;
-    while (curr > 0) : (curr = try std.math.divTrunc(T, curr, base)) {
-        digits += 1;
-    }
-    return digits;
 }
 
 fn createGen(totalDigits: u64) !ChainedGenerator {

@@ -16,10 +16,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
 
     var in_ranges = true;
     var ranges_buf: [200]Range = undefined;
-    var ranges = std.ArrayList(Range){
-        .items = ranges_buf[0..0],
-        .capacity = ranges_buf.len,
-    };
+    var ranges = std.ArrayList(Range).initBuffer(&ranges_buf);
 
     while (try reader.takeDelimiter('\n')) |line| {
         if (in_ranges) {
@@ -27,7 +24,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
                 in_ranges = false;
                 continue;
             }
-            const hyphen_i = std.mem.indexOf(u8, line, "-").?;
+            const hyphen_i = std.mem.indexOfScalar(u8, line, '-').?;
             try ranges.appendBounded(.{
                 .left = try std.fmt.parseInt(usize, line[0..hyphen_i], 10),
                 .right = try std.fmt.parseInt(usize, line[hyphen_i + 1 ..], 10),
@@ -44,10 +41,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
     }
 
     var reduced_ranges_buf: [200]Range = undefined;
-    var reduced_ranges = std.ArrayList(Range){
-        .items = reduced_ranges_buf[0..0],
-        .capacity = reduced_ranges_buf.len,
-    };
+    var reduced_ranges = std.ArrayList(Range).initBuffer(&reduced_ranges_buf);
 
     for (ranges.items) |rng| {
         var i: usize = 0;

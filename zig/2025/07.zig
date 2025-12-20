@@ -20,8 +20,8 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
 
     var data_buf: [buf_cap]u8 = undefined;
     var lines_buf: [lines_cap][]u8 = undefined;
-    const buf = try readToBuffer(&data_buf, reader);
-    const lines = try findLines(buf, &lines_buf);
+    const buf = try utils.io.readAllToBuffer(&data_buf, reader);
+    const lines = try utils.buf.findLines(buf, &lines_buf);
 
     const s_x = std.mem.indexOfScalar(u8, lines[0], 'S').?;
     const s = Point{
@@ -144,33 +144,4 @@ fn findSplitterBelow(lines: [][]u8, start: Point) ?Point {
         }
     }
     return null;
-}
-
-fn readToBuffer(buffer: []u8, reader: *std.io.Reader) ![]u8 {
-    const len = try reader.readSliceShort(buffer);
-    if (len == buffer.len) {
-        return error.BufferTooSmall;
-    }
-    return buffer[0..len];
-}
-
-fn findLines(buf: []u8, lines_buf: [][]u8) ![][]u8 {
-    var lines = std.ArrayList([]u8){
-        .items = lines_buf[0..0],
-        .capacity = lines_buf.len,
-    };
-
-    var offset: usize = 0;
-    while (offset < buf.len) {
-        const next_newline = std.mem.indexOfScalarPos(u8, buf, offset, '\n');
-        if (next_newline) |val| {
-            try lines.appendBounded(buf[offset..val]);
-            offset = val + 1;
-        } else {
-            try lines.appendBounded(buf[offset..buf.len]);
-            break;
-        }
-    }
-
-    return lines.items;
 }
