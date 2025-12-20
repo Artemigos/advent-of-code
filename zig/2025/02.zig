@@ -1,24 +1,20 @@
 const std = @import("std");
+const utils = @import("utils.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    const file = try readFileFromArg();
+    const file = try utils.io.readFileFromArg();
     defer file.close();
     var file_buffer: [4096]u8 = undefined;
     var file_reader = file.reader(&file_buffer);
     const result = try processBuf(allocator, &file_reader.interface);
-    try printStdOutUnsafe("{}\n{}\n", .{ result.part1, result.part2 });
+    try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-const Result = struct {
-    part1: u64,
-    part2: u64,
-};
-
-fn processBuf(allocator: std.mem.Allocator, reader: *std.io.Reader) !Result {
+fn processBuf(allocator: std.mem.Allocator, reader: *std.io.Reader) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
     while (try reader.takeDelimiter(',')) |range| {
@@ -92,23 +88,6 @@ fn findIndex(data: []const u8, to_find: u8) ?usize {
         }
     }
     return null;
-}
-
-fn readFileFromArg() !std.fs.File {
-    var args = std.process.args();
-    _ = args.next();
-    const path = args.next();
-    if (path == null) {
-        return error.InvalidNumberOfArguments;
-    }
-    return std.fs.cwd().openFile(path.?, .{});
-}
-
-fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
-    var buf: [64]u8 = undefined;
-    var writer = std.fs.File.stdout().writer(&buf);
-    try writer.interface.print(fmt, args);
-    try writer.interface.flush();
 }
 
 fn countDigits(comptime T: type, num: T, base: T) !usize {

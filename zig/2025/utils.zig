@@ -26,3 +26,31 @@ pub const floats = struct {
         return converted;
     }
 };
+
+pub const io = struct {
+    pub fn readFileFromArg() !std.fs.File {
+        var args = std.process.args();
+        _ = args.next();
+        const path = args.next();
+        if (path == null) {
+            return error.InvalidNumberOfArguments;
+        }
+        return std.fs.cwd().openFile(path.?, .{});
+    }
+
+    pub fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
+        var buf: [64]u8 = undefined;
+        var writer = std.fs.File.stdout().writer(&buf);
+        try writer.interface.print(fmt, args);
+        try writer.interface.flush();
+    }
+};
+
+pub const Result = struct {
+    part1: u64,
+    part2: u64,
+
+    pub fn format(self: Result, writer: *std.io.Writer) !void {
+        try writer.print("{}\n{}\n", .{ self.part1, self.part2 });
+    }
+};

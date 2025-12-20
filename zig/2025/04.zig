@@ -1,10 +1,11 @@
 const std = @import("std");
+const utils = @import("utils.zig");
 
 // barely enough for my input, needs to fit it all
 const buf_size = 20 * 1024;
 
 pub fn main() !void {
-    const file = try readFileFromArg();
+    const file = try utils.io.readFileFromArg();
     defer file.close();
     var file_buffer: [buf_size]u8 = undefined;
     const size = try file.readAll(&file_buffer);
@@ -13,15 +14,10 @@ pub fn main() !void {
     }
 
     const result = try processBuf(&file_buffer, size);
-    try printStdOutUnsafe("{}\n{}\n", .{ result.part1, result.part2 });
+    try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-const Result = struct {
-    part1: u64,
-    part2: u64,
-};
-
-fn processBuf(data: []u8, size: usize) !Result {
+fn processBuf(data: []u8, size: usize) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
 
@@ -121,21 +117,4 @@ test "sample" {
     const result = try processBuf(&buf, sample.len);
     try std.testing.expectEqual(13, result.part1);
     try std.testing.expectEqual(43, result.part2);
-}
-
-fn readFileFromArg() !std.fs.File {
-    var args = std.process.args();
-    _ = args.next();
-    const path = args.next();
-    if (path == null) {
-        return error.InvalidNumberOfArguments;
-    }
-    return std.fs.cwd().openFile(path.?, .{});
-}
-
-fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
-    var buf: [64]u8 = undefined;
-    var writer = std.fs.File.stdout().writer(&buf);
-    try writer.interface.print(fmt, args);
-    try writer.interface.flush();
 }

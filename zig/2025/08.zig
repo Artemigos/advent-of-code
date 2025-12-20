@@ -1,22 +1,18 @@
 const std = @import("std");
+const utils = @import("utils.zig");
 
 const points_cap: usize = 1000;
 
 pub fn main() !void {
-    const file = try readFileFromArg();
+    const file = try utils.io.readFileFromArg();
     defer file.close();
     var buf: [4096]u8 = undefined;
     var reader = file.reader(&buf);
     const result = try processBuf(&reader.interface, 1000);
-    try printStdOutUnsafe("{}\n{}\n", .{ result.part1, result.part2 });
+    try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-const Result = struct {
-    part1: u64,
-    part2: u64,
-};
-
-fn processBuf(reader: *std.io.Reader, connections: usize) !Result {
+fn processBuf(reader: *std.io.Reader, connections: usize) !utils.Result {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
     const alloc = arena.allocator();
@@ -198,20 +194,3 @@ const Dist = struct {
         return lhs.distance < rhs.distance;
     }
 };
-
-fn readFileFromArg() !std.fs.File {
-    var args = std.process.args();
-    _ = args.next();
-    const path = args.next();
-    if (path == null) {
-        return error.InvalidNumberOfArguments;
-    }
-    return std.fs.cwd().openFile(path.?, .{});
-}
-
-fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
-    var buf: [64]u8 = undefined;
-    var writer = std.fs.File.stdout().writer(&buf);
-    try writer.interface.print(fmt, args);
-    try writer.interface.flush();
-}

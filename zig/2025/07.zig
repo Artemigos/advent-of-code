@@ -1,23 +1,19 @@
 const std = @import("std");
+const utils = @import("utils.zig");
 
 const buf_cap: usize = 30000;
 const lines_cap: usize = 200;
 
 pub fn main() !void {
-    const file = try readFileFromArg();
+    const file = try utils.io.readFileFromArg();
     defer file.close();
     var buf: [4096]u8 = undefined;
     var reader = file.reader(&buf);
     const result = try processBuf(&reader.interface);
-    try printStdOutUnsafe("{}\n{}\n", .{ result.part1, result.part2 });
+    try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-const Result = struct {
-    part1: u64,
-    part2: u64,
-};
-
-fn processBuf(reader: *std.io.Reader) !Result {
+fn processBuf(reader: *std.io.Reader) !utils.Result {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
@@ -148,23 +144,6 @@ fn findSplitterBelow(lines: [][]u8, start: Point) ?Point {
         }
     }
     return null;
-}
-
-fn readFileFromArg() !std.fs.File {
-    var args = std.process.args();
-    _ = args.next();
-    const path = args.next();
-    if (path == null) {
-        return error.InvalidNumberOfArguments;
-    }
-    return std.fs.cwd().openFile(path.?, .{});
-}
-
-fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
-    var buf: [64]u8 = undefined;
-    var writer = std.fs.File.stdout().writer(&buf);
-    try writer.interface.print(fmt, args);
-    try writer.interface.flush();
 }
 
 fn readToBuffer(buffer: []u8, reader: *std.io.Reader) ![]u8 {
