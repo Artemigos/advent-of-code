@@ -1,16 +1,17 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
+    var reader = file.reader(init.io, &buf);
     const result = try processBuf(&reader.interface);
     try utils.io.printStdOutUnsafe("{}\n", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !u64 {
+fn processBuf(reader: *std.Io.Reader) !u64 {
     var shapes: [6][9]bool = undefined;
     var shape_sizes: [6]usize = @splat(0);
 

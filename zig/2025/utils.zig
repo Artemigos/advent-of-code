@@ -48,24 +48,32 @@ pub const int = struct {
 };
 
 pub const io = struct {
-    pub fn readFileFromArg() !std.fs.File {
-        var args = std.process.args();
-        _ = args.next();
-        const path = args.next();
+    var procArgs: std.process.Args = undefined;
+    var io_: std.Io = undefined;
+
+    pub fn setup(init: std.process.Init) void {
+        procArgs = init.minimal.args;
+        io_ = init.io;
+    }
+
+    pub fn readFileFromArg() !std.Io.File {
+        var it = procArgs.iterate();
+        _ = it.next();
+        const path = it.next();
         if (path == null) {
             return error.InvalidNumberOfArguments;
         }
-        return std.fs.cwd().openFile(path.?, .{});
+        return try std.Io.Dir.cwd().openFile(io_, path.?, .{});
     }
 
     pub fn printStdOutUnsafe(comptime fmt: []const u8, args: anytype) !void {
         var buffer: [64]u8 = undefined;
-        var writer = std.fs.File.stdout().writer(&buffer);
+        var writer = std.Io.File.stdout().writer(io_, &buffer);
         try writer.interface.print(fmt, args);
         try writer.interface.flush();
     }
 
-    pub fn readAllToBuffer(buffer: []u8, reader: *std.io.Reader) ![]u8 {
+    pub fn readAllToBuffer(buffer: []u8, reader: *std.Io.Reader) ![]u8 {
         const len = try reader.readSliceShort(buffer);
         if (len == buffer.len) {
             return error.BufferTooSmall;
@@ -97,7 +105,7 @@ pub const Result = struct {
     part1: u64,
     part2: u64,
 
-    pub fn format(self: Result, writer: *std.io.Writer) !void {
+    pub fn format(self: Result, writer: *std.Io.Writer) !void {
         try writer.print("{}\n{}\n", .{ self.part1, self.part2 });
     }
 };

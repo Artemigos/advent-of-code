@@ -4,11 +4,12 @@ const utils = @import("utils.zig");
 // barely enough for my input, needs to fit it all
 const buf_size = 20 * 1024;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var file_buffer: [buf_size]u8 = undefined;
-    const size = try file.readAll(&file_buffer);
+    const size = try file.readPositionalAll(init.io, &file_buffer, 0);
     if (size == file_buffer.len) {
         return error.FileTooLarge;
     }

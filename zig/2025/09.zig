@@ -3,16 +3,17 @@ const utils = @import("utils.zig");
 
 const points_cap: usize = 500;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
+    var reader = file.reader(init.io, &buf);
     const result = try processBuf(&reader.interface);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
+fn processBuf(reader: *std.Io.Reader) !utils.Result {
     // parse input points
     var points_buf: [points_cap]Point = undefined;
     var points = std.ArrayList(Point).initBuffer(&points_buf);
@@ -200,7 +201,7 @@ test "sample" {
         \\7,3
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expectEqual(50, result.part1);
     try std.testing.expectEqual(24, result.part2);

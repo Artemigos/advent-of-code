@@ -1,16 +1,17 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var file_buffer: [4096]u8 = undefined;
-    var file_reader = file.reader(&file_buffer);
+    var file_reader = file.reader(init.io, &file_buffer);
     const result = try processBuf(&file_reader.interface);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
+fn processBuf(reader: *std.Io.Reader) !utils.Result {
     var part1: usize = 0;
     var part2: usize = 0;
     var state: isize = 50;
@@ -63,7 +64,7 @@ test "sample" {
         \\L82
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expectEqual(3, result.part1);
     try std.testing.expectEqual(6, result.part2);

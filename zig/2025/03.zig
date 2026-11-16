@@ -1,16 +1,17 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var file_buffer: [4096]u8 = undefined;
-    var file_reader = file.reader(&file_buffer);
+    var file_reader = file.reader(init.io, &file_buffer);
     const result = try processBuf(&file_reader.interface);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
+fn processBuf(reader: *std.Io.Reader) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
     while (try reader.takeDelimiter('\n')) |line| {
@@ -39,7 +40,7 @@ fn Solution(comptime w: u8) type {
     return struct {
         const Self = @This();
 
-        digits: [w]u8 = .{0} ** w,
+        digits: [w]u8 = @splat(0),
         max: u64 = 0,
 
         fn observeDigit(self: *Self, digit: u8, n_digits_left: usize) void {
@@ -84,7 +85,7 @@ test "sample" {
         \\234234234234278
         \\818181911112111
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expectEqual(357, result.part1);
     try std.testing.expectEqual(3121910778619, result.part2);

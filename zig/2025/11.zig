@@ -1,12 +1,13 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
-    const result = try processBuf(&reader.interface, true, true);
+    var reader = file.reader(init.io, &buf);
+    const result = try processBuf(&reader.interface, true, true, init.gpa);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
@@ -28,11 +29,7 @@ const Node = struct {
     }
 };
 
-fn processBuf(reader: *std.io.Reader, calc_part_1: bool, calc_part_2: bool) !utils.Result {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const alloc = gpa.allocator();
-
+fn processBuf(reader: *std.Io.Reader, calc_part_1: bool, calc_part_2: bool, alloc: std.mem.Allocator) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
 
@@ -190,7 +187,7 @@ test "sample 1" {
         \\iii: out
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader, true, false);
     try std.testing.expectEqual(5, result.part1);
 }
@@ -212,7 +209,7 @@ test "sample 2" {
         \\hhh: out
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader, false, true);
     try std.testing.expectEqual(2, result.part2);
 }

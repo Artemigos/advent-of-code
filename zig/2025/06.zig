@@ -5,16 +5,17 @@ const buf_cap: usize = 20000;
 const lines_cap: usize = 10;
 const columns_cap: usize = 1000;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
+    var reader = file.reader(init.io, &buf);
     const result = try processBuf(&reader.interface);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
+fn processBuf(reader: *std.Io.Reader) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
 
@@ -107,7 +108,7 @@ test "sample" {
         \\*   +   *   +  
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expectEqual(4277556, result.part1);
     try std.testing.expectEqual(3263827, result.part2);

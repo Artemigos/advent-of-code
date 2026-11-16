@@ -1,20 +1,17 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var file_buffer: [4096]u8 = undefined;
-    var file_reader = file.reader(&file_buffer);
-    const result = try processBuf(&file_reader.interface);
+    var file_reader = file.reader(init.io, &file_buffer);
+    const result = try processBuf(&file_reader.interface, init.gpa);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
+fn processBuf(reader: *std.Io.Reader, alloc: std.mem.Allocator) !utils.Result {
     var part1: u64 = 0;
     var part2: u64 = 0;
     while (try reader.takeDelimiter(',')) |range| {
@@ -29,9 +26,9 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
         const left_val = try std.fmt.parseInt(u64, left, 10);
         const right_val = try std.fmt.parseInt(u64, right, 10);
 
-        var set1 = std.AutoHashMap(u64, void).init(allocator);
+        var set1 = std.AutoHashMap(u64, void).init(alloc);
         defer set1.deinit();
-        var set2 = std.AutoHashMap(u64, void).init(allocator);
+        var set2 = std.AutoHashMap(u64, void).init(alloc);
         defer set2.deinit();
 
         var i = @max(left_w, 2);
@@ -70,7 +67,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
 
 test "sample" {
     const sample = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expect(result.part1 == 1227775554);
     try std.testing.expect(result.part2 == 4174379265);

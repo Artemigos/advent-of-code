@@ -3,20 +3,17 @@ const utils = @import("utils.zig");
 
 const points_cap: usize = 1000;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
-    const result = try processBuf(&reader.interface, 1000);
+    var reader = file.reader(init.io, &buf);
+    const result = try processBuf(&reader.interface, 1000, init.arena.allocator());
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader, connections: usize) !utils.Result {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const alloc = arena.allocator();
-
+fn processBuf(reader: *std.Io.Reader, connections: usize, alloc: std.mem.Allocator) !utils.Result {
     // parse input points
     var points_buf: [points_cap]Point = undefined;
     var points = std.ArrayList(Point).initBuffer(&points_buf);
@@ -69,7 +66,7 @@ fn processBuf(reader: *std.io.Reader, connections: usize) !utils.Result {
     var repeats: usize = 0;
     while (true) : (repeats += 1) {
         if (repeats == connections) {
-            part1 = try collect_part1(points.items);
+            part1 = try collect_part1(points.items, alloc);
         }
 
         const dist = &dists.items[repeats];
@@ -99,13 +96,9 @@ fn processBuf(reader: *std.io.Reader, connections: usize) !utils.Result {
     };
 }
 
-fn collect_part1(points: []Point) !u64 {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
-    var q = std.PriorityQueue(usize, void, cmp_usize).init(allocator, {});
-    defer q.deinit();
+fn collect_part1(points: []Point, alloc: std.mem.Allocator) !u64 {
+    var q = std.PriorityQueue(usize, void, cmp_usize).empty;
+    defer q.deinit(alloc);
     var circuit: usize = 0;
     while (circuit < points.len) : (circuit += 1) {
         var acc: usize = 0;
@@ -116,14 +109,14 @@ fn collect_part1(points: []Point) !u64 {
             }
         }
         if (acc != 0) {
-            try q.add(acc);
+            try q.push(alloc, acc);
         }
     }
 
     var acc: u64 = 1;
     var repeats: usize = 0;
     while (repeats < 3) : (repeats += 1) {
-        acc *= q.remove();
+        acc *= q.pop().?;
     }
 
     return acc;
@@ -163,7 +156,7 @@ test "sample" {
         \\425,690,689
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader, 10);
     try std.testing.expectEqual(40, result.part1);
     try std.testing.expectEqual(25272, result.part2);

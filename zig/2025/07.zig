@@ -4,20 +4,17 @@ const utils = @import("utils.zig");
 const buf_cap: usize = 30000;
 const lines_cap: usize = 200;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    utils.io.setup(init);
     const file = try utils.io.readFileFromArg();
-    defer file.close();
+    defer file.close(init.io);
     var buf: [4096]u8 = undefined;
-    var reader = file.reader(&buf);
-    const result = try processBuf(&reader.interface);
+    var reader = file.reader(init.io, &buf);
+    const result = try processBuf(&reader.interface, init.gpa);
     try utils.io.printStdOutUnsafe("{f}", .{result});
 }
 
-fn processBuf(reader: *std.io.Reader) !utils.Result {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
+fn processBuf(reader: *std.Io.Reader, alloc: std.mem.Allocator) !utils.Result {
     var data_buf: [buf_cap]u8 = undefined;
     var lines_buf: [lines_cap][]const u8 = undefined;
     const buf = try utils.io.readAllToBuffer(&data_buf, reader);
@@ -30,7 +27,7 @@ fn processBuf(reader: *std.io.Reader) !utils.Result {
     };
 
     const fist_splitter = findSplitterBelow(lines, s).?;
-    var finder = MemoFindPaths.init(allocator);
+    var finder = MemoFindPaths.init(alloc);
     defer finder.deinit();
     const paths = try finder.call(lines, fist_splitter);
 
@@ -60,7 +57,7 @@ test "sample" {
         \\...............
         \\
     ;
-    var reader = std.io.Reader.fixed(sample);
+    var reader = std.Io.Reader.fixed(sample);
     const result = try processBuf(&reader);
     try std.testing.expectEqual(21, result.part1);
     try std.testing.expectEqual(40, result.part2);
